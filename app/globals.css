@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-cream: #faf7f2;
+  --color-charcoal: #1a1815;
+  --color-bronze: #b08d4f;
+  --color-gold: #c9a464;
+  --color-sand: #ede4d3;
+  --color-warm: #f7f1e6;
+  --color-cognac: #af8e6d;
+  --color-espresso: #5c422b;
+  --color-card: #6d461b;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-outfit);
+  --font-display: var(--font-fraunces);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Projeto Nexo — 1 creme, 2 areia, 3 caramelo, 4 chocolate, 5 ouro */
+.theme-nexo {
+  --color-cream: #e5dbd2;
+  --color-sand: #af8e6d;
+  --color-cognac: #af8e6d;
+  --color-card: #6d461b;
+  --color-bronze: #6d461b;
+  --color-espresso: #5c422b;
+  --color-charcoal: #5c422b;
+  --color-gold: #d59951;
+  --color-warm: #e5dbd2;
+  --font-display: var(--font-naville);
+  color: var(--color-charcoal);
+  background: var(--color-cream);
+}
+
+.theme-nexo .font-display {
+  font-family: var(--font-naville), sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+}
+
+.theme-nexo ::selection {
+  background: #d59951;
+  color: #5c422b;
+}
+
+.theme-nexo :focus-visible {
+  outline-color: #d4a05a;
+}
+
+.gold-leaf {
+  background-image: linear-gradient(
+    180deg,
+    #f8c87e 0%,
+    #d49851 48%,
+    #b67940 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+html {
+  background: var(--color-cream);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: #c9a464;
+  color: #1a1815;
+}
+
+:focus-visible {
+  outline: 2px solid #b08d4f;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
