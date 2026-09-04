@@ -31,21 +31,17 @@ const FAQS = [
   {
     question: "As reparações são feitas pela Projeto Nexo?",
     answer:
-      "Reparações e serviços especializados são encaminhados para a Nexo Services (/reparacoes), para não misturar a obra de fundo com a manutenção pontual.",
+      "Reparações e serviços especializados são encaminhados para a Nexo Services, para não misturar a obra de fundo com a manutenção pontual.",
   },
 ];
 
 export default function FaqPage() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
-      <p className="font-display text-[0.7rem] uppercase tracking-[0.28em] text-bronze">
-        Garantias e FAQ
-      </p>
-      <h1 className="mt-3 font-display text-4xl text-charcoal sm:text-5xl">
-        Condições claras,{" "}
-        <span className="gold-leaf">por escrito</span>.
+      <h1 className="font-display text-4xl text-charcoal sm:text-5xl">
+        Condições claras, <span className="text-accent">por escrito</span>.
       </h1>
-      <p className="mt-4 text-base leading-relaxed text-charcoal/75">
+      <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75">
         Resumo no site: garantia de 2 a 7 anos. Abaixo, a política completa —
         sem cláusulas escondidas e sem prazos inventados.
       </p>

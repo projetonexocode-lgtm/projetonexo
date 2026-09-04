@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
-import { Fraunces, Outfit } from "next/font/google";
+import { Fraunces, IBM_Plex_Mono, Jost, Outfit } from "next/font/google";
 import { SITE } from "@/lib/site";
 import "./globals.css";
 
@@ -16,11 +16,26 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
+const jost = Jost({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
+  variable: "--font-jost",
+  display: "swap",
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
+  variable: "--font-ibm-plex-mono",
+  display: "swap",
+});
+
 const naville = localFont({
   src: "./fonts/Naville-Regular.ttf",
   variable: "--font-naville",
   display: "swap",
   weight: "400",
+  adjustFontFallback: false,
 });
 
 export const metadata: Metadata = {
@@ -85,7 +100,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-PT"
-      className={`${outfit.variable} ${fraunces.variable} ${naville.variable} h-full scroll-smooth antialiased`}
+      className={`${outfit.variable} ${fraunces.variable} ${jost.variable} ${ibmPlexMono.variable} ${naville.variable} h-full scroll-smooth antialiased`}
     >
       <body className="flex min-h-full flex-col bg-cream font-sans text-charcoal">
         <script

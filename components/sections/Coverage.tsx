@@ -1,50 +1,52 @@
-import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { COVERAGE_IMAGE } from "@/lib/images";
+import { SITE } from "@/lib/site";
+
+const REGIONS = ["Lisboa", "Área Metropolitana", "Território nacional"];
 
 export function Coverage() {
   return (
-    <section id="atuacao" className="scroll-mt-28 px-5 py-16 sm:px-8 sm:py-20">
-      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <section id="atuacao" className="scroll-mt-32 bg-cream px-5 py-20 sm:px-8 sm:py-28 lg:py-36">
+      <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2 lg:gap-20">
         <div>
           <SectionHeading
-            eyebrow="Área de atuação"
-            title="Sede em Lisboa. Obra em todo o país."
+            title="Base em Lisboa, obra em todo o país."
             highlight="Lisboa"
           />
-          <p className="mt-6 text-base leading-relaxed text-charcoal/80 sm:text-lg">
-            Sediados em Lisboa e Área Metropolitana. Atendemos também em todo o
-            território nacional.
+          <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
+            Sediados em Lisboa e Área Metropolitana. Atendemos também em todo
+            o território nacional.
           </p>
-          <p className="mt-4 text-base leading-relaxed text-charcoal/75">
-            A base operacional — reuniões, coordenação e arranque de obra —
-            está em Lisboa. Quando o projeto o justifica, deslocamo-nos a
-            qualquer distrito, com o mesmo método de acompanhamento.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            <span className="rounded-full border border-gold bg-cognac/25 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-charcoal">
-              Lisboa
-            </span>
-            <span className="rounded-full border border-gold bg-cognac/25 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-charcoal">
-              Área Metropolitana
-            </span>
-            <span className="rounded-full border border-gold bg-cognac/25 px-3 py-1.5 text-xs uppercase tracking-[0.14em] text-charcoal">
-              Portugal inteiro
-            </span>
+          <div className="mt-8 flex flex-wrap gap-2.5">
+            {REGIONS.map((region) => (
+              <span
+                key={region}
+                className="rounded-full border border-gold/45 bg-sand px-3.5 py-2 text-sm tracking-wide text-charcoal"
+              >
+                {region}
+              </span>
+            ))}
           </div>
         </div>
-        <div className="relative aspect-[4/3] overflow-hidden">
-          <Image
-            src={COVERAGE_IMAGE.src}
-            alt={COVERAGE_IMAGE.alt}
-            fill
-            sizes="(max-width: 1024px) 100vw, 50vw"
-            className="object-cover"
+
+        <div className="overflow-hidden rounded-none border border-gold/35">
+          <div className="flex min-w-0 flex-col gap-2 border-b border-gold/25 bg-sand px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-charcoal">Lisboa — área de base</p>
+            <a
+              href={SITE.mapsLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hit-link shrink-0 text-sm text-accent hover:text-charcoal"
+            >
+              Abrir no Maps
+            </a>
+          </div>
+          <iframe
+            title="Mapa de Lisboa — área de base da Projeto Nexo"
+            src={SITE.mapsEmbedUrl}
+            className="h-[300px] w-full max-w-full border-0 sm:h-[360px]"
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
           />
-          <div className="absolute inset-0 ring-1 ring-inset ring-bronze/40" />
-          <p className="absolute left-4 top-4 rounded-full border border-gold bg-cream/95 px-3 py-1.5 text-[0.65rem] uppercase tracking-[0.16em] text-charcoal">
-            Base: Lisboa
-          </p>
         </div>
       </div>
     </section>

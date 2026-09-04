@@ -1,42 +1,25 @@
-import Link from "next/link";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DIFFERENTIALS } from "@/lib/differentials";
 
 export function Differentials() {
   return (
-    <section id="diferenciais" className="scroll-mt-28 px-5 py-16 sm:px-8 sm:py-20">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrow="Porquê a Nexo"
-          title="Critérios concretos, sem recorte de catálogo."
-          highlight="concretos"
-        />
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+    <section
+      id="diferenciais"
+      className="scroll-mt-32 bg-cream px-5 py-20 sm:px-8 sm:py-28 lg:py-36"
+    >
+      <div className="mx-auto min-w-0 max-w-6xl">
+        <h2 className="max-w-[20ch] font-display text-3xl leading-[1.1] text-charcoal sm:text-4xl lg:text-[2.75rem]">
+          Um responsável, do orçamento à entrega.
+        </h2>
+        <dl className="mt-12 grid gap-10 border-t border-charcoal/15 pt-12 sm:grid-cols-2 sm:gap-16">
           {DIFFERENTIALS.map((item) => (
-            <li
-              key={item.title}
-              className="border border-card bg-card p-6"
-            >
-              {"placeholder" in item && item.placeholder ? (
-                <p className="mb-2 text-[0.65rem] uppercase tracking-[0.16em] text-gold">
-                  A preencher pelo cliente
-                </p>
-              ) : null}
-              <h3 className="font-display text-2xl text-warm">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-warm/75">
+            <div key={item.title}>
+              <dt className="text-lg font-medium text-charcoal">{item.title}</dt>
+              <dd className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
                 {item.body}
-              </p>
-              {"href" in item && item.href ? (
-                <Link
-                  href={item.href}
-                  className="mt-4 inline-flex min-h-11 items-center text-sm text-gold hover:text-warm"
-                >
-                  Ver política de garantias
-                </Link>
-              ) : null}
-            </li>
+              </dd>
+            </div>
           ))}
-        </ul>
+        </dl>
       </div>
     </section>
   );

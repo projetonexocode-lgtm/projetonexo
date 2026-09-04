@@ -1,40 +1,28 @@
 import Image from "next/image";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { GALLERY_ITEMS } from "@/lib/images";
+import { GALLERY_PROJECT } from "@/lib/images";
 
 export function Gallery() {
   return (
-    <section id="galeria" className="scroll-mt-28 px-5 py-16 sm:px-8 sm:py-20">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrow="Galeria"
-          title="Trabalhos com a luz e a matéria no centro."
-          highlight="matéria"
-          description="O primeiro trabalho é um projeto real de WC. As restantes imagens são de banco, temporárias, até chegarem fotografias dos outros serviços."
-        />
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {GALLERY_ITEMS.map((item) => (
-            <li key={item.src} className="group relative">
-              <figure className="relative aspect-[4/5] overflow-hidden bg-sand">
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                />
-                <figcaption className="absolute inset-x-0 bottom-0 bg-charcoal/60 px-4 py-3 text-sm text-warm">
-                  {item.caption}
-                  {item.placeholder ? (
-                    <span className="mt-1 block text-[0.65rem] uppercase tracking-[0.14em] text-gold">
-                      Fotografia temporária
-                    </span>
-                  ) : null}
-                </figcaption>
-              </figure>
-            </li>
-          ))}
-        </ul>
+    <section id="galeria" className="scroll-mt-32 bg-sand py-20 sm:py-28 lg:py-36">
+      <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        <h2 className="max-w-[18ch] font-display text-3xl leading-[1.1] text-charcoal sm:text-4xl lg:text-[2.75rem]">
+          {GALLERY_PROJECT.title}
+        </h2>
+        <figure className="mt-10 sm:mt-12">
+          <Image
+            src={GALLERY_PROJECT.src}
+            alt={GALLERY_PROJECT.alt}
+            width={GALLERY_PROJECT.width}
+            height={GALLERY_PROJECT.height}
+            sizes="(min-width: 1152px) 1088px, calc(100vw - 2.5rem)"
+            className="h-auto w-full object-contain"
+          />
+          <figcaption className="mt-5 sm:mt-6">
+            <p className="max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
+              {GALLERY_PROJECT.caption}
+            </p>
+          </figcaption>
+        </figure>
       </div>
     </section>
   );

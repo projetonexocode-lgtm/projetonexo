@@ -43,7 +43,7 @@ const portableComponents: PortableTextComponents = {
       <h3 className="mt-8 font-display text-2xl text-charcoal">{children}</h3>
     ),
     normal: ({ children }) => (
-      <p className="mt-4 text-base leading-relaxed text-charcoal/80">{children}</p>
+      <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/80">{children}</p>
     ),
   },
 };
@@ -59,7 +59,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <article className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
       {post.category ? (
-        <p className="text-[0.7rem] uppercase tracking-[0.28em] text-bronze">
+        <p className="type-label text-accent">
           {post.category}
         </p>
       ) : null}

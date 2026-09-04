@@ -1,45 +1,53 @@
-import { ArrowUpRight, MessageCircle } from "lucide-react";
 import type { ReactNode } from "react";
+import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import { buildWhatsAppUrl } from "@/lib/site";
 
 type WhatsAppButtonProps = {
   serviceLabel: string;
   children: ReactNode;
-  variant?: "primary" | "gold" | "ghost" | "card";
+  variant?: "dark" | "cream";
   className?: string;
   showIcon?: boolean;
+  compact?: boolean;
 };
 
-const VARIANTS: Record<NonNullable<WhatsAppButtonProps["variant"]>, string> = {
-  primary:
-    "bg-espresso text-warm hover:bg-espresso/90",
-  gold:
-    "border border-gold bg-transparent text-charcoal hover:bg-cognac/20",
-  ghost:
-    "border border-charcoal/15 bg-transparent text-charcoal hover:border-bronze hover:bg-cognac/15",
-  card:
-    "border border-gold/50 bg-cream text-espresso hover:border-gold hover:bg-warm",
+const VARIANTS: Record<
+  NonNullable<WhatsAppButtonProps["variant"]>,
+  { classes: string; punch: string }
+> = {
+  dark: {
+    classes: "bg-charcoal text-cream hover:bg-bronze",
+    punch: "var(--color-charcoal)",
+  },
+  cream: {
+    classes: "bg-cream text-charcoal hover:bg-gold",
+    punch: "var(--color-cream)",
+  },
 };
 
 export function WhatsAppButton({
   serviceLabel,
   children,
-  variant = "primary",
+  variant = "dark",
   className = "",
   showIcon = true,
+  compact = false,
 }: WhatsAppButtonProps) {
+  const { classes, punch } = VARIANTS[variant];
+
   return (
     <a
       href={buildWhatsAppUrl(serviceLabel)}
       target="_blank"
       rel="noopener noreferrer"
-      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-none px-5 text-sm font-medium tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze ${VARIANTS[variant]} ${className}`}
+      className={`inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full text-sm tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze ${
+        compact ? "min-w-12 px-0" : "px-6"
+      } ${classes} ${className}`}
     >
-      {showIcon ? <MessageCircle className="size-4 shrink-0" aria-hidden /> : null}
-      <span>{children}</span>
-      {variant === "card" ? (
-        <ArrowUpRight className="size-3.5 shrink-0" aria-hidden />
+      {showIcon ? (
+        <WhatsAppIcon punchColor={punch} className="size-4 shrink-0" />
       ) : null}
+      {compact ? <span className="sr-only">{children}</span> : <span>{children}</span>}
     </a>
   );
 }

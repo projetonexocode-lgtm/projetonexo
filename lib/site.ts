@@ -12,7 +12,7 @@ export const SITE = {
   whatsappDisplay: "+351 934 900 070",
   phoneDisplay: "+351 214 062 942",
   phoneTel: "+351214062942",
-  nexoServicesUrl: "/reparacoes",
+  nexoServicesUrl: "https://nexoservices.vercel.app",
   mapsQuery: "Lisboa, Portugal",
   mapsEmbedUrl:
     "https://maps.google.com/maps?q=Lisboa%2C%20Portugal&hl=pt-PT&z=11&output=embed",
@@ -35,7 +35,5 @@ export const NAV_ITEMS = [
   { href: "/#sobre", label: "Sobre" },
   { href: "/#servicos", label: "Serviços" },
   { href: "/#galeria", label: "Galeria" },
-  { href: "/#atuacao", label: "Área de atuação" },
   { href: "/#contacto", label: "Contacto" },
-  { href: "/blog", label: "Blog" },
 ] as const;

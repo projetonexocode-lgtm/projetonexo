@@ -1,3 +1,5 @@
+import { SITE } from "@/lib/site";
+
 export const SERVICE_CATEGORIES = [
   {
     id: "obras",
@@ -35,26 +37,9 @@ export type ServiceItem = {
   title: string;
   description: string;
   category: ServiceCategoryId;
-  icon: ServiceIconName;
   cta: ServiceCta;
   featured?: boolean;
 };
-
-export type ServiceIconName =
-  | "bath"
-  | "kitchen"
-  | "apartment"
-  | "house"
-  | "store"
-  | "office"
-  | "inspection"
-  | "engineering"
-  | "furniture"
-  | "decor"
-  | "architecture"
-  | "consulting"
-  | "rehab"
-  | "repairs";
 
 export const SERVICES: ServiceItem[] = [
   {
@@ -63,7 +48,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Remodelação completa ou parcial, com impermeabilização e acabamentos duradouros.",
     category: "obras",
-    icon: "bath",
     cta: {
       type: "whatsapp",
       serviceLabel: "remodelação de WC / casa de banho",
@@ -75,7 +59,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Layout, bancadas, instalações e acabamentos pensados para o dia-a-dia.",
     category: "obras",
-    icon: "kitchen",
     cta: { type: "whatsapp", serviceLabel: "remodelação de cozinha" },
   },
   {
@@ -84,7 +67,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Remodelação integral ou por fases, com coordenação de todas as especialidades.",
     category: "obras",
-    icon: "apartment",
     cta: { type: "whatsapp", serviceLabel: "remodelação de apartamento" },
   },
   {
@@ -93,7 +75,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Obras em moradias, da atualização de interiores à intervenção no conjunto.",
     category: "obras",
-    icon: "house",
     cta: { type: "whatsapp", serviceLabel: "obras em moradia / vivenda" },
   },
   {
@@ -102,7 +83,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Adequação de espaços comerciais, com prazos e funcionamento em mente.",
     category: "obras",
-    icon: "store",
     cta: {
       type: "whatsapp",
       serviceLabel: "obras em loja / estabelecimento",
@@ -114,7 +94,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Reorganização e remodelação de espaços de trabalho, com conforto e eficiência.",
     category: "obras",
-    icon: "office",
     cta: { type: "whatsapp", serviceLabel: "remodelação de escritório" },
   },
   {
@@ -123,7 +102,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Seguimento técnico da obra, controlo de qualidade e de execução em obra.",
     category: "obras",
-    icon: "inspection",
     cta: {
       type: "whatsapp",
       serviceLabel: "acompanhamento e fiscalização de obra",
@@ -135,7 +113,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Apoio técnico de engenharia para decisões de obra com fundamento.",
     category: "obras",
-    icon: "engineering",
     cta: { type: "whatsapp", serviceLabel: "serviços de engenharia" },
   },
   {
@@ -144,7 +121,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Carpintaria e peças desenhadas para o espaço, sem soluções genéricas.",
     category: "decoracao",
-    icon: "furniture",
     cta: { type: "whatsapp", serviceLabel: "mobiliário à medida" },
   },
   {
@@ -153,7 +129,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Composição de interiores: paleta, materiais, iluminação e mobiliário.",
     category: "decoracao",
-    icon: "decor",
     cta: { type: "whatsapp", serviceLabel: "projeto de decoração" },
   },
   {
@@ -162,7 +137,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Projeto de arquitetura para remodelar, ampliar ou reabilitar com método.",
     category: "decoracao",
-    icon: "architecture",
     cta: { type: "whatsapp", serviceLabel: "projeto de arquitetura" },
   },
   {
@@ -171,7 +145,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Orientação pontual para escolhas de materiais, layout e ambiente.",
     category: "decoracao",
-    icon: "consulting",
     cta: { type: "whatsapp", serviceLabel: "consultoria de interiores" },
   },
   {
@@ -180,7 +153,6 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Recuperação de edifícios e fracções, da estrutura aos acabamentos.",
     category: "reabilitacao",
-    icon: "rehab",
     cta: { type: "whatsapp", serviceLabel: "reabilitação de imóveis" },
   },
   {
@@ -189,14 +161,17 @@ export const SERVICES: ServiceItem[] = [
     description:
       "Reparações, manutenção e serviços técnicos — encaminhamento para a Nexo Services.",
     category: "reparacoes",
-    icon: "repairs",
     featured: true,
     cta: {
       type: "external",
-      href: "/reparacoes",
+      href: SITE.nexoServicesUrl,
     },
   },
 ];
+
+export const WORK_SERVICES = SERVICES.filter(
+  (service) => service.category !== "reparacoes",
+);
 
 export const CONTACT_SERVICE_OPTIONS = [
   "Remodelação de WC / casa de banho",

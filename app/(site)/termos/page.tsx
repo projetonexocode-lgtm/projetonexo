@@ -9,13 +9,10 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
-      <p className="font-display text-[0.7rem] uppercase tracking-[0.28em] text-bronze">
-        Termos
-      </p>
-      <h1 className="mt-3 font-display text-4xl text-charcoal">
+      <h1 className="font-display text-4xl text-charcoal">
         Termos de utilização
       </h1>
-      <div className="mt-8 space-y-5 text-sm leading-relaxed text-charcoal/80">
+      <div className="mt-8 max-w-[65ch] space-y-5 text-base leading-relaxed text-charcoal/80">
         <p>
           Este site pertence à {SITE.legalName}, com base em Lisboa, Portugal.
           Os conteúdos institucionais destinam-se a informar sobre serviços de
@@ -33,14 +30,14 @@ export default function TermsPage() {
         </p>
         <p>
           A política de garantias está descrita na página{" "}
-          <a href="/faq" className="text-bronze underline">
+          <a href="/faq" className="text-accent underline">
             Garantias e FAQ
           </a>
           .
         </p>
         <p>
           Reparações e serviços especializados são prestados através da{" "}
-          <a href={SITE.nexoServicesUrl} className="text-bronze underline">
+          <a href={SITE.nexoServicesUrl} className="text-accent underline">
             Nexo Services
           </a>
           .

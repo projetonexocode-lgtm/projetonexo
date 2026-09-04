@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { clipForWhatsApp, validateContactFields } from "@/lib/contact";
 import { buildWhatsAppUrlFromMessage, SITE } from "@/lib/site";
 
 type ContactPayload = {
   name?: unknown;
   phone?: unknown;
+  email?: unknown;
   service?: unknown;
   message?: unknown;
   need?: unknown;
@@ -16,6 +18,18 @@ function asNonEmptyString(value: unknown): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function whatsappPayload(text: string, service: string) {
+  return {
+    ok: true as const,
+    channel: "whatsapp" as const,
+    url: buildWhatsAppUrlFromMessage(
+      clipForWhatsApp(
+        `Olá! Vi o site da ${SITE.name} e quero saber mais sobre ${service.toLowerCase()}.\n\n${text}`,
+      ),
+    ),
+  };
+}
+
 export async function POST(request: Request) {
   let payload: ContactPayload;
 
@@ -23,7 +37,7 @@ export async function POST(request: Request) {
     payload = (await request.json()) as ContactPayload;
   } catch {
     return NextResponse.json(
-      { ok: false, error: "Pedido inválido." },
+      { ok: false, error: "Pedido inválido. Recarregue a página e tente de novo." },
       { status: 400 },
     );
   }
@@ -32,28 +46,34 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, channel: "email" });
   }
 
-  const name = asNonEmptyString(payload.name);
-  const phone = asNonEmptyString(payload.phone);
   const need = asNonEmptyString(payload.need);
-  const service =
-    asNonEmptyString(payload.service) ??
-    (need ? "Assistência técnica urgente" : null);
-  const message = asNonEmptyString(payload.message) ?? need;
+  const parsed = validateContactFields({
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    service: payload.service ?? (need ? "Assistência técnica urgente" : ""),
+    message: payload.message ?? need ?? "",
+  });
 
-  if (!name || !phone || !service || !message) {
+  if (!parsed.ok) {
     return NextResponse.json(
-      { ok: false, error: "Preencha nome, telefone e o pedido." },
+      { ok: false, error: parsed.error, fields: parsed.fields },
       { status: 400 },
     );
   }
+
+  const { name, phone, email, service, message } = parsed.value;
 
   const text = [
     `${name} pediu contacto através do site.`,
     `Serviço: ${service}`,
     `Telefone: ${phone}`,
+    email ? `E-mail: ${email}` : null,
     "",
     message,
-  ].join("\n");
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
 
   const resendKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_EMAIL;
@@ -66,11 +86,15 @@ export async function POST(request: Request) {
           Authorization: `Bearer ${resendKey}`,
           "Content-Type": "application/json",
         },
+        signal: AbortSignal.timeout(8_000),
         body: JSON.stringify({
-          from: process.env.CONTACT_FROM_EMAIL || "Projeto Nexo <noreply@projetonexo.pt>",
+          from:
+            process.env.CONTACT_FROM_EMAIL ||
+            "Projeto Nexo <noreply@projetonexo.pt>",
           to: [toEmail],
+          ...(email ? { reply_to: email } : {}),
           subject: `Novo contacto — ${service}`,
-          text: `Nome: ${name}\nTelefone: ${phone}\nServiço: ${service}\n\n${message}`,
+          text,
         }),
       });
 
@@ -81,21 +105,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: true, channel: "email" });
     } catch (error) {
       console.error("Email delivery failed", error);
-      return NextResponse.json({
-        ok: true,
-        channel: "whatsapp",
-        url: buildWhatsAppUrlFromMessage(
-          `Olá! Vi o site da ${SITE.name} e quero saber mais sobre ${service.toLowerCase()}.\n\n${text}`,
-        ),
-      });
+      return NextResponse.json(whatsappPayload(text, service));
     }
   }
 
-  return NextResponse.json({
-    ok: true,
-    channel: "whatsapp",
-    url: buildWhatsAppUrlFromMessage(
-      `Olá! Vi o site da ${SITE.name} e quero saber mais sobre ${service.toLowerCase()}.\n\nNome: ${name}\nTelefone: ${phone}\nMensagem: ${message}`,
-    ),
-  });
+  return NextResponse.json(whatsappPayload(text, service));
 }

@@ -16,11 +16,25 @@ const nextConfig: NextConfig = {
     ],
   },
   async redirects() {
+    const nexoOrigin = "https://nexoservices.vercel.app/";
+    const skipOnNexoHost = [
+      { type: "host" as const, value: "nexoservices.vercel.app" },
+      { type: "host" as const, value: "nexoservices.pt" },
+      { type: "host" as const, value: "www.nexoservices.pt" },
+    ];
+
     return [
       {
+        source: "/reparacoes",
+        destination: nexoOrigin,
+        permanent: false,
+        missing: skipOnNexoHost,
+      },
+      {
         source: "/reparações",
-        destination: "/reparacoes",
-        permanent: true,
+        destination: nexoOrigin,
+        permanent: false,
+        missing: skipOnNexoHost,
       },
     ];
   },

@@ -20,7 +20,7 @@ Copiar `.env.example` para `.env.local`:
 
 ## Redirect
 
-`/reparacoes` → `https://nexoservices.pt` (308 permanente)
+`/reparacoes` e `/reparações` → `https://nexoservices.vercel.app/` (307)
 
 ## Deploy
 
