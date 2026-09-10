@@ -24,6 +24,7 @@ import {
   DEFAULT_SITE,
 } from "./lib/cms/defaults";
 import { SERVICE_PHOTOS } from "./lib/service-photos";
+import { migrations } from "./migrations";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -65,6 +66,9 @@ export default buildConfig({
         pool: {
           connectionString: postgresUrl,
         },
+        migrationDir: path.resolve(dirname, "migrations"),
+        prodMigrations: migrations,
+        push: false,
       })
     : sqliteAdapter({
         client: {

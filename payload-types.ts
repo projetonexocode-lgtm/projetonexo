@@ -452,8 +452,11 @@ export interface Site {
   phoneDisplay: string;
   phoneTel: string;
   contactEmail: string;
+  /**
+   * Destino do logótipo na secção Serviços, do rodapé e do redirecionamento de /reparacoes.
+   */
   nexoServicesUrl: string;
-  nexoServicesLabel: string;
+  nexoServicesLabel?: string | null;
   whatsappCta: string;
   whatsappIntro: string;
   /**
