@@ -1,14 +1,36 @@
 "use client";
 
-import { ExternalLink, Menu, Phone, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { NAV_ITEMS, SITE } from "@/lib/site";
+import type { NavItem } from "@/lib/cms/content";
+import { DEFAULT_SITE } from "@/lib/cms/defaults";
 
-export function Header() {
+type HeaderProps = {
+  name?: string;
+  nav?: NavItem[];
+  phoneDisplay?: string;
+  phoneTel?: string;
+  whatsappDisplay?: string;
+  whatsappCta?: string;
+  intro?: string;
+  e164?: string;
+};
+
+export function Header({
+  name = DEFAULT_SITE.name,
+  nav = DEFAULT_SITE.nav,
+  phoneDisplay = DEFAULT_SITE.phoneDisplay,
+  phoneTel = DEFAULT_SITE.phoneTel,
+  whatsappDisplay = DEFAULT_SITE.whatsappDisplay,
+  whatsappCta = DEFAULT_SITE.whatsappCta,
+  intro,
+  e164 = DEFAULT_SITE.whatsappE164,
+}: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const whatsappTel = `+${e164}`;
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -32,16 +54,16 @@ export function Header() {
         <Link
           href="/"
           className="inline-flex min-h-11 shrink-0 items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bronze"
-          aria-label={`${SITE.name} — início`}
+          aria-label={`${name} — início`}
         >
           <Logo />
         </Link>
 
         <nav
-          className="ml-auto hidden items-center gap-1 text-sm tracking-wide xl:flex xl:gap-2"
+          className="ml-auto hidden items-center gap-1 text-sm uppercase tracking-wide xl:flex xl:gap-2"
           aria-label="Secções"
         >
-          {NAV_ITEMS.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -50,27 +72,28 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href={SITE.nexoServicesUrl}
-            className="hit-link gap-1.5 px-2 text-charcoal hover:text-accent"
-          >
-            Reparações
-            <ExternalLink className="size-3.5 shrink-0" aria-hidden />
-          </Link>
         </nav>
 
-        <a
-          href={`tel:${SITE.phoneTel}`}
-          className="hidden min-h-11 shrink-0 items-center whitespace-nowrap border-l border-gold/30 pl-5 text-sm text-charcoal/70 hover:text-charcoal xl:inline-flex"
-        >
-          {SITE.phoneDisplay}
-        </a>
+        <div className="hidden shrink-0 flex-col justify-center gap-0.5 border-l border-gold/30 pl-5 text-sm leading-snug xl:flex">
+          <a
+            href={`tel:${phoneTel}`}
+            className="whitespace-nowrap text-charcoal/70 hover:text-charcoal"
+          >
+            {phoneDisplay}
+          </a>
+          <a
+            href={`tel:${whatsappTel}`}
+            className="whitespace-nowrap text-charcoal/70 hover:text-charcoal"
+          >
+            {whatsappDisplay}
+          </a>
+        </div>
 
         <div className="ml-auto flex shrink-0 items-center gap-1 xl:ml-0 sm:gap-2">
           <a
-            href={`tel:${SITE.phoneTel}`}
+            href={`tel:${phoneTel}`}
             className="hidden min-h-12 min-w-12 items-center justify-center text-charcoal sm:inline-flex xl:hidden"
-            aria-label={`Ligar para ${SITE.phoneDisplay}`}
+            aria-label={`Ligar para ${phoneDisplay}`}
           >
             <Phone className="size-5" />
           </a>
@@ -79,12 +102,19 @@ export function Header() {
             variant="dark"
             compact
             className="xl:hidden"
+            intro={intro}
+            e164={e164}
           >
-            Falar por WhatsApp
+            {whatsappCta}
           </WhatsAppButton>
           <div className="hidden xl:block">
-            <WhatsAppButton serviceLabel="os vossos serviços" variant="dark">
-              Falar por WhatsApp
+            <WhatsAppButton
+              serviceLabel="os vossos serviços"
+              variant="dark"
+              intro={intro}
+              e164={e164}
+            >
+              {whatsappCta}
             </WhatsAppButton>
           </div>
           <button
@@ -108,10 +138,10 @@ export function Header() {
       >
         <div className="min-h-0 overflow-hidden">
           <nav
-            className="flex flex-col gap-1 border-t border-gold/22 px-5 py-4 sm:px-8"
+            className="flex flex-col gap-1 border-t border-gold/22 px-5 py-4 uppercase sm:px-8"
             aria-label="Menu móvel"
           >
-            {NAV_ITEMS.map((item) => (
+            {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -121,21 +151,19 @@ export function Header() {
                 {item.label}
               </Link>
             ))}
-            <Link
-              href={SITE.nexoServicesUrl}
-              onClick={() => setOpen(false)}
-              className="flex min-h-12 items-center gap-2 text-base text-charcoal"
-            >
-              Reparações
-              <ExternalLink className="size-3.5" aria-hidden />
-            </Link>
             <a
-              href={`tel:${SITE.phoneTel}`}
-              className="mt-1 flex min-h-12 items-center border-t border-gold/22 pt-3 text-sm text-charcoal/70"
+              href={`tel:${phoneTel}`}
+              className="mt-1 flex min-h-12 items-center border-t border-gold/22 pt-3 text-sm normal-case text-charcoal/70"
             >
-              Telefone · {SITE.phoneDisplay}
+              {phoneDisplay}
             </a>
-        </nav>
+            <a
+              href={`tel:${whatsappTel}`}
+              className="flex min-h-12 items-center text-sm normal-case text-charcoal/70"
+            >
+              {whatsappDisplay}
+            </a>
+          </nav>
         </div>
       </div>
     </header>

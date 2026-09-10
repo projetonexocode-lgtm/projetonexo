@@ -4,10 +4,38 @@ import { Pause, Play } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { HERO_SLIDES } from "@/lib/images";
+import { DEFAULT_SITE } from "@/lib/cms/defaults";
 import { HERO_CYCLE_MS } from "@/lib/motion";
 
-export function Hero() {
+type HeroSlide = {
+  src: string;
+  alt: string;
+  label: string;
+};
+
+type HeroProps = {
+  heading?: string;
+  highlight?: string;
+  lede?: string;
+  whatsappCta?: string;
+  secondaryCta?: string;
+  secondaryHref?: string;
+  slides?: HeroSlide[];
+  intro?: string;
+  e164?: string;
+};
+
+export function Hero({
+  heading = DEFAULT_SITE.heroHeading,
+  highlight = DEFAULT_SITE.heroHeadingHighlight,
+  lede = DEFAULT_SITE.heroLede,
+  whatsappCta = DEFAULT_SITE.whatsappCta,
+  secondaryCta = DEFAULT_SITE.heroSecondaryCta,
+  secondaryHref = DEFAULT_SITE.heroSecondaryHref,
+  slides = DEFAULT_SITE.heroSlides,
+  intro,
+  e164,
+}: HeroProps) {
   const rootRef = useRef<HTMLElement>(null);
   const wasCycling = useRef(false);
   const [slide, setSlide] = useState(0);
@@ -57,10 +85,10 @@ export function Hero() {
   useEffect(() => {
     if (!cycling) return undefined;
     const timer = window.setTimeout(() => {
-      setSlide((current) => (current + 1) % HERO_SLIDES.length);
+      setSlide((current) => (current + 1) % slides.length);
     }, HERO_CYCLE_MS);
     return () => window.clearTimeout(timer);
-  }, [cycling, slide, epoch]);
+  }, [cycling, slide, epoch, slides.length]);
 
   return (
     <section
@@ -68,9 +96,9 @@ export function Hero() {
       id="top"
       className="relative flex min-h-[min(88vh,860px)] items-end overflow-hidden bg-ink"
     >
-      {HERO_SLIDES.map((item, index) => (
+      {slides.map((item, index) => (
         <div
-          key={item.src}
+          key={`${item.src}-${index}`}
           aria-hidden={index !== slide}
           className={`nx-hero-slide absolute inset-0 ${
             index === slide ? "is-active" : ""
@@ -91,27 +119,37 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-t from-ink/75 via-transparent to-ink/25" />
 
       <p className="pointer-events-none absolute top-[max(1.5rem,env(safe-area-inset-top))] right-[max(1.5rem,env(safe-area-inset-right))] z-10 hidden max-w-[min(46vw,320px)] text-right font-mono type-label leading-relaxed text-cream sm:block">
-        {HERO_SLIDES[slide].label}
+        {slides[slide]?.label}
       </p>
 
       <div className="relative z-10 mx-auto w-full max-w-6xl pb-16 pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] sm:pb-20 sm:pl-[max(2rem,env(safe-area-inset-left))] sm:pr-[max(2rem,env(safe-area-inset-right))]">
-        <h1 className="max-w-[19ch] font-display text-[clamp(1.85rem,8vw,2.4rem)] leading-[1.05] text-cream sm:text-6xl lg:text-[5.25rem]">
-          Gestão de obras com <span className="text-gold">rigor</span> de
-          projeto.
+        <h1 className="max-w-xl font-display text-pretty text-cream sm:max-w-3xl">
+          <span className="block text-[clamp(1.85rem,5vw,3.75rem)] leading-[1.08] sm:whitespace-nowrap">
+            {heading}
+          </span>
+          {highlight ? (
+            <span className="mt-2 block text-[clamp(1.35rem,3.6vw,2.75rem)] leading-[1.12] text-gold sm:whitespace-nowrap">
+              {highlight}
+            </span>
+          ) : null}
         </h1>
         <p className="mt-6 max-w-[65ch] text-base leading-[1.7] tracking-[0.01em] text-sand sm:text-lg">
-          Remodelação, construção e reabilitação de imóveis. Sede em Lisboa e
-          Área Metropolitana, com obras em todo o território nacional.
+          {lede}
         </p>
         <div className="mt-10 flex flex-wrap gap-3.5">
-          <WhatsAppButton serviceLabel="os vossos serviços" variant="cream">
-            Falar por WhatsApp
+          <WhatsAppButton
+            serviceLabel="os vossos serviços"
+            variant="cream"
+            intro={intro}
+            e164={e164}
+          >
+            {whatsappCta}
           </WhatsAppButton>
           <a
-            href="#galeria"
+            href={secondaryHref}
             className="inline-flex min-h-12 items-center gap-2.5 rounded-full border border-gold/60 px-6 text-sm tracking-wide text-sand transition-colors hover:bg-gold/15"
           >
-            Ver a obra
+            {secondaryCta}
           </a>
         </div>
         <div className="mt-10 flex flex-wrap items-center">
@@ -120,7 +158,7 @@ export function Hero() {
             role="group"
             aria-label="Imagens do hero"
           >
-            {HERO_SLIDES.map((item, index) => (
+            {slides.map((item, index) => (
               <button
                 key={item.src}
                 type="button"

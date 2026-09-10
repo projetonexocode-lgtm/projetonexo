@@ -1,39 +1,40 @@
+import { DEFAULT_SITE } from "@/lib/cms/defaults";
+
 export const SITE = {
-  name: "Projeto Nexo",
-  legalName: "Projeto Nexo — Gestão de Obras e Projetos",
-  tagline: "Remodelação, construção e reabilitação de imóveis",
+  name: DEFAULT_SITE.name,
+  legalName: DEFAULT_SITE.legalName,
+  tagline: DEFAULT_SITE.tagline,
   url: "https://projetonexo.pt",
   locale: "pt_PT",
   language: "pt-PT",
   city: "Lisboa",
   region: "Lisboa e Área Metropolitana",
   country: "Portugal",
-  whatsappE164: "351934900070",
-  whatsappDisplay: "+351 934 900 070",
-  phoneDisplay: "+351 214 062 942",
-  phoneTel: "+351214062942",
-  nexoServicesUrl: "https://nexoservices.vercel.app",
+  whatsappE164: DEFAULT_SITE.whatsappE164,
+  whatsappDisplay: DEFAULT_SITE.whatsappDisplay,
+  phoneDisplay: DEFAULT_SITE.phoneDisplay,
+  phoneTel: DEFAULT_SITE.phoneTel,
+  contactEmail: DEFAULT_SITE.contactEmail,
+  nexoServicesUrl: DEFAULT_SITE.nexoServicesUrl,
   mapsQuery: "Lisboa, Portugal",
-  mapsEmbedUrl:
-    "https://maps.google.com/maps?q=Lisboa%2C%20Portugal&hl=pt-PT&z=11&output=embed",
-  mapsLink: "https://www.google.com/maps/search/?api=1&query=Lisboa%2C%20Portugal",
+  mapsEmbedUrl: DEFAULT_SITE.mapsEmbedUrl,
+  mapsLink: DEFAULT_SITE.mapsLink,
 } as const;
 
-export const WHATSAPP_INTRO =
-  "Olá! Vi o site da Projeto Nexo e quero saber mais sobre";
+export const WHATSAPP_INTRO = DEFAULT_SITE.whatsappIntro;
 
-export function buildWhatsAppUrl(serviceLabel: string): string {
-  const text = `${WHATSAPP_INTRO} ${serviceLabel}`;
-  return `https://wa.me/${SITE.whatsappE164}?text=${encodeURIComponent(text)}`;
+export function buildWhatsAppUrl(
+  serviceLabel: string,
+  intro: string = WHATSAPP_INTRO,
+  e164: string = SITE.whatsappE164,
+): string {
+  const text = `${intro} ${serviceLabel}`;
+  return `https://wa.me/${e164}?text=${encodeURIComponent(text)}`;
 }
 
-export function buildWhatsAppUrlFromMessage(message: string): string {
-  return `https://wa.me/${SITE.whatsappE164}?text=${encodeURIComponent(message)}`;
+export function buildWhatsAppUrlFromMessage(
+  message: string,
+  e164: string = SITE.whatsappE164,
+): string {
+  return `https://wa.me/${e164}?text=${encodeURIComponent(message)}`;
 }
-
-export const NAV_ITEMS = [
-  { href: "/#sobre", label: "Sobre" },
-  { href: "/#servicos", label: "Serviços" },
-  { href: "/#galeria", label: "Galeria" },
-  { href: "/#contacto", label: "Contacto" },
-] as const;

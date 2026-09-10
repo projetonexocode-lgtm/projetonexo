@@ -2,22 +2,29 @@
   "name": "projetonexo",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "payload": "payload",
+    "generate:importmap": "payload generate:importmap",
+    "generate:types": "payload generate:types"
   },
   "dependencies": {
-    "@portabletext/react": "^7.0.1",
-    "@sanity/image-url": "^2.1.1",
-    "@sanity/vision": "^6.10.1",
+    "@payloadcms/db-sqlite": "^3.88.0",
+    "@payloadcms/db-vercel-postgres": "^3.88.0",
+    "@payloadcms/next": "^3.88.0",
+    "@payloadcms/richtext-lexical": "^3.88.0",
+    "@payloadcms/storage-vercel-blob": "^3.88.0",
+    "graphql": "^16.14.2",
     "lucide-react": "^1.33.0",
     "next": "16.3.1",
-    "next-sanity": "^13.3.3",
+    "payload": "^3.88.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
-    "sanity": "^6.10.1"
+    "sharp": "^0.35.4"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

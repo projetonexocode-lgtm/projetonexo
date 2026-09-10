@@ -9,7 +9,13 @@ export function Footer() {
     <footer className="border-t border-bronze/30 bg-sand pb-[5.75rem] sm:pb-0">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-8 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo />
+          <Link
+            href={BASE_PATH}
+            className="inline-flex items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-bronze"
+            aria-label={`${SITE.name} — início`}
+          >
+            <Logo size="footer" />
+          </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-charcoal/75">
             Reparações e serviços especializados ao domicílio. Base em Lisboa,
             atendimento imediato na Área Metropolitana e Margem Sul, cobertura

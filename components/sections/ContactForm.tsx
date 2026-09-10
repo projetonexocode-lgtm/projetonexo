@@ -14,8 +14,8 @@ import {
   validateContactFields,
   type ContactFieldKey,
 } from "@/lib/contact";
-import { CONTACT_SERVICE_OPTIONS } from "@/lib/services";
-import { buildWhatsAppUrlFromMessage, SITE } from "@/lib/site";
+import { buildWhatsAppUrlFromMessage } from "@/lib/site";
+import { DEFAULT_CONTACT, DEFAULT_SERVICES, DEFAULT_SITE } from "@/lib/cms/defaults";
 
 type FormState = "idle" | "submitting" | "success" | "whatsapp" | "error";
 
@@ -35,7 +35,66 @@ const FIELD_ORDER: ContactFieldKey[] = [
   "message",
 ];
 
-export function ContactForm() {
+type ContactFormProps = {
+  heading?: string;
+  body?: string;
+  submitLabel?: string;
+  submittingLabel?: string;
+  successMessage?: string;
+  consent?: string;
+  nameLabel?: string;
+  phoneLabel?: string;
+  phoneHint?: string;
+  emailLabel?: string;
+  emailHint?: string;
+  serviceLabel?: string;
+  messageLabel?: string;
+  namePlaceholder?: string;
+  phonePlaceholder?: string;
+  emailPlaceholder?: string;
+  servicePlaceholder?: string;
+  messagePlaceholder?: string;
+  serviceOptions?: string[];
+  whatsappDisplay?: string;
+  phoneDisplay?: string;
+  phoneTel?: string;
+  e164?: string;
+};
+
+export function ContactForm({
+  heading = DEFAULT_CONTACT.heading,
+  body = DEFAULT_CONTACT.body,
+  submitLabel = DEFAULT_CONTACT.submitLabel,
+  submittingLabel = DEFAULT_CONTACT.submittingLabel,
+  successMessage = DEFAULT_CONTACT.successMessage,
+  consent = DEFAULT_CONTACT.consent,
+  nameLabel = DEFAULT_CONTACT.nameLabel,
+  phoneLabel = DEFAULT_CONTACT.phoneLabel,
+  phoneHint = DEFAULT_CONTACT.phoneHint,
+  emailLabel = DEFAULT_CONTACT.emailLabel,
+  emailHint = DEFAULT_CONTACT.emailHint,
+  serviceLabel = DEFAULT_CONTACT.serviceLabel,
+  messageLabel = DEFAULT_CONTACT.messageLabel,
+  namePlaceholder = DEFAULT_CONTACT.namePlaceholder,
+  phonePlaceholder = DEFAULT_CONTACT.phonePlaceholder,
+  emailPlaceholder = DEFAULT_CONTACT.emailPlaceholder,
+  servicePlaceholder = DEFAULT_CONTACT.servicePlaceholder,
+  messagePlaceholder = DEFAULT_CONTACT.messagePlaceholder,
+  serviceOptions,
+  whatsappDisplay = DEFAULT_SITE.whatsappDisplay,
+  phoneDisplay = DEFAULT_SITE.phoneDisplay,
+  phoneTel = DEFAULT_SITE.phoneTel,
+  e164,
+}: ContactFormProps) {
+  const options =
+    serviceOptions && serviceOptions.length > 0
+      ? serviceOptions
+      : [
+          ...DEFAULT_SERVICES.filter((item) => item.inContactForm).map(
+            (item) => item.contactLabel,
+          ),
+          DEFAULT_CONTACT.otherServiceOption,
+        ];
   const [state, setState] = useState<FormState>("idle");
   const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<
@@ -187,29 +246,29 @@ export function ContactForm() {
       <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
         <div className="min-w-0">
           <h2 className="max-w-[20ch] wrap-break-word font-display text-3xl leading-[1.1] text-cream sm:text-4xl lg:text-[2.75rem]">
-            Diga-nos o que precisa na obra.
+            {heading}
           </h2>
           <p className="mt-6 max-w-[65ch] wrap-break-word text-base leading-[1.7] tracking-[0.01em] text-cream">
-            Um responsável responde em horário de trabalho. O orçamento é
-            explicado antes de qualquer obra começar.
+            {body}
           </p>
           <div className="mt-9 flex max-w-[420px] flex-col gap-3.5">
             <a
               href={buildWhatsAppUrlFromMessage(
                 "Olá! Vi o site da Projeto Nexo e quero saber mais sobre os vossos serviços.",
+                e164,
               )}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full bg-cream px-6 text-base wrap-break-word text-charcoal transition-colors hover:bg-gold"
             >
               <WhatsAppIcon punchColor="var(--color-cream)" className="size-4.5 shrink-0" />
-              {SITE.whatsappDisplay} · WhatsApp
+              {whatsappDisplay} · WhatsApp
             </a>
             <a
-              href={`tel:${SITE.phoneTel}`}
+              href={`tel:${phoneTel}`}
               className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-gold/50 px-6 text-base wrap-break-word text-cream transition-colors hover:bg-gold/15"
             >
-              {SITE.phoneDisplay} · Telefone
+              {phoneDisplay} · Telefone
             </a>
           </div>
         </div>
@@ -234,7 +293,7 @@ export function ContactForm() {
 
           <div className="grid gap-5">
             <Field
-              label="Nome"
+              label={nameLabel}
               htmlFor="name"
               error={fieldErrors.name}
               required
@@ -248,7 +307,7 @@ export function ContactForm() {
                 maxLength={CONTACT_LIMITS.name}
                 autoComplete="name"
                 autoCapitalize="words"
-                placeholder="O seu nome"
+                placeholder={namePlaceholder}
                 aria-invalid={fieldErrors.name ? true : undefined}
                 aria-describedby={describedBy("name")}
                 onInput={() => clearFieldError("name")}
@@ -256,10 +315,10 @@ export function ContactForm() {
               />
             </Field>
             <Field
-              label="Telefone"
+              label={phoneLabel}
               htmlFor="phone"
               error={fieldErrors.phone}
-              hint="Com indicativo, por exemplo +351 934 900 070."
+              hint={phoneHint}
               required
             >
               <input
@@ -271,7 +330,7 @@ export function ContactForm() {
                 maxLength={CONTACT_LIMITS.phone}
                 autoComplete="tel"
                 inputMode="tel"
-                placeholder="O seu telefone"
+                placeholder={phonePlaceholder}
                 aria-invalid={fieldErrors.phone ? true : undefined}
                 aria-describedby={describedBy("phone", true)}
                 onInput={() => clearFieldError("phone")}
@@ -279,10 +338,10 @@ export function ContactForm() {
               />
             </Field>
             <Field
-              label="E-mail"
+              label={emailLabel}
               htmlFor="email"
               error={fieldErrors.email}
-              hint="Serve para respondermos por escrito."
+              hint={emailHint}
             >
               <input
                 id="email"
@@ -291,7 +350,7 @@ export function ContactForm() {
                 dir="ltr"
                 maxLength={CONTACT_LIMITS.email}
                 autoComplete="email"
-                placeholder="nome@email.pt"
+                placeholder={emailPlaceholder}
                 aria-invalid={fieldErrors.email ? true : undefined}
                 aria-describedby={describedBy("email", true)}
                 onInput={() => clearFieldError("email")}
@@ -299,7 +358,7 @@ export function ContactForm() {
               />
             </Field>
             <Field
-              label="Tipo de serviço"
+              label={serviceLabel}
               htmlFor="service"
               error={fieldErrors.service}
               required
@@ -312,12 +371,12 @@ export function ContactForm() {
                 aria-invalid={fieldErrors.service ? true : undefined}
                 aria-describedby={describedBy("service")}
                 onChange={() => clearFieldError("service")}
-                className={fieldClass}
+                className={`${fieldClass} scheme-light`}
               >
                 <option value="" disabled>
-                  Selecione…
+                  {servicePlaceholder}
                 </option>
-                {CONTACT_SERVICE_OPTIONS.map((option) => (
+                {options.map((option) => (
                   <option key={option} value={option}>
                     {option}
                   </option>
@@ -325,7 +384,7 @@ export function ContactForm() {
               </select>
             </Field>
             <Field
-              label="Mensagem"
+              label={messageLabel}
               htmlFor="message"
               error={fieldErrors.message}
               required
@@ -338,7 +397,7 @@ export function ContactForm() {
                 maxLength={CONTACT_LIMITS.message}
                 rows={4}
                 enterKeyHint="send"
-                placeholder="Imóvel, âmbito da obra e prazo pretendido."
+                placeholder={messagePlaceholder}
                 aria-invalid={fieldErrors.message ? true : undefined}
                 aria-describedby={describedBy("message")}
                 onInput={() => clearFieldError("message")}
@@ -353,8 +412,7 @@ export function ContactForm() {
               role="status"
               aria-live="polite"
             >
-              Pedido recebido. Um responsável responde em horário de trabalho.
-              O orçamento é explicado antes de qualquer obra.
+              {successMessage}
             </p>
           ) : null}
           {state === "whatsapp" ? (
@@ -390,11 +448,11 @@ export function ContactForm() {
               disabled={state === "submitting"}
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-gold px-7 text-sm tracking-wide text-charcoal transition-colors hover:bg-cream disabled:opacity-60"
             >
-              {state === "submitting" ? "A enviar…" : "Enviar pedido"}
+              {state === "submitting" ? submittingLabel : submitLabel}
             </button>
           </div>
           <p className="mt-5 text-sm leading-relaxed wrap-break-word text-cream/80">
-            Ao enviar, autoriza o contacto da Projeto Nexo sobre este pedido.
+            {consent}
           </p>
         </form>
       </div>

@@ -9,6 +9,8 @@ type WhatsAppButtonProps = {
   className?: string;
   showIcon?: boolean;
   compact?: boolean;
+  intro?: string;
+  e164?: string;
 };
 
 const VARIANTS: Record<
@@ -32,12 +34,14 @@ export function WhatsAppButton({
   className = "",
   showIcon = true,
   compact = false,
+  intro,
+  e164,
 }: WhatsAppButtonProps) {
   const { classes, punch } = VARIANTS[variant];
 
   return (
     <a
-      href={buildWhatsAppUrl(serviceLabel)}
+      href={buildWhatsAppUrl(serviceLabel, intro, e164)}
       target="_blank"
       rel="noopener noreferrer"
       className={`inline-flex min-h-12 items-center justify-center gap-2.5 rounded-full text-sm tracking-wide transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bronze ${

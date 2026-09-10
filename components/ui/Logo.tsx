@@ -1,27 +1,31 @@
-import { SITE } from "@/lib/site";
-
 type LogoProps = {
   className?: string;
   onDark?: boolean;
+  size?: "header" | "footer";
 };
 
-export function Logo({ className = "", onDark = false }: LogoProps) {
+const SIZE_CLASS = {
+  header: "h-10 w-auto max-w-[10.75rem] sm:h-12 sm:max-w-[13.5rem]",
+  footer: "h-[3.75rem] w-auto max-w-[16rem] sm:h-[4.5rem] sm:max-w-[18rem]",
+} as const;
+
+export function Logo({
+  className = "",
+  onDark = false,
+  size = "header",
+}: LogoProps) {
+  const src = onDark
+    ? "/assets/projeto-nexo-logo.svg"
+    : "/assets/projeto-nexo-logo-fundo-claro.svg";
+
   return (
-    <span
-      className={`inline-flex items-baseline gap-2.5 ${
-        onDark ? "text-cream" : "text-charcoal"
-      } ${className}`}
-    >
-      <span className="font-sans text-[0.95rem] font-medium uppercase tracking-[0.14em] sm:text-[1.05rem] sm:tracking-[0.2em]">
-        {SITE.name.replace("Projeto ", "")}
-      </span>
-      <span
-        className={`font-sans text-xs uppercase tracking-[0.16em] ${
-          onDark ? "text-gold" : "text-accent"
-        }`}
-      >
-        Projeto
-      </span>
-    </span>
+    <img
+      src={src}
+      alt=""
+      width={1180}
+      height={400}
+      className={`${SIZE_CLASS[size]} ${className}`.trim()}
+      decoding="async"
+    />
   );
 }

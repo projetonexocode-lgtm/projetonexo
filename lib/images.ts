@@ -10,22 +10,22 @@ export const GALLERY_PROJECT = {
 export const HERO_SLIDES = [
   {
     src: "/hero/interior.jpg",
-    alt: "Sala contemporânea com luz natural — fotografia de banco, temporária",
+    alt: "Sala contemporânea com luz natural, madeira e zona de estar",
     label: "Interior · estar e circulação",
   },
   {
     src: "/hero/cozinha.jpg",
-    alt: "Cozinha contemporânea com bancada e carpintaria — fotografia de banco, temporária",
+    alt: "Cozinha contemporânea com bancada em pedra e carpintaria",
     label: "Cozinha · bancada e carpintaria",
   },
   {
     src: "/hero/moradia.jpg",
-    alt: "Moradia contemporânea vista do exterior — fotografia de banco, temporária",
+    alt: "Moradia com jardim e vãos amplos",
     label: "Moradia · volume e vãos",
   },
   {
     src: "/hero/escritorio.jpg",
-    alt: "Escritório contemporâneo com zona de trabalho — fotografia de banco, temporária",
+    alt: "Escritório contemporâneo com zona de trabalho e circulação",
     label: "Escritório · espaço comercial",
   },
 ] as const;

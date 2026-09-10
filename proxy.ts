@@ -1,11 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isNexoHost } from "@/lib/nexo-host";
 
 export function proxy(request: NextRequest) {
   const host = request.headers.get("host") ?? "";
-  const isNexoHost =
-    host.startsWith("nexoservices.") || host.includes("nexoservices.pt");
 
-  if (isNexoHost && request.nextUrl.pathname === "/") {
+  if (isNexoHost(host) && request.nextUrl.pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = "/reparacoes";
     return NextResponse.rewrite(url);

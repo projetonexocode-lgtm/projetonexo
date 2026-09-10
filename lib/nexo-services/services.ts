@@ -19,7 +19,7 @@ export type Service = {
   description: string;
   icon: ServiceIconName;
   whatsappMessage: string;
-  image?: {
+  image: {
     src: string;
     alt: string;
   };
@@ -35,7 +35,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de um canalizador urgente.",
     image: {
       src: "/nexo-services/canalizacao.jpg",
-      alt: "Técnico Nexo Services a intervir na canalização sob um lava-loiças",
+      alt: "Torneira de banheira em cromado — referência de canalização doméstica",
     },
   },
   {
@@ -47,7 +47,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de um eletricista urgente.",
     image: {
       src: "/nexo-services/eletricidade.jpg",
-      alt: "Técnico Nexo Services a trabalhar num quadro elétrico",
+      alt: "Quadro elétrico com disjuntores e cablagem",
     },
   },
   {
@@ -57,6 +57,10 @@ export const SERVICES: Service[] = [
       "Sanita, ralo, caleira ou caixa de visita entupida. Desobstrução no próprio dia, quando possível.",
     icon: "drain",
     whatsappMessage: "Olá! Preciso de um desentupimento urgente.",
+    image: {
+      src: "/nexo-services/desentupimentos.jpg",
+      alt: "Lava-loiças com torneira e água a correr",
+    },
   },
   {
     slug: "esquentadores-caldeiras",
@@ -66,6 +70,10 @@ export const SERVICES: Service[] = [
     icon: "heater",
     whatsappMessage:
       "Olá! Preciso de assistência urgente a esquentador, caldeira ou termoacumulador.",
+    image: {
+      src: "/nexo-services/esquentadores.jpg",
+      alt: "Tubagem de gás e válvulas numa instalação técnica",
+    },
   },
   {
     slug: "estores-persianas",
@@ -76,7 +84,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de reparação urgente de estores ou persianas.",
     image: {
       src: "/nexo-services/estores.jpg",
-      alt: "Técnico Nexo Services a reparar um estore de enrolar",
+      alt: "Sala com estores de madeira nas janelas",
     },
   },
   {
@@ -86,6 +94,10 @@ export const SERVICES: Service[] = [
       "Portão que não abre, comando sem resposta, motor ou calha. Assistência a portões seccionados e basculantes.",
     icon: "garage",
     whatsappMessage: "Olá! Preciso de assistência urgente a portão de garagem.",
+    image: {
+      src: "/nexo-services/portoes.jpg",
+      alt: "Moradia com portões de garagem seccionados",
+    },
   },
   {
     slug: "vidros-espelhos",
@@ -94,6 +106,10 @@ export const SERVICES: Service[] = [
       "Vidro partido, substituição de vidro ou espelho. Corte e instalação no local.",
     icon: "glass",
     whatsappMessage: "Olá! Preciso de assistência urgente a vidros ou espelhos.",
+    image: {
+      src: "/nexo-services/vidros.jpg",
+      alt: "Grandes vãos envidraçados numa sala contemporânea",
+    },
   },
   {
     slug: "serralharia",
@@ -102,6 +118,10 @@ export const SERVICES: Service[] = [
       "Fechadura avariada, porta emperrada ou chave partida. Abertura e substituição com identificação.",
     icon: "locksmith",
     whatsappMessage: "Olá! Preciso de um serralheiro urgente.",
+    image: {
+      src: "/nexo-services/serralharia.jpg",
+      alt: "Fechadura e puxador de porta com chave",
+    },
   },
   {
     slug: "ar-condicionado",
@@ -112,7 +132,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de assistência urgente a ar condicionado.",
     image: {
       src: "/nexo-services/ar-condicionado.jpg",
-      alt: "Técnico Nexo Services a fazer manutenção de um aparelho de ar condicionado",
+      alt: "Unidades exteriores de ar condicionado na fachada",
     },
   },
   {
@@ -124,7 +144,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de assistência urgente a caixilharia.",
     image: {
       src: "/nexo-services/caixilharia.jpg",
-      alt: "Técnico Nexo Services a instalar caixilharia de janela",
+      alt: "Caixilharia de alumínio e vidro em vãos amplos",
     },
   },
   {
@@ -136,7 +156,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de assistência urgente a portas ou janelas.",
     image: {
       src: "/nexo-services/portas.jpg",
-      alt: "Técnico Nexo Services a trabalhar no fecho de uma porta",
+      alt: "Porta de entrada em madeira com caixilho",
     },
   },
   {
@@ -148,7 +168,7 @@ export const SERVICES: Service[] = [
     whatsappMessage: "Olá! Preciso de deteção de infiltração ou humidade.",
     image: {
       src: "/nexo-services/infiltracao-humidade.jpg",
-      alt: "Técnico Nexo Services a verificar infiltração e humidade numa parede",
+      alt: "Técnico a medir humidade numa parede com manchas",
     },
   },
   {
@@ -158,6 +178,10 @@ export const SERVICES: Service[] = [
       "Telha partida, goteira ou impermeabilização pontual. Intervenção em coberturas com segurança.",
     icon: "roof",
     whatsappMessage: "Olá! Preciso de assistência urgente a telhados ou coberturas.",
+    image: {
+      src: "/nexo-services/telhados.jpg",
+      alt: "Telhado de telha vermelha com beiral e caleira",
+    },
   },
 ];
 

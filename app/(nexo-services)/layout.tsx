@@ -1,14 +1,25 @@
 import type { ReactNode } from "react";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { FloatingCta } from "@/components/nexo-services/layout/FloatingCta";
 import { Footer } from "@/components/nexo-services/layout/Footer";
 import { Header } from "@/components/nexo-services/layout/Header";
+import { getCmsContent } from "@/lib/cms/content";
+import { DEFAULT_SITE } from "@/lib/cms/defaults";
+import { isNexoHost } from "@/lib/nexo-host";
 import { SITE } from "@/lib/nexo-services/site";
 
-export default function NexoServicesLayout({
+export default async function NexoServicesLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const host = (await headers()).get("host") ?? "";
+  if (!isNexoHost(host)) {
+    const { site } = await getCmsContent();
+    redirect(site.nexoServicesUrl || DEFAULT_SITE.nexoServicesUrl);
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HomeAndConstructionBusiness",
@@ -26,6 +37,8 @@ export default function NexoServicesLayout({
       addressCountry: "PT",
     },
     description: SITE.tagline,
+    logo: `${SITE.url}/assets/nexo-services-fundo-claro.svg`,
+    image: `${SITE.url}/assets/nexo-services-fundo-claro.svg`,
   };
 
   return (

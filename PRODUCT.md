@@ -41,7 +41,7 @@ Do not mix the offers. Reparações on projetonexo.pt is a hand-off to Nexo Serv
 - Base: Lisboa and Área Metropolitana. Current site copy also offers attendance nationwide when the project justifies travel; this was not re-confirmed as immutable in init.
 - Conversion today: WhatsApp (`+351 934 900 070`), landline (`+351 214 062 942`), and a contact form (Resend when configured; otherwise the request opens WhatsApp).
 - One Next.js app, two public hosts: `projetonexo.pt` (institutional works site) and `nexoservices.pt` (rewrites `/` to `/reparacoes`).
-- Blog and Studio via Sanity at `/studio`.
+- CMS via Payload at `/admin`. Site copy (Sobre, Serviços, Galeria, Contacto, plus chrome) is edited there. Blog posts are a Payload collection.
 - `/reparacoes` is the Nexo Services surface; `/reparações` 308-redirects to it.
 
 ## Capabilities and Constraints

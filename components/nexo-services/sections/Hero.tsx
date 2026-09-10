@@ -42,7 +42,7 @@ export function Hero() {
         <div className="relative aspect-[4/5] w-full overflow-hidden sm:aspect-[5/4] lg:aspect-[4/5]">
           <Image
             src="/nexo-services/canalizacao.jpg"
-            alt="Técnico Nexo Services a resolver uma avaria de canalização ao domicílio"
+            alt="Torneira de banheira em cromado — referência de canalização doméstica"
             fill
             priority
             sizes="(max-width: 1024px) 100vw, 46vw"

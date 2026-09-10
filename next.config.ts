@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -10,34 +11,30 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "cdn.sanity.io",
-        pathname: "/images/**",
+        hostname: "*.public.blob.vercel-storage.com",
+        pathname: "/**",
       },
     ],
   },
   async redirects() {
-    const nexoOrigin = "https://nexoservices.vercel.app/";
-    const skipOnNexoHost = [
-      { type: "host" as const, value: "nexoservices.vercel.app" },
-      { type: "host" as const, value: "nexoservices.pt" },
-      { type: "host" as const, value: "www.nexoservices.pt" },
-    ];
-
     return [
       {
-        source: "/reparacoes",
-        destination: nexoOrigin,
+        source: "/studio",
+        destination: "/admin",
         permanent: false,
-        missing: skipOnNexoHost,
+      },
+      {
+        source: "/studio/:path*",
+        destination: "/admin",
+        permanent: false,
       },
       {
         source: "/reparações",
-        destination: nexoOrigin,
+        destination: "/reparacoes",
         permanent: false,
-        missing: skipOnNexoHost,
       },
     ];
   },
 };
 
-export default nextConfig;
+export default withPayload(nextConfig);

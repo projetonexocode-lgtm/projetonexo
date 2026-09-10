@@ -1,32 +1,30 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { ProjectServiceIcon } from "@/components/ui/ProjectServiceIcon";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
-import { SERVICES } from "@/lib/services";
-import { SITE } from "@/lib/site";
-
-const SERVICE_PHOTOS: Record<string, { src: string; alt: string }> = {
-  "wc-casa-de-banho": {
-    src: "/galeria/wc-base-de-duche.jpg",
-    alt: "Etapas reais de troca de banheira por base de duche",
-  },
-};
+import { getCmsContent } from "@/lib/cms/content";
+import { SERVICE_PHOTOS } from "@/lib/service-photos";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
-  return SERVICES.filter((service) => service.cta.type === "whatsapp").map(
-    (service) => ({ slug: service.slug }),
-  );
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  const content = await getCmsContent();
+  return content.services
+    .filter((service) => service.slug)
+    .map((service) => ({ slug: service.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: ServicePageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = SERVICES.find((item) => item.slug === slug);
+  const content = await getCmsContent();
+  const service = content.services.find((item) => item.slug === slug);
 
   if (!service) {
     return { title: "Serviço" };
@@ -40,21 +38,23 @@ export async function generateMetadata({
 
 export default async function ServicePage({ params }: ServicePageProps) {
   const { slug } = await params;
-  const service = SERVICES.find((item) => item.slug === slug);
+  const content = await getCmsContent();
+  const service = content.services.find((item) => item.slug === slug);
 
   if (!service) {
     notFound();
   }
 
-  if (service.cta.type === "external") {
-    notFound();
-  }
-
-  const photo = SERVICE_PHOTOS[service.slug];
+  const photo = service.imageUrl
+    ? { src: service.imageUrl, alt: service.imageAlt || service.title }
+    : SERVICE_PHOTOS[service.slug];
 
   return (
     <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
-      <h1 className="font-display text-4xl text-charcoal sm:text-5xl">
+      <p className="inline-flex size-12 items-center justify-center border border-gold/50 text-accent">
+        <ProjectServiceIcon slug={service.slug} className="size-6" />
+      </p>
+      <h1 className="mt-5 font-display text-4xl text-charcoal sm:text-5xl">
         {service.title}
       </h1>
       <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-charcoal/75">
@@ -70,17 +70,14 @@ export default async function ServicePage({ params }: ServicePageProps) {
             className="object-cover"
           />
         </div>
-      ) : (
-        <p className="mt-4 text-sm leading-relaxed text-charcoal/70">
-          Página pronta para fotografias reais deste serviço. O pedido segue
-          para o WhatsApp da {SITE.name}.
-        </p>
-      )}
+      ) : null}
       <WhatsAppButton
-        serviceLabel={service.cta.serviceLabel}
+        serviceLabel={service.whatsappLabel}
+        intro={content.site.whatsappIntro}
+        e164={content.site.whatsappE164}
         className="mt-8"
       >
-        Pedir este serviço no WhatsApp
+        {content.servicesPage.serviceWhatsappCta}
       </WhatsAppButton>
     </div>
   );
