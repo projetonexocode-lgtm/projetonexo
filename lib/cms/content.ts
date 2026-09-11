@@ -7,6 +7,8 @@ import {
   DEFAULT_SERVICES,
   DEFAULT_SERVICES_PAGE,
   DEFAULT_SITE,
+  isSocialNetwork,
+  type SocialLink,
 } from "@/lib/cms/defaults";
 import { SERVICE_PHOTOS } from "@/lib/service-photos";
 
@@ -79,6 +81,26 @@ function mapNav(value: unknown): NavItem[] {
     const row = item as { label?: unknown; href?: unknown };
     if (typeof row.label !== "string" || typeof row.href !== "string") return [];
     return [{ label: row.label, href: row.href }];
+  });
+}
+
+function mapSocialLinks(value: unknown): SocialLink[] {
+  if (!Array.isArray(value)) return DEFAULT_SITE.socialLinks;
+  return value.flatMap((item) => {
+    if (!item || typeof item !== "object") return [];
+    const row = item as {
+      network?: unknown;
+      url?: unknown;
+      enabled?: unknown;
+    };
+    if (!isSocialNetwork(row.network)) return [];
+    return [
+      {
+        network: row.network,
+        url: typeof row.url === "string" ? row.url : "",
+        enabled: Boolean(row.enabled),
+      },
+    ];
   });
 }
 
@@ -304,6 +326,9 @@ export async function getCmsContent(): Promise<CmsContent> {
         footerCopyright: text(
           (site as { footerCopyright?: string | null }).footerCopyright,
           DEFAULT_SITE.footerCopyright,
+        ),
+        socialLinks: mapSocialLinks(
+          (site as { socialLinks?: unknown }).socialLinks,
         ),
         blogHeading: text(
           (site as { blogHeading?: string | null }).blogHeading,

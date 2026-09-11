@@ -1,8 +1,13 @@
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
 import { Logo as NexoServicesLogo } from "@/components/nexo-services/ui/Logo";
+import { Logo } from "@/components/ui/Logo";
+import { SocialLinks } from "@/components/ui/SocialLinks";
+import {
+  DEFAULT_SITE,
+  FOOTER_SERVICE_COLUMNS,
+  type SocialLink,
+} from "@/lib/cms/defaults";
 import { buildWhatsAppUrl } from "@/lib/site";
-import { FOOTER_SERVICE_COLUMNS, DEFAULT_SITE } from "@/lib/cms/defaults";
 
 type FooterProps = {
   name?: string;
@@ -28,6 +33,7 @@ type FooterProps = {
   repairsLabel?: string;
   guaranteesHeading?: string;
   copyright?: string;
+  socialLinks?: SocialLink[];
 };
 
 export function Footer({
@@ -54,6 +60,7 @@ export function Footer({
   repairsLabel = DEFAULT_SITE.footerRepairsLabel,
   guaranteesHeading = DEFAULT_SITE.footerGuaranteesHeading,
   copyright = DEFAULT_SITE.footerCopyright,
+  socialLinks = DEFAULT_SITE.socialLinks,
 }: FooterProps) {
   return (
     <footer className="bg-ink text-cream/70">
@@ -67,6 +74,7 @@ export function Footer({
             <Logo onDark size="footer" />
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed">{intro}</p>
+          <SocialLinks links={socialLinks} />
         </div>
 
         <div>
@@ -80,25 +88,31 @@ export function Footer({
             <li>
               <a
                 href={buildWhatsAppUrl("os vossos serviços", whatsappIntro, e164)}
-                className="hit-link group whitespace-nowrap"
+                className="hit-link group gap-2 whitespace-nowrap"
               >
-                {whatsappPrefix} ·{" "}
+                <span>{whatsappPrefix}</span>
                 <span className="text-gold group-hover:text-cream">
                   {whatsappDisplay}
                 </span>
               </a>
             </li>
             <li>
-              <a href={`tel:${phoneTel}`} className="hit-link group whitespace-nowrap">
-                {phonePrefix} ·{" "}
+              <a
+                href={`tel:${phoneTel}`}
+                className="hit-link group gap-2 whitespace-nowrap"
+              >
+                <span>{phonePrefix}</span>
                 <span className="text-gold group-hover:text-cream">
                   {phoneDisplay}
                 </span>
               </a>
             </li>
             <li>
-              <a href={`mailto:${contactEmail}`} className="hit-link group">
-                {emailPrefix} -{" "}
+              <a
+                href={`mailto:${contactEmail}`}
+                className="hit-link group gap-2 whitespace-nowrap"
+              >
+                <span className="shrink-0">{emailPrefix}</span>
                 <span className="text-gold group-hover:text-cream">
                   {contactEmail}
                 </span>

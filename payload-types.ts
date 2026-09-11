@@ -561,6 +561,20 @@ export interface Site {
   footerRepairsLabel?: string | null;
   footerGuaranteesHeading?: string | null;
   footerCopyright?: string | null;
+  /**
+   * O ícone só aparece no rodapé se «Visível no rodapé» estiver activo e o URL estiver preenchido.
+   */
+  socialLinks?:
+    | {
+        network: 'instagram' | 'facebook' | 'linkedin' | 'youtube' | 'tiktok' | 'x' | 'pinterest';
+        /**
+         * URL completo, por exemplo https://www.instagram.com/projetonexo
+         */
+        url?: string | null;
+        enabled?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   termsHeading?: string | null;
   termsParagraphs?:
     | {
@@ -836,6 +850,14 @@ export interface SiteSelect<T extends boolean = true> {
   footerRepairsLabel?: T;
   footerGuaranteesHeading?: T;
   footerCopyright?: T;
+  socialLinks?:
+    | T
+    | {
+        network?: T;
+        url?: T;
+        enabled?: T;
+        id?: T;
+      };
   termsHeading?: T;
   termsParagraphs?:
     | T

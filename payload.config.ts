@@ -1,3 +1,4 @@
+import { spawnSync } from "node:child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
@@ -29,6 +30,32 @@ import { migrations } from "./migrations";
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
+
+function ensureSqliteSocialLinksTable() {
+  if (postgresUrl) return;
+  const dbUrl = process.env.SQLITE_URL || "file:./payload.sqlite";
+  const dbPath = dbUrl.startsWith("file:") ? dbUrl.slice("file:".length) : dbUrl;
+  spawnSync(
+    "sqlite3",
+    [
+      dbPath,
+      `CREATE TABLE IF NOT EXISTS site_social_links (
+        _order integer NOT NULL,
+        _parent_id integer NOT NULL,
+        id text PRIMARY KEY NOT NULL,
+        network text NOT NULL,
+        url text,
+        enabled integer DEFAULT false,
+        FOREIGN KEY (_parent_id) REFERENCES site(id) ON UPDATE no action ON DELETE cascade
+      );
+      CREATE INDEX IF NOT EXISTS site_social_links_order_idx ON site_social_links (_order);
+      CREATE INDEX IF NOT EXISTS site_social_links_parent_id_idx ON site_social_links (_parent_id);`,
+    ],
+    { stdio: "ignore" },
+  );
+}
+
+ensureSqliteSocialLinksTable();
 
 export default buildConfig({
   admin: {
@@ -89,6 +116,7 @@ export default buildConfig({
     : [],
   async onInit(payload) {
     try {
+      ensureSqliteSocialLinksTable();
       const existing = await payload.find({
         collection: "services",
         limit: 1,
@@ -276,6 +304,19 @@ export default buildConfig({
             methodPhotoUrl: DEFAULT_SITE.methodImage.src,
             methodPhotoAlt: DEFAULT_SITE.methodImage.alt,
           },
+          overrideAccess: true,
+        });
+      }
+
+      const siteWithSocial = site as { socialLinks?: unknown[] | null };
+      if (
+        site.name &&
+        (!Array.isArray(siteWithSocial.socialLinks) ||
+          siteWithSocial.socialLinks.length === 0)
+      ) {
+        await payload.updateGlobal({
+          slug: "site",
+          data: { socialLinks: DEFAULT_SITE.socialLinks },
           overrideAccess: true,
         });
       }

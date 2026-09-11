@@ -1,5 +1,5 @@
 import type { GlobalConfig } from "payload";
-import { DEFAULT_SITE } from "@/lib/cms/defaults";
+import { DEFAULT_SITE, SOCIAL_NETWORKS } from "@/lib/cms/defaults";
 import { mediaImageFields } from "./fields";
 
 export const Site: GlobalConfig = {
@@ -459,6 +459,46 @@ export const Site: GlobalConfig = {
               type: "text",
               label: "Texto de copyright",
               defaultValue: DEFAULT_SITE.footerCopyright,
+            },
+            {
+              name: "socialLinks",
+              type: "array",
+              label: "Redes sociais",
+              labels: {
+                singular: "Rede social",
+                plural: "Redes sociais",
+              },
+              admin: {
+                description:
+                  "O ícone só aparece no rodapé se «Visível no rodapé» estiver activo e o URL estiver preenchido.",
+              },
+              fields: [
+                {
+                  name: "network",
+                  type: "select",
+                  label: "Rede",
+                  required: true,
+                  options: SOCIAL_NETWORKS.map((network) => ({
+                    label: network.label,
+                    value: network.value,
+                  })),
+                },
+                {
+                  name: "url",
+                  type: "text",
+                  label: "URL",
+                  admin: {
+                    description:
+                      "URL completo, por exemplo https://www.instagram.com/projetonexo",
+                  },
+                },
+                {
+                  name: "enabled",
+                  type: "checkbox",
+                  label: "Visível no rodapé",
+                  defaultValue: false,
+                },
+              ],
             },
           ],
         },

@@ -59,6 +59,7 @@ export default async function SiteLayout({
         repairsLabel={site.footerRepairsLabel}
         guaranteesHeading={site.footerGuaranteesHeading}
         copyright={site.footerCopyright}
+        socialLinks={site.socialLinks}
       />
     </div>
   );

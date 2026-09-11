@@ -223,6 +223,69 @@ export const FOOTER_SERVICE_COLUMNS: { slug: string; title: string }[][] = [
   ],
 ];
 
+export const SOCIAL_NETWORKS = [
+  { value: "instagram", label: "Instagram" },
+  { value: "facebook", label: "Facebook" },
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "youtube", label: "YouTube" },
+  { value: "tiktok", label: "TikTok" },
+  { value: "x", label: "X" },
+  { value: "pinterest", label: "Pinterest" },
+] as const;
+
+export type SocialNetwork = (typeof SOCIAL_NETWORKS)[number]["value"];
+
+export type SocialLink = {
+  network: SocialNetwork;
+  url: string;
+  enabled: boolean;
+};
+
+const DEFAULT_SOCIAL_NETWORKS: SocialNetwork[] = [
+  "instagram",
+  "facebook",
+  "linkedin",
+  "youtube",
+];
+
+export const DEFAULT_SOCIAL_LINKS: SocialLink[] = DEFAULT_SOCIAL_NETWORKS.map(
+  (network) => ({ network, url: "", enabled: false }),
+);
+
+export function isSocialNetwork(value: unknown): value is SocialNetwork {
+  return SOCIAL_NETWORKS.some((network) => network.value === value);
+}
+
+export function socialNetworkLabel(network: SocialNetwork): string {
+  return (
+    SOCIAL_NETWORKS.find((item) => item.value === network)?.label ?? network
+  );
+}
+
+export function normalizeSocialUrl(value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const withProtocol = /^https?:\/\//i.test(trimmed)
+    ? trimmed
+    : `https://${trimmed}`;
+  try {
+    const url = new URL(withProtocol);
+    if (url.protocol !== "http:" && url.protocol !== "https:") return null;
+    return url.href;
+  } catch {
+    return null;
+  }
+}
+
+export function visibleSocialLinks(links: SocialLink[]): SocialLink[] {
+  return links.flatMap((link) => {
+    if (!link.enabled) return [];
+    const url = normalizeSocialUrl(link.url);
+    if (!url) return [];
+    return [{ ...link, url }];
+  });
+}
+
 export const DEFAULT_SITE = {
   name: "Projeto Nexo",
   legalName: "Projeto Nexo — Gestão de Obras e Projetos",
@@ -362,6 +425,7 @@ export const DEFAULT_SITE = {
   footerRepairsLabel: "Reparações",
   footerGuaranteesHeading: "Garantias",
   footerCopyright: "Todos os direitos reservados.",
+  socialLinks: DEFAULT_SOCIAL_LINKS,
   blogHeading: "Notas de obra",
   blogHeadingHighlight: "obra",
   blogIntro:
