@@ -80,8 +80,99 @@ function mapNav(value: unknown): NavItem[] {
     if (!item || typeof item !== "object") return [];
     const row = item as { label?: unknown; href?: unknown };
     if (typeof row.label !== "string" || typeof row.href !== "string") return [];
-    return [{ label: row.label, href: row.href }];
+    const href = row.href === "/#sobre" ? "/sobre" : row.href;
+    return [{ label: row.label, href }];
   });
+}
+
+function mapAbout(about: {
+  heading?: string | null;
+  headingHighlight?: string | null;
+  heroEyebrow?: string | null;
+  heroLead?: string | null;
+  heroImage?: unknown;
+  heroImageUrl?: string | null;
+  heroImageAlt?: string | null;
+  storyTitle?: string | null;
+  valuesEyebrow?: string | null;
+  valuesTitle?: string | null;
+  valuesIntro?: string | null;
+  values?: { title?: string | null; body?: string | null }[] | null;
+  ctaTitle?: string | null;
+  ctaBody?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  ctaWhatsappLabel?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  paragraphs?: { text?: string | null }[] | null;
+  placeholders?: {
+    label?: string | null;
+    image?: unknown;
+    imageUrl?: string | null;
+    alt?: string | null;
+    shape?: string | null;
+  }[] | null;
+}): typeof DEFAULT_ABOUT {
+  return {
+    heading: text(about.heading, DEFAULT_ABOUT.heading),
+    headingHighlight: text(about.headingHighlight, DEFAULT_ABOUT.headingHighlight),
+    heroEyebrow: text(about.heroEyebrow, DEFAULT_ABOUT.heroEyebrow),
+    heroLead: text(about.heroLead, DEFAULT_ABOUT.heroLead),
+    heroImageUrl:
+      mediaUrl(about.heroImage) ||
+      text(about.heroImageUrl, DEFAULT_ABOUT.heroImageUrl),
+    heroImageAlt: text(about.heroImageAlt, DEFAULT_ABOUT.heroImageAlt),
+    storyTitle: text(about.storyTitle, DEFAULT_ABOUT.storyTitle),
+    valuesEyebrow: text(about.valuesEyebrow, DEFAULT_ABOUT.valuesEyebrow),
+    valuesTitle: text(about.valuesTitle, DEFAULT_ABOUT.valuesTitle),
+    valuesIntro: text(about.valuesIntro, DEFAULT_ABOUT.valuesIntro),
+    values:
+      Array.isArray(about.values) && about.values.length > 0
+        ? about.values.map((item, index) => {
+            const fallback = DEFAULT_ABOUT.values[index];
+            return {
+              title: text(item.title, fallback?.title ?? ""),
+              body: text(item.body, fallback?.body ?? ""),
+            };
+          })
+        : DEFAULT_ABOUT.values,
+    ctaTitle: text(about.ctaTitle, DEFAULT_ABOUT.ctaTitle),
+    ctaBody: text(about.ctaBody, DEFAULT_ABOUT.ctaBody),
+    ctaLabel: text(about.ctaLabel, DEFAULT_ABOUT.ctaLabel),
+    ctaHref: text(about.ctaHref, DEFAULT_ABOUT.ctaHref),
+    ctaWhatsappLabel: text(
+      about.ctaWhatsappLabel,
+      DEFAULT_ABOUT.ctaWhatsappLabel,
+    ),
+    seoTitle: text(about.seoTitle, DEFAULT_ABOUT.seoTitle),
+    seoDescription: text(about.seoDescription, DEFAULT_ABOUT.seoDescription),
+    paragraphs:
+      Array.isArray(about.paragraphs) && about.paragraphs.length > 0
+        ? about.paragraphs.map((item) => ({
+            text: text(item.text, ""),
+          }))
+        : DEFAULT_ABOUT.paragraphs,
+    placeholders:
+      Array.isArray(about.placeholders) && about.placeholders.length > 0
+        ? about.placeholders.map((item, index) => {
+            const fallback = DEFAULT_ABOUT.placeholders[index];
+            return {
+              label: text(item.label, fallback?.label ?? ""),
+              imageUrl:
+                mediaUrl(item.image) ||
+                text(item.imageUrl, fallback?.imageUrl ?? ""),
+              alt: text(item.alt, fallback?.alt ?? fallback?.label ?? ""),
+              shape:
+                item.shape === "round" ||
+                item.shape === "square" ||
+                item.shape === "wide"
+                  ? item.shape
+                  : fallback?.shape ?? "wide",
+            };
+          })
+        : DEFAULT_ABOUT.placeholders,
+  };
 }
 
 function mapSocialLinks(value: unknown): SocialLink[] {
@@ -415,36 +506,7 @@ export async function getCmsContent(): Promise<CmsContent> {
             })) as typeof DEFAULT_SITE.termsParagraphs
           : DEFAULT_SITE.termsParagraphs,
       },
-      about: {
-        heading: text(about.heading, DEFAULT_ABOUT.heading),
-        headingHighlight: text(
-          about.headingHighlight,
-          DEFAULT_ABOUT.headingHighlight,
-        ),
-        paragraphs:
-          Array.isArray(about.paragraphs) && about.paragraphs.length > 0
-            ? about.paragraphs.map((item) => ({
-                text: text(item.text, ""),
-              }))
-            : DEFAULT_ABOUT.paragraphs,
-        placeholders:
-          Array.isArray(about.placeholders) && about.placeholders.length > 0
-            ? about.placeholders.map((item, index) => {
-                const fallback = DEFAULT_ABOUT.placeholders[index];
-                return {
-                  label: text(item.label, fallback?.label ?? ""),
-                  imageUrl:
-                    mediaUrl(item.image) ||
-                    text(item.imageUrl, fallback?.imageUrl ?? ""),
-                  alt: text(item.alt, fallback?.alt ?? fallback?.label ?? ""),
-                  shape:
-                    item.shape === "round" || item.shape === "square" || item.shape === "wide"
-                      ? item.shape
-                      : fallback?.shape ?? "wide",
-                };
-              })
-            : DEFAULT_ABOUT.placeholders,
-      },
+      about: mapAbout(about),
       servicesPage: {
         heading: text(servicesPage.heading, DEFAULT_SERVICES_PAGE.heading),
         intro: text(servicesPage.intro, DEFAULT_SERVICES_PAGE.intro),

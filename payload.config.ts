@@ -31,15 +31,19 @@ const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
 const postgresUrl = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 
+function sqliteDbPath() {
+  const dbUrl = process.env.SQLITE_URL || "file:./payload.sqlite";
+  return dbUrl.startsWith("file:") ? dbUrl.slice("file:".length) : dbUrl;
+}
+
+function runSqlite(sql: string) {
+  spawnSync("sqlite3", [sqliteDbPath(), sql], { stdio: "ignore" });
+}
+
 function ensureSqliteSocialLinksTable() {
   if (postgresUrl) return;
-  const dbUrl = process.env.SQLITE_URL || "file:./payload.sqlite";
-  const dbPath = dbUrl.startsWith("file:") ? dbUrl.slice("file:".length) : dbUrl;
-  spawnSync(
-    "sqlite3",
-    [
-      dbPath,
-      `CREATE TABLE IF NOT EXISTS site_social_links (
+  runSqlite(`
+      CREATE TABLE IF NOT EXISTS site_social_links (
         _order integer NOT NULL,
         _parent_id integer NOT NULL,
         id text PRIMARY KEY NOT NULL,
@@ -49,13 +53,47 @@ function ensureSqliteSocialLinksTable() {
         FOREIGN KEY (_parent_id) REFERENCES site(id) ON UPDATE no action ON DELETE cascade
       );
       CREATE INDEX IF NOT EXISTS site_social_links_order_idx ON site_social_links (_order);
-      CREATE INDEX IF NOT EXISTS site_social_links_parent_id_idx ON site_social_links (_parent_id);`,
-    ],
-    { stdio: "ignore" },
-  );
+      CREATE INDEX IF NOT EXISTS site_social_links_parent_id_idx ON site_social_links (_parent_id);`);
+}
+
+function ensureSqliteAboutPageSchema() {
+  if (postgresUrl) return;
+  runSqlite(`
+      CREATE TABLE IF NOT EXISTS about_values (
+        _order integer NOT NULL,
+        _parent_id integer NOT NULL,
+        id text PRIMARY KEY NOT NULL,
+        title text NOT NULL,
+        body text NOT NULL,
+        FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
+      );
+      CREATE INDEX IF NOT EXISTS about_values_order_idx ON about_values (_order);
+      CREATE INDEX IF NOT EXISTS about_values_parent_id_idx ON about_values (_parent_id);`);
+  const columns = [
+    "hero_eyebrow",
+    "hero_lead",
+    "hero_image_id",
+    "hero_image_url",
+    "hero_image_alt",
+    "story_title",
+    "values_eyebrow",
+    "values_title",
+    "values_intro",
+    "cta_title",
+    "cta_body",
+    "cta_label",
+    "cta_href",
+    "cta_whatsapp_label",
+    "seo_title",
+    "seo_description",
+  ];
+  for (const column of columns) {
+    runSqlite(`ALTER TABLE about ADD COLUMN ${column} text;`);
+  }
 }
 
 ensureSqliteSocialLinksTable();
+ensureSqliteAboutPageSchema();
 
 export default buildConfig({
   admin: {
@@ -117,6 +155,7 @@ export default buildConfig({
   async onInit(payload) {
     try {
       ensureSqliteSocialLinksTable();
+      ensureSqliteAboutPageSchema();
       const existing = await payload.find({
         collection: "services",
         limit: 1,
@@ -140,18 +179,45 @@ export default buildConfig({
         | { imageUrl?: string | null }[]
         | null
         | undefined;
+      const aboutRecord = about as typeof about & Partial<typeof DEFAULT_ABOUT>;
       if (!about.heading) {
         await payload.updateGlobal({
           slug: "about",
           data: DEFAULT_ABOUT,
           overrideAccess: true,
         });
-      } else if (!aboutPhotos?.[0]?.imageUrl) {
-        await payload.updateGlobal({
-          slug: "about",
-          data: { placeholders: DEFAULT_ABOUT.placeholders },
-          overrideAccess: true,
-        });
+      } else {
+        const patch: Record<string, unknown> = {};
+        if (!aboutPhotos?.[0]?.imageUrl) {
+          patch.placeholders = DEFAULT_ABOUT.placeholders;
+        }
+        if (!aboutRecord.heroLead) {
+          patch.heroEyebrow = DEFAULT_ABOUT.heroEyebrow;
+          patch.heroLead = DEFAULT_ABOUT.heroLead;
+          patch.heroImageUrl = DEFAULT_ABOUT.heroImageUrl;
+          patch.heroImageAlt = DEFAULT_ABOUT.heroImageAlt;
+          patch.storyTitle = DEFAULT_ABOUT.storyTitle;
+          patch.valuesEyebrow = DEFAULT_ABOUT.valuesEyebrow;
+          patch.valuesTitle = DEFAULT_ABOUT.valuesTitle;
+          patch.valuesIntro = DEFAULT_ABOUT.valuesIntro;
+          patch.values = DEFAULT_ABOUT.values;
+          patch.ctaTitle = DEFAULT_ABOUT.ctaTitle;
+          patch.ctaBody = DEFAULT_ABOUT.ctaBody;
+          patch.ctaLabel = DEFAULT_ABOUT.ctaLabel;
+          patch.ctaHref = DEFAULT_ABOUT.ctaHref;
+          patch.ctaWhatsappLabel = DEFAULT_ABOUT.ctaWhatsappLabel;
+          patch.seoTitle = DEFAULT_ABOUT.seoTitle;
+          patch.seoDescription = DEFAULT_ABOUT.seoDescription;
+        } else if (!aboutRecord.values?.length) {
+          patch.values = DEFAULT_ABOUT.values;
+        }
+        if (Object.keys(patch).length > 0) {
+          await payload.updateGlobal({
+            slug: "about",
+            data: patch,
+            overrideAccess: true,
+          });
+        }
       }
 
       const servicesPage = await payload.findGlobal({
@@ -267,6 +333,20 @@ export default buildConfig({
         await payload.updateGlobal({
           slug: "site",
           data: { heroSlides: DEFAULT_SITE.heroSlides },
+          overrideAccess: true,
+        });
+      }
+
+      const navNeedsSobrePage = site.nav?.some((item) => item.href === "/#sobre");
+      if (site.name && navNeedsSobrePage) {
+        await payload.updateGlobal({
+          slug: "site",
+          data: {
+            nav: site.nav?.map((item) => ({
+              ...item,
+              href: item.href === "/#sobre" ? "/sobre" : item.href,
+            })),
+          },
           overrideAccess: true,
         });
       }

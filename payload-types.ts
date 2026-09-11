@@ -588,15 +588,24 @@ export interface Site {
   createdAt?: string | null;
 }
 /**
- * Textos e fotografias da secção Sobre na homepage. Carregar imagens em Media.
+ * Página /sobre: textos e fotografias. Carregar imagens em Media.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "about".
  */
 export interface About {
   id: number;
+  heroEyebrow?: string | null;
   heading: string;
   headingHighlight?: string | null;
+  heroLead?: string | null;
+  heroImage?: (number | null) | Media;
+  /**
+   * Usado só se a imagem Media estiver vazia. Preferir o carregamento acima.
+   */
+  heroImageUrl?: string | null;
+  heroImageAlt?: string | null;
+  storyTitle?: string | null;
   paragraphs?:
     | {
         text: string;
@@ -604,7 +613,7 @@ export interface About {
       }[]
     | null;
   /**
-   * Fotografias da secção Sobre. Podem ser de banco de imagens ou de obra.
+   * Grelha ao lado da história. Preferir Media; o URL só serve se a imagem estiver vazia.
    */
   placeholders?:
     | {
@@ -619,6 +628,23 @@ export interface About {
         id?: string | null;
       }[]
     | null;
+  valuesEyebrow?: string | null;
+  valuesTitle?: string | null;
+  valuesIntro?: string | null;
+  values?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  ctaTitle?: string | null;
+  ctaBody?: string | null;
+  ctaLabel?: string | null;
+  ctaHref?: string | null;
+  ctaWhatsappLabel?: string | null;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -876,8 +902,14 @@ export interface SiteSelect<T extends boolean = true> {
  * via the `definition` "about_select".
  */
 export interface AboutSelect<T extends boolean = true> {
+  heroEyebrow?: T;
   heading?: T;
   headingHighlight?: T;
+  heroLead?: T;
+  heroImage?: T;
+  heroImageUrl?: T;
+  heroImageAlt?: T;
+  storyTitle?: T;
   paragraphs?:
     | T
     | {
@@ -894,6 +926,23 @@ export interface AboutSelect<T extends boolean = true> {
         shape?: T;
         id?: T;
       };
+  valuesEyebrow?: T;
+  valuesTitle?: T;
+  valuesIntro?: T;
+  values?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  ctaTitle?: T;
+  ctaBody?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  ctaWhatsappLabel?: T;
+  seoTitle?: T;
+  seoDescription?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

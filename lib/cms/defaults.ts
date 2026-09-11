@@ -1,7 +1,7 @@
 export const DEFAULT_NAV: { label: string; href: string }[] = [
   { label: "Método", href: "/#metodo" },
   { label: "Galeria", href: "/galeria" },
-  { label: "Sobre", href: "/#sobre" },
+  { label: "Sobre", href: "/sobre" },
   { label: "Serviços", href: "/#servicos" },
   { label: "Atuação", href: "/#atuacao" },
   { label: "Blog", href: "/#blog" },
@@ -471,6 +471,34 @@ export const DEFAULT_SITE = {
 export const DEFAULT_ABOUT = {
   heading: "Uma equipa que coordena tudo o que a obra exige.",
   headingHighlight: "coordena",
+  heroEyebrow: "Sobre nós",
+  heroLead:
+    "Gestão integral da obra: planeamento, execução, fiscalização e entrega — com orçamento explicado antes de começar e garantia de 2 a 7 anos.",
+  heroImageUrl: "/sobre/equipa-obra.jpg",
+  heroImageAlt: "Profissional de obra com capacete a trabalhar no estaleiro",
+  storyTitle: "A nossa história",
+  valuesEyebrow: "Como trabalhamos",
+  valuesTitle: "O que nos define",
+  valuesIntro: "",
+  values: [
+    {
+      title: "Orçamento explicado",
+      body: "Antes de começar, o âmbito e o valor ficam claros. Só se avança com o seu acordo.",
+    },
+    {
+      title: "Garantia de 2 a 7 anos",
+      body: "Conforme a intervenção e as normas técnicas em vigor.",
+    },
+  ],
+  ctaTitle: "Vamos falar da sua obra?",
+  ctaBody:
+    "Peça contacto. Explicamos o próximo passo e acompanhamos do orçamento à entrega.",
+  ctaLabel: "Pedido de contacto",
+  ctaHref: "/#contacto",
+  ctaWhatsappLabel: "Falar por WhatsApp",
+  seoTitle: "Sobre nós",
+  seoDescription:
+    "Gestão integral da obra: planeamento, execução, fiscalização e entrega — com orçamento explicado antes de começar e garantia de 2 a 7 anos.",
   paragraphs: [
     {
       text: "A Projeto Nexo assegura a gestão integral da obra: planeamento, execução, fiscalização e entrega. Cada intervenção é acompanhada por profissionais especializados na área respetiva. Antes de começar, apresentamos o orçamento explicado ao detalhe; no final, a obra é entregue com garantia de 2 a 7 anos, conforme a intervenção.",

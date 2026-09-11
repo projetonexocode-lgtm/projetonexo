@@ -2,6 +2,7 @@
 
 import { Menu, Phone, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/ui/Logo";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
@@ -30,6 +31,7 @@ export function Header({
   e164 = DEFAULT_SITE.whatsappE164,
 }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const whatsappTel = `+${e164}`;
 
   useEffect(() => {
@@ -67,7 +69,10 @@ export function Header({
             <Link
               key={item.href}
               href={item.href}
-              className="hit-link px-2 hover:text-cream"
+              aria-current={pathname === item.href ? "page" : undefined}
+              className={`hit-link px-2 hover:text-cream ${
+                pathname === item.href ? "text-cream" : ""
+              }`}
             >
               {item.label}
             </Link>
@@ -148,7 +153,10 @@ export function Header({
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center text-sm uppercase tracking-wide text-gold hover:text-cream"
+                aria-current={pathname === item.href ? "page" : undefined}
+                className={`flex min-h-12 items-center text-sm uppercase tracking-wide hover:text-cream ${
+                  pathname === item.href ? "text-cream" : "text-gold"
+                }`}
               >
                 {item.label}
               </Link>

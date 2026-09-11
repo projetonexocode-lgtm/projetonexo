@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 function scrollToHash() {
@@ -20,8 +20,14 @@ function scrollToHash() {
 
 export function HashScroll() {
   const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
+    if (pathname === "/" && window.location.hash === "#sobre") {
+      router.replace("/sobre");
+      return;
+    }
+
     const frame = window.requestAnimationFrame(scrollToHash);
 
     function onClick(event: MouseEvent) {
@@ -49,7 +55,7 @@ export function HashScroll() {
       window.removeEventListener("hashchange", scrollToHash);
       document.removeEventListener("click", onClick, true);
     };
-  }, [pathname]);
+  }, [pathname, router]);
 
   return null;
 }

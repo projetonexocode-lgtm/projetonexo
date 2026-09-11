@@ -1,4 +1,3 @@
-import { About } from "@/components/sections/About";
 import { BlogPreview } from "@/components/sections/BlogPreview";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { Coverage } from "@/components/sections/Coverage";
@@ -12,7 +11,7 @@ export const revalidate = 60;
 
 export default async function HomePage() {
   const content = await getCmsContent();
-  const { site, about, servicesPage, gallery, contact } = content;
+  const { site, servicesPage, gallery, contact } = content;
   const featured = content.services.filter((item) => item.featured);
 
   return (
@@ -39,12 +38,6 @@ export default async function HomePage() {
         projects={gallery.projects}
         mosaicContact={gallery.mosaicContact}
         mosaicWork={gallery.mosaicWork}
-      />
-      <About
-        heading={about.heading}
-        highlight={about.headingHighlight}
-        paragraphs={about.paragraphs}
-        placeholders={about.placeholders}
       />
       <Services
         heading={servicesPage.heading}
