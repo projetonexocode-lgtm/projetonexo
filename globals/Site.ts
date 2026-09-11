@@ -461,6 +461,48 @@ export const Site: GlobalConfig = {
               defaultValue: DEFAULT_SITE.footerCopyright,
             },
             {
+              name: "footerCertificateHeading",
+              type: "text",
+              label: "Título Certificado",
+              defaultValue: DEFAULT_SITE.footerCertificateHeading,
+            },
+            {
+              name: "footerCertificateIssuer",
+              type: "text",
+              label: "Entidade (IMPIC)",
+              defaultValue: DEFAULT_SITE.footerCertificateIssuer,
+            },
+            {
+              name: "footerCertificateCompany",
+              type: "text",
+              label: "Sociedade",
+              defaultValue: DEFAULT_SITE.footerCertificateCompany,
+            },
+            {
+              name: "footerCertificateNipc",
+              type: "text",
+              label: "NIPC",
+              defaultValue: DEFAULT_SITE.footerCertificateNipc,
+            },
+            {
+              name: "footerCertificateAlvara",
+              type: "text",
+              label: "Alvará",
+              defaultValue: DEFAULT_SITE.footerCertificateAlvara,
+            },
+            {
+              name: "footerAlsoDoTitle",
+              type: "text",
+              label: "Título «Também fazemos»",
+              defaultValue: DEFAULT_SITE.footerAlsoDoTitle,
+            },
+            {
+              name: "footerAlsoDoBody",
+              type: "textarea",
+              label: "Texto «Também fazemos»",
+              defaultValue: DEFAULT_SITE.footerAlsoDoBody,
+            },
+            {
               name: "socialLinks",
               type: "array",
               label: "Redes sociais",

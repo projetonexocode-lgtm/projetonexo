@@ -59,6 +59,13 @@ export default async function SiteLayout({
         repairsLabel={site.footerRepairsLabel}
         guaranteesHeading={site.footerGuaranteesHeading}
         copyright={site.footerCopyright}
+        certificateHeading={site.footerCertificateHeading}
+        certificateIssuer={site.footerCertificateIssuer}
+        certificateCompany={site.footerCertificateCompany}
+        certificateNipc={site.footerCertificateNipc}
+        certificateAlvara={site.footerCertificateAlvara}
+        alsoDoTitle={site.footerAlsoDoTitle}
+        alsoDoBody={site.footerAlsoDoBody}
         socialLinks={site.socialLinks}
       />
     </div>

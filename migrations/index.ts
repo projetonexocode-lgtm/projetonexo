@@ -1,6 +1,7 @@
 import * as migration_20260910_191654_initial from './20260910_191654_initial';
 import * as migration_20260911_154500_site_social_links from './20260911_154500_site_social_links';
 import * as migration_20260911_161500_about_page_fields from './20260911_161500_about_page_fields';
+import * as migration_20260911_180500_site_footer_certificate from './20260911_180500_site_footer_certificate';
 
 export const migrations = [
   {
@@ -17,5 +18,10 @@ export const migrations = [
     up: migration_20260911_161500_about_page_fields.up,
     down: migration_20260911_161500_about_page_fields.down,
     name: '20260911_161500_about_page_fields'
+  },
+  {
+    up: migration_20260911_180500_site_footer_certificate.up,
+    down: migration_20260911_180500_site_footer_certificate.down,
+    name: '20260911_180500_site_footer_certificate'
   },
 ];

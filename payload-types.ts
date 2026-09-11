@@ -561,6 +561,13 @@ export interface Site {
   footerRepairsLabel?: string | null;
   footerGuaranteesHeading?: string | null;
   footerCopyright?: string | null;
+  footerCertificateHeading?: string | null;
+  footerCertificateIssuer?: string | null;
+  footerCertificateCompany?: string | null;
+  footerCertificateNipc?: string | null;
+  footerCertificateAlvara?: string | null;
+  footerAlsoDoTitle?: string | null;
+  footerAlsoDoBody?: string | null;
   /**
    * O ícone só aparece no rodapé se «Visível no rodapé» estiver activo e o URL estiver preenchido.
    */
@@ -876,6 +883,13 @@ export interface SiteSelect<T extends boolean = true> {
   footerRepairsLabel?: T;
   footerGuaranteesHeading?: T;
   footerCopyright?: T;
+  footerCertificateHeading?: T;
+  footerCertificateIssuer?: T;
+  footerCertificateCompany?: T;
+  footerCertificateNipc?: T;
+  footerCertificateAlvara?: T;
+  footerAlsoDoTitle?: T;
+  footerAlsoDoBody?: T;
   socialLinks?:
     | T
     | {

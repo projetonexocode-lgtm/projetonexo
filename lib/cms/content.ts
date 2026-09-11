@@ -418,6 +418,38 @@ export async function getCmsContent(): Promise<CmsContent> {
           (site as { footerCopyright?: string | null }).footerCopyright,
           DEFAULT_SITE.footerCopyright,
         ),
+        footerCertificateHeading: text(
+          (site as { footerCertificateHeading?: string | null })
+            .footerCertificateHeading,
+          DEFAULT_SITE.footerCertificateHeading,
+        ),
+        footerCertificateIssuer: text(
+          (site as { footerCertificateIssuer?: string | null })
+            .footerCertificateIssuer,
+          DEFAULT_SITE.footerCertificateIssuer,
+        ),
+        footerCertificateCompany: text(
+          (site as { footerCertificateCompany?: string | null })
+            .footerCertificateCompany,
+          DEFAULT_SITE.footerCertificateCompany,
+        ),
+        footerCertificateNipc: text(
+          (site as { footerCertificateNipc?: string | null }).footerCertificateNipc,
+          DEFAULT_SITE.footerCertificateNipc,
+        ),
+        footerCertificateAlvara: text(
+          (site as { footerCertificateAlvara?: string | null })
+            .footerCertificateAlvara,
+          DEFAULT_SITE.footerCertificateAlvara,
+        ),
+        footerAlsoDoTitle: text(
+          (site as { footerAlsoDoTitle?: string | null }).footerAlsoDoTitle,
+          DEFAULT_SITE.footerAlsoDoTitle,
+        ),
+        footerAlsoDoBody: text(
+          (site as { footerAlsoDoBody?: string | null }).footerAlsoDoBody,
+          DEFAULT_SITE.footerAlsoDoBody,
+        ),
         socialLinks: mapSocialLinks(
           (site as { socialLinks?: unknown }).socialLinks,
         ),

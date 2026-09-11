@@ -425,6 +425,15 @@ export const DEFAULT_SITE = {
   footerRepairsLabel: "Reparações",
   footerGuaranteesHeading: "Garantias",
   footerCopyright: "Todos os direitos reservados.",
+  footerCertificateHeading: "Certificado",
+  footerCertificateIssuer: "IMPIC",
+  footerCertificateCompany: "RARO & INQUEBRAVEL LDA",
+  footerCertificateNipc: "NIPC: 519395026",
+  footerCertificateAlvara:
+    "Alvará Obras Particulares IMPIC - 121548 - PAR",
+  footerAlsoDoTitle: "Também fazemos",
+  footerAlsoDoBody:
+    "Reparações e serviços especializados, na Nexo Services.",
   socialLinks: DEFAULT_SOCIAL_LINKS,
   blogHeading: "Notas de obra",
   blogHeadingHighlight: "obra",

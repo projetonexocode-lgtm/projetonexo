@@ -92,8 +92,25 @@ function ensureSqliteAboutPageSchema() {
   }
 }
 
+function ensureSqliteFooterCertificateSchema() {
+  if (postgresUrl) return;
+  const columns = [
+    "footer_certificate_heading",
+    "footer_certificate_issuer",
+    "footer_certificate_company",
+    "footer_certificate_nipc",
+    "footer_certificate_alvara",
+    "footer_also_do_title",
+    "footer_also_do_body",
+  ];
+  for (const column of columns) {
+    runSqlite(`ALTER TABLE site ADD COLUMN ${column} text;`);
+  }
+}
+
 ensureSqliteSocialLinksTable();
 ensureSqliteAboutPageSchema();
+ensureSqliteFooterCertificateSchema();
 
 export default buildConfig({
   admin: {
@@ -156,6 +173,7 @@ export default buildConfig({
     try {
       ensureSqliteSocialLinksTable();
       ensureSqliteAboutPageSchema();
+      ensureSqliteFooterCertificateSchema();
       const existing = await payload.find({
         collection: "services",
         limit: 1,
@@ -397,6 +415,35 @@ export default buildConfig({
         await payload.updateGlobal({
           slug: "site",
           data: { socialLinks: DEFAULT_SITE.socialLinks },
+          overrideAccess: true,
+        });
+      }
+
+      const siteWithCertificate = site as {
+        footerCertificateHeading?: string | null;
+        footerAlsoDoTitle?: string | null;
+      };
+      if (site.name && !siteWithCertificate.footerCertificateHeading) {
+        await payload.updateGlobal({
+          slug: "site",
+          data: {
+            footerCertificateHeading: DEFAULT_SITE.footerCertificateHeading,
+            footerCertificateIssuer: DEFAULT_SITE.footerCertificateIssuer,
+            footerCertificateCompany: DEFAULT_SITE.footerCertificateCompany,
+            footerCertificateNipc: DEFAULT_SITE.footerCertificateNipc,
+            footerCertificateAlvara: DEFAULT_SITE.footerCertificateAlvara,
+            footerAlsoDoTitle: DEFAULT_SITE.footerAlsoDoTitle,
+            footerAlsoDoBody: DEFAULT_SITE.footerAlsoDoBody,
+          },
+          overrideAccess: true,
+        });
+      } else if (site.name && !siteWithCertificate.footerAlsoDoTitle) {
+        await payload.updateGlobal({
+          slug: "site",
+          data: {
+            footerAlsoDoTitle: DEFAULT_SITE.footerAlsoDoTitle,
+            footerAlsoDoBody: DEFAULT_SITE.footerAlsoDoBody,
+          },
           overrideAccess: true,
         });
       }
