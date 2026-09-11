@@ -165,6 +165,13 @@ body {
   outline-offset: 3px;
 }
 
+.nx-logo {
+  display: block;
+  flex-shrink: 0;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
 @keyframes nx-hero-rise {
   from {
     opacity: 0;
