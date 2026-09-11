@@ -312,7 +312,42 @@ export default buildConfig({
         depth: 0,
         overrideAccess: true,
       });
-      for (const service of catalog.docs) {
+      const bySlug = new Map(
+        catalog.docs.map((doc) => [String(doc.slug ?? ""), doc]),
+      );
+      for (const service of DEFAULT_SERVICES) {
+        const current = bySlug.get(service.slug);
+        const photo = SERVICE_PHOTOS[service.slug];
+        if (!current) {
+          await payload.create({
+            collection: "services",
+            data: {
+              ...service,
+              ...(photo
+                ? { imageUrl: photo.src, imageAlt: photo.alt }
+                : {}),
+            },
+            overrideAccess: true,
+          });
+          continue;
+        }
+        if (Boolean(current.inFooter) !== service.inFooter) {
+          await payload.update({
+            collection: "services",
+            id: current.id,
+            data: { inFooter: service.inFooter },
+            overrideAccess: true,
+          });
+        }
+      }
+
+      const catalogWithPhotos = await payload.find({
+        collection: "services",
+        limit: 100,
+        depth: 0,
+        overrideAccess: true,
+      });
+      for (const service of catalogWithPhotos.docs) {
         const photo = SERVICE_PHOTOS[String(service.slug ?? "")];
         const currentUrl = (service as { imageUrl?: string | null }).imageUrl;
         if (!photo || currentUrl) continue;

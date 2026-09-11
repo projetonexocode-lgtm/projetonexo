@@ -7,6 +7,7 @@ import {
   ClipboardCheck,
   Compass,
   CookingPot,
+  FolderKanban,
   Hammer,
   House,
   Palette,
@@ -30,6 +31,8 @@ export const SERVICE_ICONS: Record<string, LucideIcon> = {
   "projeto-de-decoracao": Palette,
   "projeto-de-arquitetura": PenTool,
   "consultoria-de-interiores": Sofa,
+  "troca-de-banheira-por-base-de-duche": Bath,
+  "gestao-de-projetos": FolderKanban,
   default: Hammer,
 };
 

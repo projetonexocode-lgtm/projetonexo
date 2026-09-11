@@ -73,7 +73,7 @@ export const DEFAULT_SERVICES = [
     contactLabel: "Loja / estabelecimento",
     featured: false,
     inContactForm: true,
-    inFooter: false,
+    inFooter: true,
   },
   {
     title: "Escritório",
@@ -95,7 +95,7 @@ export const DEFAULT_SERVICES = [
     contactLabel: "Acompanhamento e fiscalização",
     featured: false,
     inContactForm: true,
-    inFooter: false,
+    inFooter: true,
   },
   {
     title: "Engenharia",
@@ -139,7 +139,7 @@ export const DEFAULT_SERVICES = [
     contactLabel: "Projeto de arquitetura",
     featured: false,
     inContactForm: true,
-    inFooter: false,
+    inFooter: true,
   },
   {
     title: "Consultoria de Interiores",
@@ -150,9 +150,78 @@ export const DEFAULT_SERVICES = [
     contactLabel: "Consultoria de interiores",
     featured: false,
     inContactForm: true,
-    inFooter: false,
+    inFooter: true,
+  },
+  {
+    title: "Troca de Banheira por Base de Duche",
+    slug: "troca-de-banheira-por-base-de-duche",
+    description:
+      "Substituição da banheira por base de duche, com impermeabilização e acabamento contínuo.",
+    whatsappLabel: "troca de banheira por base de duche",
+    contactLabel: "Troca de banheira por base de duche",
+    featured: false,
+    inContactForm: true,
+    inFooter: true,
+  },
+  {
+    title: "Gestão de Projetos",
+    slug: "gestao-de-projetos",
+    description:
+      "Um interlocutor, calendário e coordenação das especialidades, do projeto à entrega.",
+    whatsappLabel: "gestão de projetos",
+    contactLabel: "Gestão de projetos",
+    featured: false,
+    inContactForm: true,
+    inFooter: true,
   },
 ] as const;
+
+export const FOOTER_SERVICE_COLUMNS: { slug: string; title: string }[][] = [
+  [
+    {
+      slug: "apartamento",
+      title: "Remodelação de Vivendas e Apartamentos",
+    },
+    {
+      slug: "wc-casa-de-banho",
+      title: "Remodelação de Casa de Banho",
+    },
+    {
+      slug: "cozinha",
+      title: "Modernização de Cozinhas",
+    },
+    {
+      slug: "reabilitacao-de-imoveis",
+      title: "Reabilitação de Ruínas",
+    },
+    {
+      slug: "troca-de-banheira-por-base-de-duche",
+      title: "Troca de Banheira por Base de Duche",
+    },
+  ],
+  [
+    {
+      slug: "gestao-de-projetos",
+      title: "Gestão de Projetos",
+    },
+    {
+      slug: "projeto-de-arquitetura",
+      title: "Projeto de Arquiteturas",
+    },
+    {
+      slug: "consultoria-de-interiores",
+      title: "Consultoria de Interiores",
+    },
+    {
+      slug: "loja-estabelecimento",
+      title: "Criação e Transformação de Espaços Comerciais",
+    },
+    {
+      slug: "acompanhamento-fiscalizacao",
+      title: "Acompanhamento e Fiscalização de Obras",
+    },
+  ],
+];
 
 export const DEFAULT_SITE = {
   name: "Projeto Nexo",

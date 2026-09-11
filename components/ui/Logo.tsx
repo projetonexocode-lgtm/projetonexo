@@ -5,7 +5,7 @@ type LogoProps = {
 };
 
 const SIZE_CLASS = {
-  header: "h-10 w-auto max-w-[10.75rem] sm:h-12 sm:max-w-[13.5rem]",
+  header: "h-12 w-auto max-w-[13rem] sm:h-16 sm:max-w-[18rem]",
   footer: "h-[3.75rem] w-auto max-w-[16rem] sm:h-[4.5rem] sm:max-w-[18rem]",
 } as const;
 

@@ -14,6 +14,10 @@ type WorksGalleryProps = {
   projects: GalleryProject[];
 };
 
+function workCaption(caption?: string): string {
+  return (caption ?? "").replace(/^Obra real\.\s*/i, "").trim();
+}
+
 export function WorksGallery({
   heading,
   intro = DEFAULT_GALLERY.intro,
@@ -23,40 +27,51 @@ export function WorksGallery({
   projects,
 }: WorksGalleryProps) {
   const { process, photos } = splitGallery(projects);
+  const kicker = heading.replace(/\.+$/, "");
 
   return (
     <div className="overflow-x-clip pb-20 sm:pb-28 lg:pb-36">
-      <div className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
-        <h1 className="max-w-[16ch] font-display text-pretty text-4xl leading-[1.08] text-charcoal sm:text-5xl">
-          {heading}
-        </h1>
-        <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75 sm:text-lg">
-          {intro}
-        </p>
-      </div>
+      <header className="mx-auto max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
+        <p className="type-label text-gold">{kicker}</p>
+
+        {process ? (
+          <div className="mt-5 flex flex-col gap-6 lg:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+            <TitleBlock project={process} as="h1" size="feature" />
+            <aside className="max-w-[34ch] border-l-2 border-gold pl-5">
+              <p className="type-label text-gold">Obra real</p>
+              <p className="mt-2 text-base leading-relaxed text-charcoal sm:text-lg">
+                {workCaption(process.caption)}
+              </p>
+            </aside>
+          </div>
+        ) : (
+          <div className="mt-5 flex flex-col gap-6 lg:mt-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
+            <h1 className="max-w-[16ch] font-display text-pretty text-4xl leading-[1.08] text-charcoal sm:text-5xl">
+              {heading}
+            </h1>
+            <p className="max-w-[42ch] text-base leading-relaxed text-charcoal/75 sm:text-lg">
+              {intro}
+            </p>
+          </div>
+        )}
+      </header>
 
       {process ? (
         <article
           id="obra-real"
-          className="mx-auto mt-12 max-w-6xl scroll-mt-32 px-5 sm:mt-16 sm:px-8"
+          className="mx-auto mt-8 max-w-6xl scroll-mt-32 px-5 sm:mt-10 sm:px-8"
         >
-          <TitleBlock project={process} as="h2" size="feature" />
-          <p className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
-            {process.caption}
-          </p>
-          <div className="mt-8">
-            <ProcessGrid panels={process.panels ?? []} />
-          </div>
+          <ProcessGrid panels={process.panels ?? []} />
         </article>
       ) : null}
 
       {photos.length > 0 ? (
         <section className="mt-16 sm:mt-24">
-          <div className="mx-auto max-w-6xl px-5 sm:px-8">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 sm:px-8 lg:flex-row lg:items-end lg:justify-between lg:gap-10">
             <h2 className="font-display text-3xl leading-[1.08] text-charcoal sm:text-4xl">
               {environmentsHeading}
             </h2>
-            <p className="mt-3 max-w-[55ch] text-base leading-relaxed text-charcoal/75">
+            <p className="max-w-[42ch] text-base leading-relaxed text-charcoal/75">
               {environmentsIntro}
             </p>
           </div>

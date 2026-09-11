@@ -51,4 +51,12 @@ export const SERVICE_PHOTOS: Record<string, { src: string; alt: string }> = {
     src: "/servicos/consultoria.jpg",
     alt: "Interior contemporâneo de referência para consultoria de interiores",
   },
+  "troca-de-banheira-por-base-de-duche": {
+    src: "/galeria/casa-de-banho.jpg",
+    alt: "Casa de banho contemporânea com base de duche em vidro e bancada",
+  },
+  "gestao-de-projetos": {
+    src: "/servicos/fiscalizacao.jpg",
+    alt: "Técnico a desenhar uma planta de obra sobre a mesa",
+  },
 };

@@ -11,7 +11,7 @@ export default async function SiteLayout({
 }: {
   children: ReactNode;
 }) {
-  const { site, services } = await getCmsContent();
+  const { site } = await getCmsContent();
 
   return (
     <div className="theme-nexo flex min-h-full flex-1 flex-col bg-cream font-sans text-charcoal">
@@ -49,7 +49,6 @@ export default async function SiteLayout({
         footerNexoLabel={site.footerNexoLabel}
         footerGuarantees={site.footerGuarantees}
         footerGuaranteesCta={site.footerGuaranteesCta}
-        footerServices={services.filter((item) => item.inFooter)}
         contactsHeading={site.footerContactsHeading}
         contactRequestLabel={site.footerContactRequestLabel}
         whatsappPrefix={site.footerWhatsappPrefix}

@@ -61,7 +61,7 @@ export function About({
                   alt={item.alt || item.label}
                   fill
                   sizes={item.shape === "wide" ? "(min-width: 1024px) 560px, 100vw" : "(min-width: 1024px) 270px, 50vw"}
-                  className="object-cover"
+                  className="object-cover brightness-[1.12] contrast-[1.04]"
                 />
                 <figcaption className="sr-only">{item.label}</figcaption>
               </figure>
