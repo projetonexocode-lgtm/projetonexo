@@ -68,7 +68,27 @@ function ensureSqliteAboutPageSchema() {
         FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
       );
       CREATE INDEX IF NOT EXISTS about_values_order_idx ON about_values (_order);
-      CREATE INDEX IF NOT EXISTS about_values_parent_id_idx ON about_values (_parent_id);`);
+      CREATE INDEX IF NOT EXISTS about_values_parent_id_idx ON about_values (_parent_id);
+      CREATE TABLE IF NOT EXISTS about_process_steps (
+        _order integer NOT NULL,
+        _parent_id integer NOT NULL,
+        id text PRIMARY KEY NOT NULL,
+        title text NOT NULL,
+        body text NOT NULL,
+        FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
+      );
+      CREATE INDEX IF NOT EXISTS about_process_steps_order_idx ON about_process_steps (_order);
+      CREATE INDEX IF NOT EXISTS about_process_steps_parent_id_idx ON about_process_steps (_parent_id);
+      CREATE TABLE IF NOT EXISTS about_audiences (
+        _order integer NOT NULL,
+        _parent_id integer NOT NULL,
+        id text PRIMARY KEY NOT NULL,
+        title text NOT NULL,
+        body text NOT NULL,
+        FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
+      );
+      CREATE INDEX IF NOT EXISTS about_audiences_order_idx ON about_audiences (_order);
+      CREATE INDEX IF NOT EXISTS about_audiences_parent_id_idx ON about_audiences (_parent_id);`);
   const columns = [
     "hero_eyebrow",
     "hero_lead",
@@ -76,9 +96,15 @@ function ensureSqliteAboutPageSchema() {
     "hero_image_url",
     "hero_image_alt",
     "story_title",
+    "mission_title",
+    "mission_body",
     "values_eyebrow",
     "values_title",
     "values_intro",
+    "process_title",
+    "process_intro",
+    "audiences_title",
+    "audiences_intro",
     "cta_title",
     "cta_body",
     "cta_label",
@@ -90,6 +116,8 @@ function ensureSqliteAboutPageSchema() {
   for (const column of columns) {
     runSqlite(`ALTER TABLE about ADD COLUMN ${column} text;`);
   }
+  runSqlite(`ALTER TABLE about_values ADD COLUMN href text;`);
+  runSqlite(`ALTER TABLE about_values ADD COLUMN link_label text;`);
 }
 
 function ensureSqliteFooterCertificateSchema() {
@@ -209,7 +237,33 @@ export default buildConfig({
         if (!aboutPhotos?.[0]?.imageUrl) {
           patch.placeholders = DEFAULT_ABOUT.placeholders;
         }
-        if (!aboutRecord.heroLead) {
+        if (!aboutRecord.missionTitle) {
+          patch.heading = DEFAULT_ABOUT.heading;
+          patch.headingHighlight = DEFAULT_ABOUT.headingHighlight;
+          patch.heroEyebrow = DEFAULT_ABOUT.heroEyebrow;
+          patch.heroLead = DEFAULT_ABOUT.heroLead;
+          patch.storyTitle = DEFAULT_ABOUT.storyTitle;
+          patch.paragraphs = DEFAULT_ABOUT.paragraphs;
+          patch.missionTitle = DEFAULT_ABOUT.missionTitle;
+          patch.missionBody = DEFAULT_ABOUT.missionBody;
+          patch.valuesEyebrow = DEFAULT_ABOUT.valuesEyebrow;
+          patch.valuesTitle = DEFAULT_ABOUT.valuesTitle;
+          patch.valuesIntro = DEFAULT_ABOUT.valuesIntro;
+          patch.values = DEFAULT_ABOUT.values;
+          patch.processTitle = DEFAULT_ABOUT.processTitle;
+          patch.processIntro = DEFAULT_ABOUT.processIntro;
+          patch.processSteps = DEFAULT_ABOUT.processSteps;
+          patch.audiencesTitle = DEFAULT_ABOUT.audiencesTitle;
+          patch.audiencesIntro = DEFAULT_ABOUT.audiencesIntro;
+          patch.audiences = DEFAULT_ABOUT.audiences;
+          patch.ctaTitle = DEFAULT_ABOUT.ctaTitle;
+          patch.ctaBody = DEFAULT_ABOUT.ctaBody;
+          patch.ctaLabel = DEFAULT_ABOUT.ctaLabel;
+          patch.ctaHref = DEFAULT_ABOUT.ctaHref;
+          patch.ctaWhatsappLabel = DEFAULT_ABOUT.ctaWhatsappLabel;
+          patch.seoTitle = DEFAULT_ABOUT.seoTitle;
+          patch.seoDescription = DEFAULT_ABOUT.seoDescription;
+        } else if (!aboutRecord.heroLead) {
           patch.heroEyebrow = DEFAULT_ABOUT.heroEyebrow;
           patch.heroLead = DEFAULT_ABOUT.heroLead;
           patch.heroImageUrl = DEFAULT_ABOUT.heroImageUrl;
@@ -228,6 +282,12 @@ export default buildConfig({
           patch.seoDescription = DEFAULT_ABOUT.seoDescription;
         } else if (!aboutRecord.values?.length) {
           patch.values = DEFAULT_ABOUT.values;
+        }
+        if (!aboutRecord.processSteps?.length) {
+          patch.processSteps = DEFAULT_ABOUT.processSteps;
+        }
+        if (!aboutRecord.audiences?.length) {
+          patch.audiences = DEFAULT_ABOUT.audiences;
         }
         if (Object.keys(patch).length > 0) {
           await payload.updateGlobal({

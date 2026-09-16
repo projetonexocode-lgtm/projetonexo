@@ -85,6 +85,23 @@ function mapNav(value: unknown): NavItem[] {
   });
 }
 
+function mapTitleBody(
+  items:
+    | { title?: string | null; body?: string | null }[]
+    | null
+    | undefined,
+  fallback: { title: string; body: string }[],
+) {
+  if (!Array.isArray(items) || items.length === 0) return fallback;
+  return items.map((item, index) => {
+    const current = fallback[index];
+    return {
+      title: text(item.title, current?.title ?? ""),
+      body: text(item.body, current?.body ?? ""),
+    };
+  });
+}
+
 function mapAbout(about: {
   heading?: string | null;
   headingHighlight?: string | null;
@@ -94,10 +111,25 @@ function mapAbout(about: {
   heroImageUrl?: string | null;
   heroImageAlt?: string | null;
   storyTitle?: string | null;
+  missionTitle?: string | null;
+  missionBody?: string | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
   valuesIntro?: string | null;
-  values?: { title?: string | null; body?: string | null }[] | null;
+  values?:
+    | {
+        title?: string | null;
+        body?: string | null;
+        href?: string | null;
+        linkLabel?: string | null;
+      }[]
+    | null;
+  processTitle?: string | null;
+  processIntro?: string | null;
+  processSteps?: { title?: string | null; body?: string | null }[] | null;
+  audiencesTitle?: string | null;
+  audiencesIntro?: string | null;
+  audiences?: { title?: string | null; body?: string | null }[] | null;
   ctaTitle?: string | null;
   ctaBody?: string | null;
   ctaLabel?: string | null;
@@ -114,41 +146,86 @@ function mapAbout(about: {
     shape?: string | null;
   }[] | null;
 }): typeof DEFAULT_ABOUT {
+  const hasNarrative = Boolean(about.missionTitle?.trim());
+
   return {
-    heading: text(about.heading, DEFAULT_ABOUT.heading),
-    headingHighlight: text(about.headingHighlight, DEFAULT_ABOUT.headingHighlight),
-    heroEyebrow: text(about.heroEyebrow, DEFAULT_ABOUT.heroEyebrow),
-    heroLead: text(about.heroLead, DEFAULT_ABOUT.heroLead),
+    heading: hasNarrative
+      ? text(about.heading, DEFAULT_ABOUT.heading)
+      : DEFAULT_ABOUT.heading,
+    headingHighlight: hasNarrative
+      ? text(about.headingHighlight, DEFAULT_ABOUT.headingHighlight)
+      : DEFAULT_ABOUT.headingHighlight,
+    heroEyebrow: hasNarrative
+      ? text(about.heroEyebrow, DEFAULT_ABOUT.heroEyebrow)
+      : DEFAULT_ABOUT.heroEyebrow,
+    heroLead: hasNarrative
+      ? text(about.heroLead, DEFAULT_ABOUT.heroLead)
+      : DEFAULT_ABOUT.heroLead,
     heroImageUrl:
       mediaUrl(about.heroImage) ||
       text(about.heroImageUrl, DEFAULT_ABOUT.heroImageUrl),
     heroImageAlt: text(about.heroImageAlt, DEFAULT_ABOUT.heroImageAlt),
-    storyTitle: text(about.storyTitle, DEFAULT_ABOUT.storyTitle),
-    valuesEyebrow: text(about.valuesEyebrow, DEFAULT_ABOUT.valuesEyebrow),
-    valuesTitle: text(about.valuesTitle, DEFAULT_ABOUT.valuesTitle),
-    valuesIntro: text(about.valuesIntro, DEFAULT_ABOUT.valuesIntro),
+    storyTitle: hasNarrative
+      ? text(about.storyTitle, DEFAULT_ABOUT.storyTitle)
+      : DEFAULT_ABOUT.storyTitle,
+    missionTitle: text(about.missionTitle, DEFAULT_ABOUT.missionTitle),
+    missionBody: text(about.missionBody, DEFAULT_ABOUT.missionBody),
+    valuesEyebrow: hasNarrative
+      ? text(about.valuesEyebrow, DEFAULT_ABOUT.valuesEyebrow)
+      : DEFAULT_ABOUT.valuesEyebrow,
+    valuesTitle: hasNarrative
+      ? text(about.valuesTitle, DEFAULT_ABOUT.valuesTitle)
+      : DEFAULT_ABOUT.valuesTitle,
+    valuesIntro: hasNarrative
+      ? text(about.valuesIntro, DEFAULT_ABOUT.valuesIntro)
+      : DEFAULT_ABOUT.valuesIntro,
     values:
-      Array.isArray(about.values) && about.values.length > 0
+      hasNarrative && Array.isArray(about.values) && about.values.length > 0
         ? about.values.map((item, index) => {
             const fallback = DEFAULT_ABOUT.values[index];
+            const title = text(item.title, fallback?.title ?? "");
+            const matched = DEFAULT_ABOUT.values.find(
+              (value) => value.title === title,
+            );
             return {
-              title: text(item.title, fallback?.title ?? ""),
+              title,
               body: text(item.body, fallback?.body ?? ""),
+              href: text(item.href, matched?.href ?? ""),
+              linkLabel: text(item.linkLabel, matched?.linkLabel ?? ""),
             };
           })
         : DEFAULT_ABOUT.values,
-    ctaTitle: text(about.ctaTitle, DEFAULT_ABOUT.ctaTitle),
-    ctaBody: text(about.ctaBody, DEFAULT_ABOUT.ctaBody),
-    ctaLabel: text(about.ctaLabel, DEFAULT_ABOUT.ctaLabel),
-    ctaHref: text(about.ctaHref, DEFAULT_ABOUT.ctaHref),
-    ctaWhatsappLabel: text(
-      about.ctaWhatsappLabel,
-      DEFAULT_ABOUT.ctaWhatsappLabel,
-    ),
-    seoTitle: text(about.seoTitle, DEFAULT_ABOUT.seoTitle),
-    seoDescription: text(about.seoDescription, DEFAULT_ABOUT.seoDescription),
+    processTitle: text(about.processTitle, DEFAULT_ABOUT.processTitle),
+    processIntro: text(about.processIntro, DEFAULT_ABOUT.processIntro),
+    processSteps: mapTitleBody(about.processSteps, DEFAULT_ABOUT.processSteps),
+    audiencesTitle: text(about.audiencesTitle, DEFAULT_ABOUT.audiencesTitle),
+    audiencesIntro: text(about.audiencesIntro, DEFAULT_ABOUT.audiencesIntro),
+    audiences: mapTitleBody(about.audiences, DEFAULT_ABOUT.audiences),
+    ctaTitle: hasNarrative
+      ? text(about.ctaTitle, DEFAULT_ABOUT.ctaTitle)
+      : DEFAULT_ABOUT.ctaTitle,
+    ctaBody: hasNarrative
+      ? text(about.ctaBody, DEFAULT_ABOUT.ctaBody)
+      : DEFAULT_ABOUT.ctaBody,
+    ctaLabel: hasNarrative
+      ? text(about.ctaLabel, DEFAULT_ABOUT.ctaLabel)
+      : DEFAULT_ABOUT.ctaLabel,
+    ctaHref: hasNarrative
+      ? text(about.ctaHref, DEFAULT_ABOUT.ctaHref)
+      : DEFAULT_ABOUT.ctaHref,
+    ctaWhatsappLabel: hasNarrative
+      ? text(about.ctaWhatsappLabel, DEFAULT_ABOUT.ctaWhatsappLabel)
+      : DEFAULT_ABOUT.ctaWhatsappLabel,
+    seoTitle: hasNarrative
+      ? text(about.seoTitle, DEFAULT_ABOUT.seoTitle)
+      : DEFAULT_ABOUT.seoTitle,
+    seoDescription: hasNarrative
+      ? text(about.seoDescription, DEFAULT_ABOUT.seoDescription)
+      : DEFAULT_ABOUT.seoDescription,
     paragraphs:
-      Array.isArray(about.paragraphs) && about.paragraphs.length > 0
+      hasNarrative &&
+      Array.isArray(about.paragraphs) &&
+      about.paragraphs.length > 0
         ? about.paragraphs.map((item) => ({
             text: text(item.text, ""),
           }))

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { DEFAULT_ABOUT } from "@/lib/cms/defaults";
@@ -21,6 +22,40 @@ function titleWithAccent(title: string, accent?: string) {
       <span className="text-gold">{accent}</span>
       {rest.join(accent)}
     </>
+  );
+}
+
+function isExternalHref(href: string) {
+  return href.startsWith("http://") || href.startsWith("https://");
+}
+
+function ActionLink({
+  href,
+  className,
+  children,
+}: {
+  href: string;
+  className: string;
+  children: ReactNode;
+}) {
+  if (isExternalHref(href) || href.includes("#")) {
+    return (
+      <a
+        href={href}
+        className={className}
+        {...(isExternalHref(href)
+          ? { target: "_blank", rel: "noopener noreferrer" }
+          : {})}
+      >
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <Link href={href} className={className}>
+      {children}
+    </Link>
   );
 }
 
@@ -53,14 +88,11 @@ export function AboutPage({
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-r from-ink/72 via-ink/48 to-ink/20" />
         <div className="relative mx-auto max-w-6xl px-5 py-[clamp(5rem,12vw,8.5rem)] sm:px-8">
-          {about.heroEyebrow ? (
-            <p className="nx-hero-rise type-label mb-4 text-gold">{about.heroEyebrow}</p>
-          ) : null}
-          <h1 className="nx-hero-rise nx-hero-rise-delay-1 max-w-[16ch] font-display text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.05] tracking-[-0.02em] uppercase">
+          <h1 className="nx-hero-rise max-w-[20ch] font-display text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.05] tracking-[-0.02em]">
             {titleWithAccent(about.heading, about.headingHighlight)}
           </h1>
           {about.heroLead ? (
-            <p className="nx-hero-rise nx-hero-rise-delay-2 mt-6 max-w-[42ch] text-[17px] leading-relaxed text-cream/80">
+            <p className="nx-hero-rise nx-hero-rise-delay-1 mt-6 max-w-[42ch] text-[17px] leading-relaxed text-cream/80">
               {about.heroLead}
             </p>
           ) : null}
@@ -121,20 +153,115 @@ export function AboutPage({
         </div>
       </section>
 
-      {about.values.length > 0 ? (
+      {about.missionTitle || about.missionBody ? (
         <section className="bg-plaster px-5 py-[clamp(4.5rem,8vw,8rem)] sm:px-8">
           <div className="mx-auto max-w-6xl">
-            {about.valuesEyebrow ? (
-              <p className="type-label mb-4 text-bronze">{about.valuesEyebrow}</p>
+            {about.missionTitle ? (
+              <h2 className="max-w-[16ch] font-display text-3xl leading-[1.1] text-charcoal sm:text-4xl lg:text-[2.75rem]">
+                {about.missionTitle}
+              </h2>
             ) : null}
+            {about.missionBody ? (
+              <p className="mt-8 max-w-[58ch] text-base leading-relaxed text-charcoal sm:text-lg">
+                {about.missionBody}
+              </p>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {about.values.length > 0 || about.processSteps.length > 0 ? (
+        <section className="bg-cream px-5 py-[clamp(4.5rem,8vw,8rem)] sm:px-8">
+          <div className="mx-auto max-w-6xl">
+            {about.values.length > 0 ? (
+              <>
+                <SectionHeading
+                  title={about.valuesTitle}
+                  description={about.valuesIntro || undefined}
+                />
+                <div className="mt-12 grid min-w-0 gap-12 border-t border-charcoal/15 pt-12 lg:grid-cols-2 lg:gap-0">
+                  {about.values.map((item, index) => (
+                    <article
+                      key={item.title}
+                      className={
+                        index === 0
+                          ? "lg:border-r lg:border-gold/55 lg:pr-16"
+                          : "border-t border-gold/45 pt-12 lg:border-t-0 lg:pt-0 lg:pl-16"
+                      }
+                    >
+                      <h3 className="text-lg font-medium text-charcoal">
+                        {item.title}
+                      </h3>
+                      <p className="mt-4 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
+                        {item.body}
+                      </p>
+                      {item.href && item.linkLabel ? (
+                        <ActionLink
+                          href={item.href}
+                          className="mt-8 inline-flex min-h-12 items-center text-sm tracking-wide text-accent underline decoration-gold/70 underline-offset-[0.22em] transition-colors hover:text-charcoal hover:decoration-charcoal"
+                        >
+                          {item.linkLabel}
+                        </ActionLink>
+                      ) : null}
+                    </article>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {about.processSteps.length > 0 ? (
+              <div
+                className={`grid min-w-0 items-start gap-12 xl:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] xl:gap-16 ${
+                  about.values.length > 0
+                    ? "mt-[clamp(4.5rem,8vw,8rem)] border-t border-charcoal/15 pt-[clamp(4.5rem,8vw,8rem)]"
+                    : ""
+                }`}
+              >
+                <div>
+                  <SectionHeading
+                    title={about.processTitle}
+                    description={about.processIntro || undefined}
+                  />
+                </div>
+                <ol className="relative m-0 list-none p-0 before:absolute before:top-2 before:bottom-2 before:left-[1.05rem] before:w-px before:bg-gold/70">
+                  {about.processSteps.map((step, index) => (
+                    <li
+                      key={step.title}
+                      className="relative grid grid-cols-[2.2rem_minmax(0,1fr)] gap-4 py-5 first:pt-0 last:pb-0"
+                    >
+                      <span className="relative z-[1] bg-cream text-sm font-medium tabular-nums text-charcoal">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h3 className="text-lg font-medium text-charcoal">
+                          {step.title}
+                        </h3>
+                        <p className="mt-2 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
+                          {step.body}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {about.audiences.length > 0 ? (
+        <section className="bg-plaster px-5 py-[clamp(4.5rem,8vw,8rem)] sm:px-8">
+          <div className="mx-auto max-w-6xl">
             <SectionHeading
-              title={about.valuesTitle}
-              description={about.valuesIntro || undefined}
+              title={about.audiencesTitle}
+              description={about.audiencesIntro || undefined}
             />
             <dl className="mt-12 grid gap-10 border-t border-charcoal/15 pt-12 sm:grid-cols-2 sm:gap-16">
-              {about.values.map((item) => (
+              {about.audiences.map((item) => (
                 <div key={item.title}>
-                  <dt className="text-lg font-medium text-charcoal">{item.title}</dt>
+                  <dt className="text-lg font-medium text-charcoal">
+                    {item.title}
+                  </dt>
                   <dd className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
                     {item.body}
                   </dd>
@@ -156,12 +283,12 @@ export function AboutPage({
             ) : null}
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
-            <Link
+            <ActionLink
               href={about.ctaHref}
               className="inline-flex min-h-12 items-center justify-center rounded-full bg-gold px-7 text-sm tracking-wide text-ink transition-colors hover:bg-cream"
             >
               {about.ctaLabel}
-            </Link>
+            </ActionLink>
             <WhatsAppButton
               serviceLabel="os vossos serviços"
               variant="cream"

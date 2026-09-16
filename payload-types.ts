@@ -635,10 +635,32 @@ export interface About {
         id?: string | null;
       }[]
     | null;
+  missionTitle?: string | null;
+  missionBody?: string | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
   valuesIntro?: string | null;
   values?:
+    | {
+        title: string;
+        body: string;
+        href?: string | null;
+        linkLabel?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  processTitle?: string | null;
+  processIntro?: string | null;
+  processSteps?:
+    | {
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  audiencesTitle?: string | null;
+  audiencesIntro?: string | null;
+  audiences?:
     | {
         title: string;
         body: string;
@@ -940,10 +962,32 @@ export interface AboutSelect<T extends boolean = true> {
         shape?: T;
         id?: T;
       };
+  missionTitle?: T;
+  missionBody?: T;
   valuesEyebrow?: T;
   valuesTitle?: T;
   valuesIntro?: T;
   values?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        href?: T;
+        linkLabel?: T;
+        id?: T;
+      };
+  processTitle?: T;
+  processIntro?: T;
+  processSteps?:
+    | T
+    | {
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  audiencesTitle?: T;
+  audiencesIntro?: T;
+  audiences?:
     | T
     | {
         title?: T;

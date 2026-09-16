@@ -478,42 +478,107 @@ export const DEFAULT_SITE = {
 };
 
 export const DEFAULT_ABOUT = {
-  heading: "Uma equipa que coordena tudo o que a obra exige.",
-  headingHighlight: "coordena",
-  heroEyebrow: "Sobre nós",
+  heading: "O único ponto de contacto entre o cliente e o imóvel.",
+  headingHighlight: "único ponto de contacto",
+  heroEyebrow: "Sobre o Projeto Nexo",
   heroLead:
-    "Gestão integral da obra: planeamento, execução, fiscalização e entrega — com orçamento explicado antes de começar e garantia de 2 a 7 anos.",
+    "Um parceiro integrado para a construção, gestão e manutenção de imóveis — sem falsas promessas, com prazos cumpridos e profissionais selecionados.",
   heroImageUrl: "/sobre/equipa-obra.jpg",
   heroImageAlt: "Profissional de obra com capacete a trabalhar no estaleiro",
-  storyTitle: "A nossa história",
-  valuesEyebrow: "Como trabalhamos",
-  valuesTitle: "O que nos define",
-  valuesIntro: "",
+  storyTitle: "A origem",
+  missionTitle: "Simplificar a relação com a sua propriedade",
+  missionBody:
+    "Gerir uma casa ou um edifício vai muito além de resolver uma obra isolada. Centralizamos necessidades e coordenamos equipas técnicas para que proprietários, senhorios, novos compradores e gestores de ativos tenham uma relação simples, segura e eficiente com o seu património. Fazemos a ligação entre o problema e a solução, para o imóvel manter a valorização e o conforto que merece.",
+  valuesEyebrow: "Dois universos",
+  valuesTitle: "Dois universos, um único nexo",
+  valuesIntro:
+    "Operamos através de duas vertentes que cobrem as necessidades de um imóvel — transformação e manutenção diária — sem misturar as duas conversas.",
   values: [
     {
-      title: "Orçamento explicado",
-      body: "Antes de começar, o âmbito e o valor ficam claros. Só se avança com o seu acordo.",
+      title: "Projetos e obras",
+      body: "Para quem comprou um imóvel antigo e quer remodelar, para investidores que procuram valorizar o ativo para venda ou arrendamento, ou para empresas que configuram novos espaços comerciais. Planeamos, coordenamos, executamos e fiscalizamos tudo.",
+      href: "/#servicos",
+      linkLabel: "Ver serviços de obra",
     },
     {
-      title: "Garantia de 2 a 7 anos",
-      body: "Conforme a intervenção e as normas técnicas em vigor.",
+      title: "Nexo Services",
+      body: "Para que uma avaria não se transforme numa dor de cabeça. Centraliza reparações domésticas, assistência técnica (eletricidade, canalização, domótica), limpezas e manutenções preventivas com um único contacto.",
+      href: "/reparacoes",
+      linkLabel: "Pedir uma reparação",
     },
   ],
-  ctaTitle: "Vamos falar da sua obra?",
+  processTitle: "Do projeto à entrega",
+  processIntro:
+    "Gestão com visão global: o cliente acompanha qualquer intervenção sem precisar de estar permanentemente no local, nem de perder o tempo livre.",
+  processSteps: [
+    {
+      title: "Levantamento e diagnóstico",
+      body: "Compreensão do imóvel e das metas do cliente.",
+    },
+    {
+      title: "Planeamento",
+      body: "Definição rigorosa de fases, especialidades e prazos.",
+    },
+    {
+      title: "Orçamentação",
+      body: "Apresentação transparente do investimento necessário.",
+    },
+    {
+      title: "Coordenação",
+      body: "Ligação direta entre as equipas para evitar falhas e atrasos.",
+    },
+    {
+      title: "Execução",
+      body: "Acompanhamento minucioso do avanço dos trabalhos.",
+    },
+    {
+      title: "Acompanhamento e fiscalização",
+      body: "Visitas técnicas e relatórios constantes de evolução.",
+    },
+    {
+      title: "Entrega",
+      body: "Validação final e entrega do espaço pronto a ser vivido ou rentabilizado.",
+    },
+  ],
+  audiencesTitle: "Para quem trabalhamos",
+  audiencesIntro:
+    "Desenhamos as soluções à medida de quem valoriza tempo, qualidade e rigor.",
+  audiences: [
+    {
+      title: "Particulares e famílias",
+      body: "Quem tem pouco tempo disponível e quer centralizar as reparações da casa num parceiro de confiança.",
+    },
+    {
+      title: "Recém-compradores",
+      body: "Quem acabou de adquirir um imóvel e precisa de o adaptar, remodelar ou validar o seu estado técnico antes de se mudar.",
+    },
+    {
+      title: "Senhorios e investidores",
+      body: "Quem tem imóveis no mercado de arrendamento — tradicional ou turístico — e quer delegar a manutenção diária e a valorização do ativo.",
+    },
+    {
+      title: "Profissionais e empresas",
+      body: "Gestores de património, condomínios, imobiliárias e gabinetes de arquitetura que procuram um braço executor de excelência.",
+    },
+  ],
+  ctaTitle: "Vamos falar do seu imóvel?",
   ctaBody:
-    "Peça contacto. Explicamos o próximo passo e acompanhamos do orçamento à entrega.",
+    "Peça contacto. Somos o único ponto de contacto entre si, o imóvel e os profissionais.",
   ctaLabel: "Pedido de contacto",
   ctaHref: "/#contacto",
   ctaWhatsappLabel: "Falar por WhatsApp",
-  seoTitle: "Sobre nós",
+  seoTitle: "Sobre o Projeto Nexo",
   seoDescription:
-    "Gestão integral da obra: planeamento, execução, fiscalização e entrega — com orçamento explicado antes de começar e garantia de 2 a 7 anos.",
+    "O Projeto Nexo é o parceiro integrado para a construção, gestão e manutenção de imóveis: um único ponto de contacto entre o cliente, o imóvel e os profissionais.",
   paragraphs: [
     {
-      text: "A Projeto Nexo assegura a gestão integral da obra: planeamento, execução, fiscalização e entrega. Cada intervenção é acompanhada por profissionais especializados na área respetiva. Antes de começar, apresentamos o orçamento explicado ao detalhe; no final, a obra é entregue com garantia de 2 a 7 anos, conforme a intervenção.",
+      text: "O Projeto Nexo nasce para responder a uma necessidade comum no mercado: a urgência de um parceiro integrado para a construção, gestão e manutenção de imóveis.",
     },
     {
-      text: "Trabalhamos para clientes particulares, condomínios e espaços comerciais — do apartamento à moradia, da loja ao escritório.",
+      text: "A empresa foi idealizada pelo sócio-fundador que, após anos de experiência direta na gestão de obras, identificou uma falha crónica no setor: a dificuldade em encontrar um parceiro que cumpra verdadeiramente o que promete. Da visão de entregar um serviço sem falsas promessas, com prazos rigorosamente cumpridos e qualidade executada por profissionais selecionados e testados, nasceu o Nexo.",
+    },
+    {
+      text: "Seja para uma empresa ou para um particular, o Nexo elimina a necessidade de lidar com dezenas de fornecedores e processos fragmentados. Somos o seu único ponto de contacto — a ligação direta e descomplicada entre o cliente, o imóvel e os profissionais.",
     },
   ],
   placeholders: [

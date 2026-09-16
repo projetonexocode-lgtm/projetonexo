@@ -114,7 +114,24 @@ export const About: GlobalConfig = {
           ],
         },
         {
-          label: "Valores",
+          label: "Missão",
+          fields: [
+            {
+              name: "missionTitle",
+              type: "text",
+              label: "Título",
+              defaultValue: DEFAULT_ABOUT.missionTitle,
+            },
+            {
+              name: "missionBody",
+              type: "textarea",
+              label: "Texto",
+              defaultValue: DEFAULT_ABOUT.missionBody,
+            },
+          ],
+        },
+        {
+          label: "Vertentes",
           fields: [
             {
               name: "valuesEyebrow",
@@ -132,12 +149,69 @@ export const About: GlobalConfig = {
               name: "valuesIntro",
               type: "textarea",
               label: "Introdução",
+              defaultValue: DEFAULT_ABOUT.valuesIntro,
             },
             {
               name: "values",
               type: "array",
-              label: "Valores / pilares",
-              labels: { singular: "Valor", plural: "Valores" },
+              label: "Vertentes",
+              labels: { singular: "Vertente", plural: "Vertentes" },
+              fields: [
+                { name: "title", type: "text", label: "Título", required: true },
+                { name: "body", type: "textarea", label: "Texto", required: true },
+                { name: "href", type: "text", label: "Ligação" },
+                { name: "linkLabel", type: "text", label: "Texto da ligação" },
+              ],
+            },
+          ],
+        },
+        {
+          label: "Processo",
+          fields: [
+            {
+              name: "processTitle",
+              type: "text",
+              label: "Título",
+              defaultValue: DEFAULT_ABOUT.processTitle,
+            },
+            {
+              name: "processIntro",
+              type: "textarea",
+              label: "Introdução",
+              defaultValue: DEFAULT_ABOUT.processIntro,
+            },
+            {
+              name: "processSteps",
+              type: "array",
+              label: "Passos",
+              labels: { singular: "Passo", plural: "Passos" },
+              fields: [
+                { name: "title", type: "text", label: "Título", required: true },
+                { name: "body", type: "textarea", label: "Texto", required: true },
+              ],
+            },
+          ],
+        },
+        {
+          label: "Públicos",
+          fields: [
+            {
+              name: "audiencesTitle",
+              type: "text",
+              label: "Título",
+              defaultValue: DEFAULT_ABOUT.audiencesTitle,
+            },
+            {
+              name: "audiencesIntro",
+              type: "textarea",
+              label: "Introdução",
+              defaultValue: DEFAULT_ABOUT.audiencesIntro,
+            },
+            {
+              name: "audiences",
+              type: "array",
+              label: "Públicos",
+              labels: { singular: "Público", plural: "Públicos" },
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
                 { name: "body", type: "textarea", label: "Texto", required: true },
