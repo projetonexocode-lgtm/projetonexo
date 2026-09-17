@@ -489,6 +489,23 @@ export const DEFAULT_ABOUT = {
   missionTitle: "Simplificar a relação com a sua propriedade",
   missionBody:
     "Gerir uma casa ou um edifício vai muito além de resolver uma obra isolada. Centralizamos necessidades e coordenamos equipas técnicas para que proprietários, senhorios, novos compradores e gestores de ativos tenham uma relação simples, segura e eficiente com o seu património. Fazemos a ligação entre o problema e a solução, para o imóvel manter a valorização e o conforto que merece.",
+  missionImages: [
+    {
+      label: "Apartamento",
+      imageUrl: "/galeria/apartamento.jpg",
+      alt: "Apartamento contemporâneo com sala, cozinha aberta e vãos para o exterior",
+    },
+    {
+      label: "Cozinha",
+      imageUrl: "/galeria/cozinha.jpg",
+      alt: "Cozinha contemporânea com ilha, fogão e bancada em pedra",
+    },
+    {
+      label: "Moradia",
+      imageUrl: "/galeria/moradia-interior.jpg",
+      alt: "Moradia contemporânea com madeira, grandes vãos e jardim",
+    },
+  ],
   valuesEyebrow: "Dois universos",
   valuesTitle: "Dois universos, um único nexo",
   valuesIntro:
@@ -510,6 +527,8 @@ export const DEFAULT_ABOUT = {
   processTitle: "Do projeto à entrega",
   processIntro:
     "Gestão com visão global: o cliente acompanha qualquer intervenção sem precisar de estar permanentemente no local, nem de perder o tempo livre.",
+  processImageUrl: "/sobre/interior-acabado.jpg",
+  processImageAlt: "Interior acabado com luz natural, pronto a ser vivido",
   processSteps: [
     {
       title: "Levantamento e diagnóstico",

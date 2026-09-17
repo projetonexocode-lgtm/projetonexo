@@ -113,6 +113,12 @@ function mapAbout(about: {
   storyTitle?: string | null;
   missionTitle?: string | null;
   missionBody?: string | null;
+  missionImages?: {
+    label?: string | null;
+    image?: unknown;
+    imageUrl?: string | null;
+    alt?: string | null;
+  }[] | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
   valuesIntro?: string | null;
@@ -126,6 +132,9 @@ function mapAbout(about: {
     | null;
   processTitle?: string | null;
   processIntro?: string | null;
+  processImage?: unknown;
+  processImageUrl?: string | null;
+  processImageAlt?: string | null;
   processSteps?: { title?: string | null; body?: string | null }[] | null;
   audiencesTitle?: string | null;
   audiencesIntro?: string | null;
@@ -170,6 +179,19 @@ function mapAbout(about: {
       : DEFAULT_ABOUT.storyTitle,
     missionTitle: text(about.missionTitle, DEFAULT_ABOUT.missionTitle),
     missionBody: text(about.missionBody, DEFAULT_ABOUT.missionBody),
+    missionImages:
+      Array.isArray(about.missionImages) && about.missionImages.length > 0
+        ? about.missionImages.map((item, index) => {
+            const fallback = DEFAULT_ABOUT.missionImages[index];
+            return {
+              label: text(item.label, fallback?.label ?? ""),
+              imageUrl:
+                mediaUrl(item.image) ||
+                text(item.imageUrl, fallback?.imageUrl ?? ""),
+              alt: text(item.alt, fallback?.alt ?? fallback?.label ?? ""),
+            };
+          })
+        : DEFAULT_ABOUT.missionImages,
     valuesEyebrow: hasNarrative
       ? text(about.valuesEyebrow, DEFAULT_ABOUT.valuesEyebrow)
       : DEFAULT_ABOUT.valuesEyebrow,
@@ -197,6 +219,10 @@ function mapAbout(about: {
         : DEFAULT_ABOUT.values,
     processTitle: text(about.processTitle, DEFAULT_ABOUT.processTitle),
     processIntro: text(about.processIntro, DEFAULT_ABOUT.processIntro),
+    processImageUrl:
+      mediaUrl(about.processImage) ||
+      text(about.processImageUrl, DEFAULT_ABOUT.processImageUrl),
+    processImageAlt: text(about.processImageAlt, DEFAULT_ABOUT.processImageAlt),
     processSteps: mapTitleBody(about.processSteps, DEFAULT_ABOUT.processSteps),
     audiencesTitle: text(about.audiencesTitle, DEFAULT_ABOUT.audiencesTitle),
     audiencesIntro: text(about.audiencesIntro, DEFAULT_ABOUT.audiencesIntro),

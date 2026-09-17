@@ -88,7 +88,20 @@ function ensureSqliteAboutPageSchema() {
         FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
       );
       CREATE INDEX IF NOT EXISTS about_audiences_order_idx ON about_audiences (_order);
-      CREATE INDEX IF NOT EXISTS about_audiences_parent_id_idx ON about_audiences (_parent_id);`);
+      CREATE INDEX IF NOT EXISTS about_audiences_parent_id_idx ON about_audiences (_parent_id);
+      CREATE TABLE IF NOT EXISTS about_mission_images (
+        _order integer NOT NULL,
+        _parent_id integer NOT NULL,
+        id text PRIMARY KEY NOT NULL,
+        label text NOT NULL,
+        image_id integer,
+        image_url text,
+        alt text,
+        FOREIGN KEY (_parent_id) REFERENCES about(id) ON UPDATE no action ON DELETE cascade
+      );
+      CREATE INDEX IF NOT EXISTS about_mission_images_order_idx ON about_mission_images (_order);
+      CREATE INDEX IF NOT EXISTS about_mission_images_parent_id_idx ON about_mission_images (_parent_id);
+      CREATE INDEX IF NOT EXISTS about_mission_images_image_idx ON about_mission_images (image_id);`);
   const columns = [
     "hero_eyebrow",
     "hero_lead",
@@ -103,6 +116,9 @@ function ensureSqliteAboutPageSchema() {
     "values_intro",
     "process_title",
     "process_intro",
+    "process_image_id",
+    "process_image_url",
+    "process_image_alt",
     "audiences_title",
     "audiences_intro",
     "cta_title",
@@ -225,6 +241,10 @@ export default buildConfig({
         | { imageUrl?: string | null }[]
         | null
         | undefined;
+      const aboutMissionImages = about.missionImages as
+        | { imageUrl?: string | null }[]
+        | null
+        | undefined;
       const aboutRecord = about as typeof about & Partial<typeof DEFAULT_ABOUT>;
       if (!about.heading) {
         await payload.updateGlobal({
@@ -252,6 +272,8 @@ export default buildConfig({
           patch.values = DEFAULT_ABOUT.values;
           patch.processTitle = DEFAULT_ABOUT.processTitle;
           patch.processIntro = DEFAULT_ABOUT.processIntro;
+          patch.processImageUrl = DEFAULT_ABOUT.processImageUrl;
+          patch.processImageAlt = DEFAULT_ABOUT.processImageAlt;
           patch.processSteps = DEFAULT_ABOUT.processSteps;
           patch.audiencesTitle = DEFAULT_ABOUT.audiencesTitle;
           patch.audiencesIntro = DEFAULT_ABOUT.audiencesIntro;
@@ -286,8 +308,15 @@ export default buildConfig({
         if (!aboutRecord.processSteps?.length) {
           patch.processSteps = DEFAULT_ABOUT.processSteps;
         }
+        if (!aboutRecord.processImageUrl) {
+          patch.processImageUrl = DEFAULT_ABOUT.processImageUrl;
+          patch.processImageAlt = DEFAULT_ABOUT.processImageAlt;
+        }
         if (!aboutRecord.audiences?.length) {
           patch.audiences = DEFAULT_ABOUT.audiences;
+        }
+        if (!aboutMissionImages?.[0]?.imageUrl) {
+          patch.missionImages = DEFAULT_ABOUT.missionImages;
         }
         if (Object.keys(patch).length > 0) {
           await payload.updateGlobal({

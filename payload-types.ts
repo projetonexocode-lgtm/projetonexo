@@ -637,6 +637,21 @@ export interface About {
     | null;
   missionTitle?: string | null;
   missionBody?: string | null;
+  /**
+   * Grelha ao lado do texto da missão. A primeira imagem é a maior. Preferir Media; o URL só serve se a imagem estiver vazia.
+   */
+  missionImages?:
+    | {
+        label: string;
+        image?: (number | null) | Media;
+        /**
+         * Usado só se a imagem Media estiver vazia. Preferir o carregamento acima.
+         */
+        imageUrl?: string | null;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
   valuesIntro?: string | null;
@@ -651,6 +666,15 @@ export interface About {
     | null;
   processTitle?: string | null;
   processIntro?: string | null;
+  processImage?: (number | null) | Media;
+  /**
+   * Usado só se a imagem Media estiver vazia. Preferir o carregamento acima.
+   */
+  processImageUrl?: string | null;
+  processImageAlt?: string | null;
+  /**
+   * Cada passo no site usa o mesmo formato: número, título, texto e risco dourado. Itens novos seguem este padrão automaticamente.
+   */
   processSteps?:
     | {
         title: string;
@@ -964,6 +988,15 @@ export interface AboutSelect<T extends boolean = true> {
       };
   missionTitle?: T;
   missionBody?: T;
+  missionImages?:
+    | T
+    | {
+        label?: T;
+        image?: T;
+        imageUrl?: T;
+        alt?: T;
+        id?: T;
+      };
   valuesEyebrow?: T;
   valuesTitle?: T;
   valuesIntro?: T;
@@ -978,6 +1011,9 @@ export interface AboutSelect<T extends boolean = true> {
       };
   processTitle?: T;
   processIntro?: T;
+  processImage?: T;
+  processImageUrl?: T;
+  processImageAlt?: T;
   processSteps?:
     | T
     | {

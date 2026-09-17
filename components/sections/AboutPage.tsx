@@ -1,9 +1,22 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type { LucideIcon } from "lucide-react";
+import { Briefcase, Building2, Home, KeyRound } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { DEFAULT_ABOUT } from "@/lib/cms/defaults";
+
+const AUDIENCE_ICONS: { match: RegExp; icon: LucideIcon }[] = [
+  { match: /fam[ií]lia|particular/i, icon: Home },
+  { match: /comprador|rec[eé]m/i, icon: KeyRound },
+  { match: /senhorio|investidor/i, icon: Building2 },
+  { match: /profissional|empresa/i, icon: Briefcase },
+];
+
+function audienceIcon(title: string): LucideIcon {
+  return AUDIENCE_ICONS.find((entry) => entry.match.test(title))?.icon ?? Home;
+}
 
 type AboutPageProps = {
   about?: typeof DEFAULT_ABOUT;
@@ -27,6 +40,78 @@ function titleWithAccent(title: string, accent?: string) {
 
 function isExternalHref(href: string) {
   return href.startsWith("http://") || href.startsWith("https://");
+}
+
+function MissionImages({
+  images,
+}: {
+  images: { label: string; imageUrl: string; alt: string }[];
+}) {
+  const photos = images.filter((item) => item.imageUrl);
+  if (photos.length === 0) return null;
+
+  const frame = (item: (typeof photos)[number], sizes: string) => (
+    <figure
+      key={item.label}
+      className="relative h-full min-h-0 overflow-hidden bg-sand"
+    >
+      <Image
+        src={item.imageUrl}
+        alt={item.alt || item.label}
+        fill
+        sizes={sizes}
+        className="object-cover brightness-[1.12] contrast-[1.04]"
+      />
+      <figcaption className="sr-only">{item.label}</figcaption>
+    </figure>
+  );
+
+  if (photos.length === 1) {
+    return (
+      <div className="aspect-4/5 w-full">
+        {frame(photos[0], "(min-width: 1024px) 560px, 100vw")}
+      </div>
+    );
+  }
+
+  if (photos.length === 2) {
+    return (
+      <div className="grid grid-cols-2 items-end gap-3 sm:gap-4">
+        <div className="aspect-3/4">
+          {frame(photos[0], "(min-width: 1024px) 280px, 50vw")}
+        </div>
+        <div className="aspect-square sm:mb-8">
+          {frame(photos[1], "(min-width: 1024px) 280px, 50vw")}
+        </div>
+      </div>
+    );
+  }
+
+  if (photos.length >= 4) {
+    return (
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        {photos.slice(0, 4).map((item) => (
+          <div key={item.label} className="aspect-square">
+            {frame(item, "(min-width: 1024px) 280px, 50vw")}
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:h-[28rem] lg:grid-cols-12 lg:grid-rows-6">
+      <div className="col-span-2 aspect-16/10 lg:col-span-7 lg:row-span-6 lg:aspect-auto">
+        {frame(photos[0], "(min-width: 1024px) 360px, 100vw")}
+      </div>
+      <div className="aspect-square lg:col-span-5 lg:row-span-3 lg:aspect-auto">
+        {frame(photos[1], "(min-width: 1024px) 240px, 50vw")}
+      </div>
+      <div className="aspect-square lg:col-span-5 lg:row-span-3 lg:aspect-auto">
+        {frame(photos[2], "(min-width: 1024px) 240px, 50vw")}
+      </div>
+    </div>
+  );
 }
 
 function ActionLink({
@@ -155,17 +240,20 @@ export function AboutPage({
 
       {about.missionTitle || about.missionBody ? (
         <section className="bg-plaster px-5 py-[clamp(4.5rem,8vw,8rem)] sm:px-8">
-          <div className="mx-auto max-w-6xl">
-            {about.missionTitle ? (
-              <h2 className="max-w-[16ch] font-display text-3xl leading-[1.1] text-charcoal sm:text-4xl lg:text-[2.75rem]">
-                {about.missionTitle}
-              </h2>
-            ) : null}
-            {about.missionBody ? (
-              <p className="mt-8 max-w-[58ch] text-base leading-relaxed text-charcoal sm:text-lg">
-                {about.missionBody}
-              </p>
-            ) : null}
+          <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
+            <div>
+              {about.missionTitle ? (
+                <h2 className="max-w-[16ch] font-display text-3xl leading-[1.1] text-charcoal sm:text-4xl lg:text-[2.75rem]">
+                  {about.missionTitle}
+                </h2>
+              ) : null}
+              {about.missionBody ? (
+                <p className="mt-8 max-w-[58ch] text-base leading-relaxed text-charcoal sm:text-lg">
+                  {about.missionBody}
+                </p>
+              ) : null}
+            </div>
+            <MissionImages images={about.missionImages} />
           </div>
         </section>
       ) : null}
@@ -222,18 +310,35 @@ export function AboutPage({
                     title={about.processTitle}
                     description={about.processIntro || undefined}
                   />
+                  {about.processImageUrl ? (
+                    <figure className="relative mt-10 aspect-16/10 overflow-hidden bg-sand">
+                      <Image
+                        src={about.processImageUrl}
+                        alt={about.processImageAlt || about.processTitle}
+                        fill
+                        sizes="(min-width: 1280px) 480px, calc(100vw - 2.5rem)"
+                        className="object-cover brightness-[1.08] contrast-[1.04]"
+                      />
+                    </figure>
+                  ) : null}
                 </div>
-                <ol className="relative m-0 list-none p-0 before:absolute before:top-2 before:bottom-2 before:left-[1.05rem] before:w-px before:bg-gold/70">
+                <ol className="m-0 list-none p-0">
                   {about.processSteps.map((step, index) => (
                     <li
-                      key={step.title}
-                      className="relative grid grid-cols-[2.2rem_minmax(0,1fr)] gap-4 py-5 first:pt-0 last:pb-0"
+                      key={`${index}-${step.title}`}
+                      className="grid grid-cols-[2.2rem_minmax(0,1fr)] gap-x-5 pb-7 last:pb-0"
                     >
-                      <span className="relative z-[1] bg-cream text-sm font-medium tabular-nums text-charcoal">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
+                      <div className="flex flex-col items-center">
+                        <span className="pt-[0.2em] text-sm font-medium tabular-nums leading-none text-charcoal">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          aria-hidden
+                          className="mt-3 h-[1.25lh] w-px flex-none bg-gold/70 text-base"
+                        />
+                      </div>
                       <div>
-                        <h3 className="text-lg font-medium text-charcoal">
+                        <h3 className="text-lg font-medium leading-snug text-charcoal">
                           {step.title}
                         </h3>
                         <p className="mt-2 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
@@ -256,17 +361,26 @@ export function AboutPage({
               title={about.audiencesTitle}
               description={about.audiencesIntro || undefined}
             />
-            <dl className="mt-12 grid gap-10 border-t border-charcoal/15 pt-12 sm:grid-cols-2 sm:gap-16">
-              {about.audiences.map((item) => (
-                <div key={item.title}>
-                  <dt className="text-lg font-medium text-charcoal">
-                    {item.title}
-                  </dt>
-                  <dd className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
-                    {item.body}
-                  </dd>
-                </div>
-              ))}
+            <dl className="mt-12 grid gap-10 border-t border-charcoal/15 pt-12 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-12">
+              {about.audiences.map((item) => {
+                const Icon = audienceIcon(item.title);
+
+                return (
+                  <div key={item.title}>
+                    <dt className="flex items-center gap-3 text-lg font-medium text-accent">
+                      <Icon
+                        className="size-5 shrink-0 text-gold"
+                        strokeWidth={1.5}
+                        aria-hidden
+                      />
+                      {item.title}
+                    </dt>
+                    <dd className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
+                      {item.body}
+                    </dd>
+                  </div>
+                );
+              })}
             </dl>
           </div>
         </section>

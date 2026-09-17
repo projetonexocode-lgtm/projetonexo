@@ -128,6 +128,31 @@ export const About: GlobalConfig = {
               label: "Texto",
               defaultValue: DEFAULT_ABOUT.missionBody,
             },
+            {
+              name: "missionImages",
+              type: "array",
+              label: "Fotografias",
+              labels: { singular: "Fotografia", plural: "Fotografias" },
+              maxRows: 4,
+              admin: {
+                description:
+                  "Grelha ao lado do texto da missão. A primeira imagem é a maior. Preferir Media; o URL só serve se a imagem estiver vazia.",
+              },
+              fields: [
+                {
+                  name: "label",
+                  type: "text",
+                  label: "Rótulo",
+                  required: true,
+                },
+                ...mediaImageFields({
+                  uploadName: "image",
+                  urlName: "imageUrl",
+                  altName: "alt",
+                  uploadLabel: "Imagem",
+                }),
+              ],
+            },
           ],
         },
         {
@@ -180,11 +205,22 @@ export const About: GlobalConfig = {
               label: "Introdução",
               defaultValue: DEFAULT_ABOUT.processIntro,
             },
+            ...mediaImageFields({
+              uploadName: "processImage",
+              urlName: "processImageUrl",
+              altName: "processImageAlt",
+              uploadLabel: "Imagem do processo",
+              altLabel: "Texto alternativo da imagem do processo",
+            }),
             {
               name: "processSteps",
               type: "array",
               label: "Passos",
               labels: { singular: "Passo", plural: "Passos" },
+              admin: {
+                description:
+                  "Cada passo no site usa o mesmo formato: número, título, texto e risco dourado. Itens novos seguem este padrão automaticamente.",
+              },
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
                 { name: "body", type: "textarea", label: "Texto", required: true },
