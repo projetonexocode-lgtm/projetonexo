@@ -31,7 +31,7 @@ export const Posts: CollectionConfig = {
     },
     {
       name: "excerpt",
-      type: "textarea",
+      type: "richText",
       label: "Resumo",
     },
     {

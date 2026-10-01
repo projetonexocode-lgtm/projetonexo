@@ -7,7 +7,9 @@ import {
   type FormEvent,
   type ReactNode,
 } from "react";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 import {
   CONTACT_LIMITS,
   CONTACT_SUBMIT_TIMEOUT_MS,
@@ -37,11 +39,11 @@ const FIELD_ORDER: ContactFieldKey[] = [
 
 type ContactFormProps = {
   heading?: string;
-  body?: string;
+  body?: CmsRichTextData;
   submitLabel?: string;
   submittingLabel?: string;
-  successMessage?: string;
-  consent?: string;
+  successMessage?: CmsRichTextData;
+  consent?: CmsRichTextData;
   nameLabel?: string;
   phoneLabel?: string;
   phoneHint?: string;
@@ -248,9 +250,10 @@ export function ContactForm({
           <h2 className="max-w-[20ch] wrap-break-word font-display text-3xl leading-[1.1] text-cream sm:text-4xl lg:text-[2.75rem]">
             {heading}
           </h2>
-          <p className="mt-6 max-w-[65ch] wrap-break-word text-base leading-[1.7] tracking-[0.01em] text-cream">
-            {body}
-          </p>
+          <CmsRichText
+            value={body}
+            className="mt-6 max-w-[65ch] wrap-break-word text-base leading-[1.7] tracking-[0.01em] text-cream"
+          />
           <div className="mt-9 flex max-w-[420px] flex-col gap-3.5">
             <a
               href={buildWhatsAppUrlFromMessage(
@@ -407,13 +410,12 @@ export function ContactForm({
           </div>
 
           {state === "success" ? (
-            <p
-              className="mt-5 text-sm leading-relaxed wrap-break-word text-cream"
-              role="status"
-              aria-live="polite"
-            >
-              {successMessage}
-            </p>
+            <div role="status" aria-live="polite">
+              <CmsRichText
+                value={successMessage}
+                className="mt-5 text-sm leading-relaxed wrap-break-word text-cream"
+              />
+            </div>
           ) : null}
           {state === "whatsapp" ? (
             <div className="mt-5 space-y-3" role="status" aria-live="polite">
@@ -451,9 +453,10 @@ export function ContactForm({
               {state === "submitting" ? submittingLabel : submitLabel}
             </button>
           </div>
-          <p className="mt-5 text-sm leading-relaxed wrap-break-word text-cream/80">
-            {consent}
-          </p>
+          <CmsRichText
+            value={consent}
+            className="mt-5 text-sm leading-relaxed wrap-break-word text-cream/80"
+          />
         </form>
       </div>
     </section>

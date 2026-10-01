@@ -23,7 +23,7 @@ export const Gallery: GlobalConfig = {
     },
     {
       name: "intro",
-      type: "textarea",
+      type: "richText",
       label: "Introdução da página /galeria",
       defaultValue: DEFAULT_GALLERY.intro,
     },
@@ -35,7 +35,7 @@ export const Gallery: GlobalConfig = {
     },
     {
       name: "environmentsIntro",
-      type: "textarea",
+      type: "richText",
       label: "Introdução dos ambientes",
       defaultValue: DEFAULT_GALLERY.environmentsIntro,
     },
@@ -58,7 +58,7 @@ export const Gallery: GlobalConfig = {
         },
         {
           name: "body",
-          type: "textarea",
+          type: "richText",
           label: "Texto",
           defaultValue: DEFAULT_GALLERY.mosaicContact.body,
         },
@@ -107,7 +107,7 @@ export const Gallery: GlobalConfig = {
         },
         {
           name: "fallbackBody",
-          type: "textarea",
+          type: "richText",
           label: "Texto se não houver obra real",
           defaultValue: DEFAULT_GALLERY.mosaicWork.fallbackBody,
         },
@@ -143,7 +143,7 @@ export const Gallery: GlobalConfig = {
         },
         {
           name: "caption",
-          type: "textarea",
+          type: "richText",
           label: "Legenda",
           required: true,
         },

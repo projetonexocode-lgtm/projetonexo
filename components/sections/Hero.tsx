@@ -3,7 +3,9 @@
 import { Pause, Play } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 import { DEFAULT_SITE } from "@/lib/cms/defaults";
 import { HERO_CYCLE_MS } from "@/lib/motion";
 
@@ -16,7 +18,7 @@ type HeroSlide = {
 type HeroProps = {
   heading?: string;
   highlight?: string;
-  lede?: string;
+  lede?: CmsRichTextData;
   whatsappCta?: string;
   secondaryCta?: string;
   secondaryHref?: string;
@@ -133,9 +135,10 @@ export function Hero({
             </span>
           ) : null}
         </h1>
-        <p className="mt-6 max-w-[65ch] text-base leading-[1.7] tracking-[0.01em] text-sand sm:text-lg">
-          {lede}
-        </p>
+        <CmsRichText
+          value={lede}
+          className="mt-6 max-w-[65ch] text-base leading-[1.7] tracking-[0.01em] text-sand sm:text-lg"
+        />
         <div className="mt-10 flex flex-wrap gap-3.5">
           <WhatsAppButton
             serviceLabel="os vossos serviços"

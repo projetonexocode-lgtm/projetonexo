@@ -1,9 +1,11 @@
 import Image from "next/image";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { DEFAULT_SITE } from "@/lib/cms/defaults";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 
 type MethodProps = {
   heading?: string;
-  steps?: { title: string; body: string }[];
+  steps?: { title: string; body: CmsRichTextData }[];
   imageSrc?: string;
   imageAlt?: string;
 };
@@ -67,9 +69,10 @@ export function Method({
               <h3 className="mt-4 text-lg font-medium text-charcoal">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg">
-                {step.body}
-              </p>
+              <CmsRichText
+                value={step.body}
+                className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal sm:text-lg"
+              />
             </li>
           ))}
         </ol>

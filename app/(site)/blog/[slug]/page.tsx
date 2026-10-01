@@ -1,20 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { RichText } from "@payloadcms/richtext-lexical/react";
 import { notFound } from "next/navigation";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { formatPostDate } from "@/lib/format-date";
 import { getAllPosts, getPostBySlug } from "@/lib/cms/content";
+import { richTextToPlain } from "@/lib/cms/rich-text";
 import { SITE } from "@/lib/site";
 
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
 };
-
-type RichTextData = NonNullable<Parameters<typeof RichText>[0]["data"]>;
-
-function isRichTextData(value: unknown): value is RichTextData {
-  return Boolean(value && typeof value === "object" && "root" in value);
-}
 
 export const revalidate = 60;
 
@@ -35,10 +30,10 @@ export async function generateMetadata({
 
   return {
     title: post.title,
-    description: post.excerpt,
+    description: richTextToPlain(post.excerpt),
     openGraph: {
       title: post.title,
-      description: post.excerpt,
+      description: richTextToPlain(post.excerpt),
       images: post.coverUrl ? [{ url: post.coverUrl }] : undefined,
     },
   };
@@ -77,11 +72,10 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           />
         </div>
       ) : null}
-      {isRichTextData(post.body) ? (
-        <div className="mt-8 max-w-[65ch] text-base leading-relaxed text-charcoal/80 [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_h2]:text-charcoal [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-2xl [&_h3]:text-charcoal [&_p]:mt-4">
-          <RichText data={post.body} />
-        </div>
-      ) : null}
+      <CmsRichText
+        value={post.body}
+        className="mt-8 max-w-[65ch] text-base leading-relaxed text-charcoal/80 [&_h2]:mt-10 [&_h2]:font-display [&_h2]:text-3xl [&_h2]:text-charcoal [&_h3]:mt-8 [&_h3]:font-display [&_h3]:text-2xl [&_h3]:text-charcoal [&_p]:mt-4"
+      />
       <p className="mt-12 text-sm text-charcoal/70">
         Publicado por {SITE.name}.
       </p>

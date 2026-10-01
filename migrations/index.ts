@@ -5,6 +5,8 @@ import * as migration_20260911_180500_site_footer_certificate from './20260911_1
 import * as migration_20260916_223000_about_page_narrative from './20260916_223000_about_page_narrative';
 import * as migration_20260917_215000_about_process_image from './20260917_215000_about_process_image';
 import * as migration_20260917_221500_about_mission_images from './20260917_221500_about_mission_images';
+import * as migration_20260929_220000_rich_text_copy from './20260929_220000_rich_text_copy';
+import * as migration_20261001_091000_service_featured_description from './20261001_091000_service_featured_description';
 
 export const migrations = [
   {
@@ -41,5 +43,15 @@ export const migrations = [
     up: migration_20260917_221500_about_mission_images.up,
     down: migration_20260917_221500_about_mission_images.down,
     name: '20260917_221500_about_mission_images'
+  },
+  {
+    up: migration_20260929_220000_rich_text_copy.up,
+    down: migration_20260929_220000_rich_text_copy.down,
+    name: '20260929_220000_rich_text_copy'
+  },
+  {
+    up: migration_20261001_091000_service_featured_description.up,
+    down: migration_20261001_091000_service_featured_description.down,
+    name: '20261001_091000_service_featured_description'
   },
 ];

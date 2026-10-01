@@ -25,7 +25,7 @@ Copiar `.env.example` para `.env.local`:
 
 - `PAYLOAD_SECRET` — obrigatório. Em produção, usar um segredo forte.
 - `POSTGRES_URL` — Postgres na Vercel (Neon / Vercel Postgres). Em local, sem esta variável, usa-se SQLite.
-- `BLOB_READ_WRITE_TOKEN` — uploads de media na Vercel Blob (opcional em local).
+- `BLOB_READ_WRITE_TOKEN` — **obrigatório em produção** para media. Criar Storage → Blob no projecto Vercel (a variável é injectada automaticamente). Sem ela o upload falha (filesystem read-only).
 - `RESEND_API_KEY` + `CONTACT_EMAIL` — envio do formulário por e-mail (sem isto, o pedido abre o WhatsApp)
 
 ## Redirect

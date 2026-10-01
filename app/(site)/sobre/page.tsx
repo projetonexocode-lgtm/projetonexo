@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AboutPage } from "@/components/sections/AboutPage";
 import { getCmsContent } from "@/lib/cms/content";
+import { richTextToPlain } from "@/lib/cms/rich-text";
 import { SITE } from "@/lib/site";
 
 export const revalidate = 60;
@@ -8,7 +9,7 @@ export const revalidate = 60;
 export async function generateMetadata(): Promise<Metadata> {
   const { about } = await getCmsContent();
   const title = about.seoTitle;
-  const description = about.seoDescription || about.heroLead;
+  const description = about.seoDescription || richTextToPlain(about.heroLead);
 
   return {
     title,

@@ -1,3 +1,5 @@
+import { richify } from "@/lib/cms/rich-text";
+
 export const DEFAULT_NAV: { label: string; href: string }[] = [
   { label: "Método", href: "/#metodo" },
   { label: "Galeria", href: "/galeria" },
@@ -8,7 +10,7 @@ export const DEFAULT_NAV: { label: string; href: string }[] = [
   { label: "Contacto", href: "/#contacto" },
 ];
 
-export const DEFAULT_SERVICES = [
+export const DEFAULT_SERVICES = richify([
   {
     title: "WC / Casa de Banho",
     slug: "wc-casa-de-banho",
@@ -174,7 +176,7 @@ export const DEFAULT_SERVICES = [
     inContactForm: true,
     inFooter: true,
   },
-] as const;
+] as const);
 
 export const FOOTER_SERVICE_COLUMNS: { slug: string; title: string }[][] = [
   [
@@ -286,7 +288,7 @@ export function visibleSocialLinks(links: SocialLink[]): SocialLink[] {
   });
 }
 
-export const DEFAULT_SITE = {
+export const DEFAULT_SITE = richify({
   name: "Projeto Nexo",
   legalName: "Projeto Nexo — Gestão de Obras e Projetos",
   tagline: "Remodelação, construção e reabilitação de imóveis",
@@ -475,9 +477,9 @@ export const DEFAULT_SITE = {
       linkLabel: "Nexo Services",
     },
   ] as { text: string; linkHref?: string; linkLabel?: string }[],
-};
+});
 
-export const DEFAULT_ABOUT = {
+export const DEFAULT_ABOUT = richify({
   heading: "O único ponto de contacto entre o cliente e o imóvel.",
   headingHighlight: "único ponto de contacto",
   heroEyebrow: "Sobre o Projeto Nexo",
@@ -620,9 +622,9 @@ export const DEFAULT_ABOUT = {
       shape: "square" as const,
     },
   ],
-};
+});
 
-export const DEFAULT_SERVICES_PAGE = {
+export const DEFAULT_SERVICES_PAGE = richify({
   heading: "Do projeto à chave na mão.",
   intro:
     "Quatro especialidades que costumamos coordenar. As restantes estão no pedido de contacto. Cada cartão abre o WhatsApp já com o serviço identificado.",
@@ -634,7 +636,7 @@ export const DEFAULT_SERVICES_PAGE = {
     "Canalização, eletricidade, desentupimentos, esquentadores, estores e muito mais. Assistência técnica ao domicílio, num site próprio.",
   nexoCta: "Ir para Nexo Services",
   serviceWhatsappCta: "Pedir este serviço no WhatsApp",
-};
+});
 
 type DefaultGalleryProject = {
   title: string;
@@ -650,7 +652,7 @@ type DefaultGalleryProject = {
   panels?: { src: string; alt: string }[];
 };
 
-export const DEFAULT_GALLERY = {
+export const DEFAULT_GALLERY = richify({
   heading: "Obras e interiores.",
   intro:
     "A colagem da troca de banheira por base de duche é obra real da Projeto Nexo. As restantes imagens são referências de ambiente, para pensar remodelação e reabilitação.",
@@ -763,9 +765,9 @@ export const DEFAULT_GALLERY = {
       fit: "cover" as const,
     },
   ] as DefaultGalleryProject[],
-};
+});
 
-export const DEFAULT_CONTACT = {
+export const DEFAULT_CONTACT = richify({
   heading: "Diga-nos o que precisa na obra.",
   body: "Um responsável responde em horário de trabalho. O orçamento é explicado antes de qualquer obra começar.",
   otherServiceOption: "Outro / ainda não sei",
@@ -786,4 +788,4 @@ export const DEFAULT_CONTACT = {
   emailPlaceholder: "nome@email.pt",
   servicePlaceholder: "Selecione…",
   messagePlaceholder: "Imóvel, âmbito da obra e prazo pretendido.",
-};
+});

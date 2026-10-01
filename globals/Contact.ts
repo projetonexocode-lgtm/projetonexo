@@ -19,7 +19,7 @@ export const Contact: GlobalConfig = {
     },
     {
       name: "body",
-      type: "textarea",
+      type: "richText",
       label: "Introdução",
       required: true,
     },
@@ -43,13 +43,13 @@ export const Contact: GlobalConfig = {
     },
     {
       name: "successMessage",
-      type: "textarea",
+      type: "richText",
       label: "Mensagem de sucesso",
       required: true,
     },
     {
       name: "consent",
-      type: "textarea",
+      type: "richText",
       label: "Consentimento",
       required: true,
     },

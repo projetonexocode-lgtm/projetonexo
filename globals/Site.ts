@@ -116,7 +116,7 @@ export const Site: GlobalConfig = {
               type: "text",
               label: "Segunda linha (cor de destaque)",
             },
-            { name: "heroLede", type: "textarea", label: "Lede", required: true },
+            { name: "heroLede", type: "richText", label: "Lede", required: true },
             {
               name: "heroSecondaryCta",
               type: "text",
@@ -170,7 +170,7 @@ export const Site: GlobalConfig = {
               minRows: 1,
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
-                { name: "body", type: "textarea", label: "Texto", required: true },
+                { name: "body", type: "richText", label: "Texto", required: true },
               ],
             },
           ],
@@ -201,7 +201,7 @@ export const Site: GlobalConfig = {
             },
             {
               name: "coverageBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto",
               required: true,
             },
@@ -250,7 +250,7 @@ export const Site: GlobalConfig = {
             },
             {
               name: "blogIntro",
-              type: "textarea",
+              type: "richText",
               label: "Introdução na homepage",
               defaultValue: DEFAULT_SITE.blogIntro,
             },
@@ -274,13 +274,13 @@ export const Site: GlobalConfig = {
             },
             {
               name: "blogEmptyBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto vazio (homepage)",
               defaultValue: DEFAULT_SITE.blogEmptyBody,
             },
             {
               name: "blogEmptyAside",
-              type: "textarea",
+              type: "richText",
               label: "Texto lateral vazio (homepage)",
               defaultValue: DEFAULT_SITE.blogEmptyAside,
             },
@@ -292,7 +292,7 @@ export const Site: GlobalConfig = {
             },
             {
               name: "blogPageIntro",
-              type: "textarea",
+              type: "richText",
               label: "Introdução da página /blog",
               defaultValue: DEFAULT_SITE.blogPageIntro,
             },
@@ -304,13 +304,13 @@ export const Site: GlobalConfig = {
             },
             {
               name: "blogPageEmptyBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto vazio (/blog)",
               defaultValue: DEFAULT_SITE.blogPageEmptyBody,
             },
             {
               name: "blogPageEmptyAside",
-              type: "textarea",
+              type: "richText",
               label: "Texto lateral vazio (/blog)",
               defaultValue: DEFAULT_SITE.blogPageEmptyAside,
             },
@@ -325,7 +325,7 @@ export const Site: GlobalConfig = {
               type: "text",
               label: "Palavra em destaque",
             },
-            { name: "faqIntro", type: "textarea", label: "Introdução", required: true },
+            { name: "faqIntro", type: "richText", label: "Introdução", required: true },
             {
               name: "faqPolicyHeading",
               type: "text",
@@ -337,7 +337,7 @@ export const Site: GlobalConfig = {
               type: "array",
               label: "Pontos da política",
               fields: [
-                { name: "text", type: "textarea", label: "Texto", required: true },
+                { name: "text", type: "richText", label: "Texto", required: true },
               ],
             },
             {
@@ -353,7 +353,7 @@ export const Site: GlobalConfig = {
                 },
                 {
                   name: "answer",
-                  type: "textarea",
+                  type: "richText",
                   label: "Resposta",
                   required: true,
                 },
@@ -372,13 +372,13 @@ export const Site: GlobalConfig = {
           fields: [
             {
               name: "footerIntro",
-              type: "textarea",
+              type: "richText",
               label: "Texto sob o logótipo",
               required: true,
             },
             {
               name: "footerGuarantees",
-              type: "textarea",
+              type: "richText",
               label: "Texto de garantias",
               required: true,
             },
@@ -498,7 +498,7 @@ export const Site: GlobalConfig = {
             },
             {
               name: "footerAlsoDoBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto «Também fazemos»",
               defaultValue: DEFAULT_SITE.footerAlsoDoBody,
             },
@@ -561,7 +561,7 @@ export const Site: GlobalConfig = {
               fields: [
                 {
                   name: "text",
-                  type: "textarea",
+                  type: "richText",
                   label: "Texto",
                   required: true,
                 },

@@ -21,7 +21,7 @@ export const ServicesPage: GlobalConfig = {
     },
     {
       name: "intro",
-      type: "textarea",
+      type: "richText",
       label: "Introdução",
       required: true,
     },
@@ -51,7 +51,7 @@ export const ServicesPage: GlobalConfig = {
     },
     {
       name: "nexoBody",
-      type: "textarea",
+      type: "richText",
       label: "Texto Nexo Services",
       required: true,
     },

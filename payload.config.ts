@@ -3,8 +3,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { sqliteAdapter } from "@payloadcms/db-sqlite";
 import { vercelPostgresAdapter } from "@payloadcms/db-vercel-postgres";
-import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import {
+  EXPERIMENTAL_TableFeature,
+  FixedToolbarFeature,
+  lexicalEditor,
+} from "@payloadcms/richtext-lexical";
 import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
+import { en } from "@payloadcms/translations/languages/en";
+import { pt } from "@payloadcms/translations/languages/pt";
 import { buildConfig } from "payload";
 import sharp from "sharp";
 import { Media } from "./collections/Media";
@@ -24,6 +30,7 @@ import {
   DEFAULT_SERVICES_PAGE,
   DEFAULT_SITE,
 } from "./lib/cms/defaults";
+import { plainTextToRichText } from "./lib/cms/rich-text";
 import { SERVICE_PHOTOS } from "./lib/service-photos";
 import { migrations } from "./migrations";
 
@@ -152,9 +159,91 @@ function ensureSqliteFooterCertificateSchema() {
   }
 }
 
+function ensureSqliteServiceFeaturedDescriptionSchema() {
+  if (postgresUrl) return;
+  runSqlite(`ALTER TABLE services ADD COLUMN featured_description text;`);
+}
+
+const SQLITE_RICH_TEXT_COLUMNS = [
+  ["site", "hero_lede"],
+  ["site", "coverage_body"],
+  ["site", "blog_intro"],
+  ["site", "blog_empty_body"],
+  ["site", "blog_empty_aside"],
+  ["site", "blog_page_intro"],
+  ["site", "blog_page_empty_body"],
+  ["site", "blog_page_empty_aside"],
+  ["site", "faq_intro"],
+  ["site", "footer_intro"],
+  ["site", "footer_guarantees"],
+  ["site", "footer_also_do_body"],
+  ["site_method_steps", "body"],
+  ["site_faq_policy_items", "text"],
+  ["site_faqs", "answer"],
+  ["site_terms_paragraphs", "text"],
+  ["about", "hero_lead"],
+  ["about", "mission_body"],
+  ["about", "values_intro"],
+  ["about", "process_intro"],
+  ["about", "audiences_intro"],
+  ["about", "cta_body"],
+  ["about_paragraphs", "text"],
+  ["about_values", "body"],
+  ["about_process_steps", "body"],
+  ["about_audiences", "body"],
+  ["services", "description"],
+  ["services_page", "intro"],
+  ["services_page", "nexo_body"],
+  ["gallery", "intro"],
+  ["gallery", "environments_intro"],
+  ["gallery", "mosaic_contact_body"],
+  ["gallery", "mosaic_work_fallback_body"],
+  ["gallery_projects", "caption"],
+  ["contact", "body"],
+  ["contact", "success_message"],
+  ["contact", "consent"],
+  ["posts", "excerpt"],
+] as const;
+
+function sqlLiteral(value: string | number): string {
+  if (typeof value === "number") return String(value);
+  return `'${value.replaceAll("'", "''")}'`;
+}
+
+function convertSqliteRichTextColumns() {
+  if (postgresUrl) return;
+  for (const [table, column] of SQLITE_RICH_TEXT_COLUMNS) {
+    const result = spawnSync(
+      "sqlite3",
+      [
+        sqliteDbPath(),
+        `SELECT json_object('id', id, 'value', ${column}) FROM ${table} WHERE ${column} IS NOT NULL AND substr(${column}, 1, 1) != '{';`,
+      ],
+      { encoding: "utf8" },
+    );
+    if (result.status !== 0 || !result.stdout?.trim()) continue;
+    for (const line of result.stdout.split("\n")) {
+      if (!line.trim()) continue;
+      let row: { id?: string | number; value?: string };
+      try {
+        row = JSON.parse(line) as { id?: string | number; value?: string };
+      } catch {
+        continue;
+      }
+      if (row.id == null || typeof row.value !== "string" || !row.value.trim()) continue;
+      const json = JSON.stringify(plainTextToRichText(row.value)).replaceAll("'", "''");
+      runSqlite(
+        `UPDATE ${table} SET ${column} = '${json}' WHERE id = ${sqlLiteral(row.id)};`,
+      );
+    }
+  }
+}
+
 ensureSqliteSocialLinksTable();
 ensureSqliteAboutPageSchema();
 ensureSqliteFooterCertificateSchema();
+ensureSqliteServiceFeaturedDescriptionSchema();
+convertSqliteRichTextColumns();
 
 export default buildConfig({
   admin: {
@@ -182,7 +271,24 @@ export default buildConfig({
   },
   collections: [Users, Media, Services, Posts],
   globals: [Site, About, ServicesPage, Gallery, Contact],
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      FixedToolbarFeature(),
+      EXPERIMENTAL_TableFeature(),
+    ],
+  }),
+  i18n: {
+    fallbackLanguage: "pt",
+    supportedLanguages: { pt, en },
+    translations: {
+      pt: {
+        general: {
+          thisLanguage: "Português (Brasil)",
+        },
+      },
+    },
+  },
   secret: process.env.PAYLOAD_SECRET || "UNSAFE_LOCAL_DEV_SECRET",
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
@@ -203,21 +309,24 @@ export default buildConfig({
         push: false,
       }),
   sharp,
-  plugins: process.env.BLOB_READ_WRITE_TOKEN
-    ? [
-        vercelBlobStorage({
-          collections: {
-            media: true,
-          },
-          token: process.env.BLOB_READ_WRITE_TOKEN,
-        }),
-      ]
-    : [],
+  plugins: [
+    vercelBlobStorage({
+      enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      collections: {
+        media: true,
+      },
+      // Required on Vercel: server request bodies are capped (~4.5MB).
+      clientUploads: true,
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
   async onInit(payload) {
     try {
       ensureSqliteSocialLinksTable();
       ensureSqliteAboutPageSchema();
       ensureSqliteFooterCertificateSchema();
+      ensureSqliteServiceFeaturedDescriptionSchema();
+      convertSqliteRichTextColumns();
       const existing = await payload.find({
         collection: "services",
         limit: 1,
@@ -343,7 +452,8 @@ export default buildConfig({
         slug: "gallery",
         overrideAccess: true,
       });
-      if (!gallery.projects?.length || gallery.projects.length < 4) {
+      // Seed once on empty install only — never overwrite CMS edits.
+      if (!gallery.projects?.length) {
         await payload.updateGlobal({
           slug: "gallery",
           data: {
@@ -369,48 +479,6 @@ export default buildConfig({
           },
           overrideAccess: true,
         });
-      } else {
-        const hasRealWork = gallery.projects.some((project) => {
-          const row = project as {
-            isRealWork?: boolean | null;
-            panels?: unknown[] | null;
-          };
-          return Boolean(row.isRealWork) || Boolean(row.panels?.length);
-        });
-        if (!hasRealWork) {
-          await payload.updateGlobal({
-            slug: "gallery",
-            data: {
-              projects: gallery.projects.map((project) => {
-                const fallback =
-                  DEFAULT_GALLERY.projects.find(
-                    (item) =>
-                      item.title === project.title ||
-                      item.imageUrl ===
-                        (project as { imageUrl?: string | null }).imageUrl,
-                  ) ?? DEFAULT_GALLERY.projects[0];
-                const image =
-                  project.image && typeof project.image === "object"
-                    ? project.image.id
-                    : project.image;
-                return {
-                  title: project.title,
-                  titleLines: fallback.titleLines?.map((line) => ({ line })),
-                  caption: project.caption,
-                  isRealWork: Boolean(fallback.isRealWork),
-                  image,
-                  imageUrl: (project as { imageUrl?: string | null }).imageUrl,
-                  alt: project.alt,
-                  width: project.width,
-                  height: project.height,
-                  fit: project.fit ?? fallback.fit,
-                  panels: fallback.panels,
-                };
-              }),
-            },
-            overrideAccess: true,
-          });
-        }
       }
 
       const contact = await payload.findGlobal({
@@ -532,22 +600,6 @@ export default buildConfig({
           data: {
             footerAlsoDoTitle: DEFAULT_SITE.footerAlsoDoTitle,
             footerAlsoDoBody: DEFAULT_SITE.footerAlsoDoBody,
-          },
-          overrideAccess: true,
-        });
-      }
-
-      const galleryWithIntro = gallery as { intro?: string | null };
-      if (!galleryWithIntro.intro) {
-        await payload.updateGlobal({
-          slug: "gallery",
-          data: {
-            intro: DEFAULT_GALLERY.intro,
-            environmentsHeading: DEFAULT_GALLERY.environmentsHeading,
-            environmentsIntro: DEFAULT_GALLERY.environmentsIntro,
-            contactCta: DEFAULT_GALLERY.contactCta,
-            mosaicContact: DEFAULT_GALLERY.mosaicContact,
-            mosaicWork: DEFAULT_GALLERY.mosaicWork,
           },
           overrideAccess: true,
         });

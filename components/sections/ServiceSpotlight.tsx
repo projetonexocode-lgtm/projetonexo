@@ -1,3 +1,4 @@
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { ProjectServiceIcon } from "@/components/ui/ProjectServiceIcon";
 import { WhatsAppIcon } from "@/components/ui/WhatsAppIcon";
 import type { CmsService } from "@/lib/cms/content";
@@ -39,9 +40,10 @@ export function ServiceSpotlight({
             <span className="mt-2.5 text-lg font-medium tracking-tight">
               {service.title}
             </span>
-            <span className="mt-2.5 text-sm leading-relaxed text-cream/80">
-              {service.description}
-            </span>
+            <CmsRichText
+              value={service.featuredDescription ?? service.description}
+              className="mt-2.5 text-sm leading-relaxed text-cream/80"
+            />
             <span className="mt-auto inline-flex items-center gap-2 pt-4 text-sm text-gold">
               <WhatsAppIcon punchColor="var(--color-ink)" className="size-3.5 shrink-0" />
               {cardCta}

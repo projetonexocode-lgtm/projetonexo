@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Logo as NexoServicesLogo } from "@/components/nexo-services/ui/Logo";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { Logo } from "@/components/ui/Logo";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 import { SocialLinks } from "@/components/ui/SocialLinks";
 import {
   DEFAULT_SITE,
@@ -11,7 +13,7 @@ import { buildWhatsAppUrl } from "@/lib/site";
 
 type FooterProps = {
   name?: string;
-  intro?: string;
+  intro?: CmsRichTextData;
   locationLine?: string;
   whatsappDisplay?: string;
   phoneDisplay?: string;
@@ -21,7 +23,7 @@ type FooterProps = {
   whatsappIntro?: string;
   nexoServicesUrl?: string;
   footerNexoLabel?: string;
-  footerGuarantees?: string;
+  footerGuarantees?: CmsRichTextData;
   footerGuaranteesCta?: string;
   contactsHeading?: string;
   contactRequestLabel?: string;
@@ -39,7 +41,7 @@ type FooterProps = {
   certificateNipc?: string;
   certificateAlvara?: string;
   alsoDoTitle?: string;
-  alsoDoBody?: string;
+  alsoDoBody?: CmsRichTextData;
   socialLinks?: SocialLink[];
 };
 
@@ -92,7 +94,10 @@ export function Footer({
             >
               <Logo onDark size="footer" />
             </Link>
-            <p className="mt-4 max-w-[32ch] text-sm leading-relaxed">{intro}</p>
+            <CmsRichText
+              value={intro}
+              className="mt-4 max-w-[32ch] text-sm leading-relaxed"
+            />
             <SocialLinks links={socialLinks} />
           </div>
 
@@ -170,7 +175,10 @@ export function Footer({
         <div className="grid gap-8 border-b border-gold/28 py-8 sm:grid-cols-3 sm:gap-10">
           <div>
             <p className="type-label mb-3 text-gold">{guaranteesHeading}</p>
-            <p className="max-w-[36ch] text-sm leading-relaxed">{footerGuarantees}</p>
+            <CmsRichText
+              value={footerGuarantees}
+              className="max-w-[36ch] text-sm leading-relaxed"
+            />
             <Link
               href="/faq"
               className="hit-link mt-3 text-sm text-gold hover:text-cream"
@@ -202,11 +210,10 @@ export function Footer({
             {alsoDoTitle ? (
               <p className="type-label mb-3 text-gold">{alsoDoTitle}</p>
             ) : null}
-            {alsoDoBody ? (
-              <p className="mb-5 max-w-[28ch] text-sm leading-relaxed text-cream/75">
-                {alsoDoBody}
-              </p>
-            ) : null}
+            <CmsRichText
+              value={alsoDoBody}
+              className="mb-5 max-w-[28ch] text-sm leading-relaxed text-cream/75"
+            />
             <Link
               href={nexoServicesUrl}
               aria-label={repairsLabel}

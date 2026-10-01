@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { getCmsContent } from "@/lib/cms/content";
 
 export const revalidate = 60;
@@ -18,9 +19,9 @@ export default async function TermsPage() {
     <div className="mx-auto max-w-3xl px-5 py-16 sm:px-8 sm:py-20">
       <h1 className="font-display text-4xl text-charcoal">{site.termsHeading}</h1>
       <div className="mt-8 max-w-[65ch] space-y-5 text-base leading-relaxed text-charcoal/80">
-        {site.termsParagraphs.map((paragraph) => (
-          <p key={paragraph.text}>
-            {paragraph.text}
+        {site.termsParagraphs.map((paragraph, index) => (
+          <div key={index}>
+            <CmsRichText value={paragraph.text} inline />
             {paragraph.linkHref && paragraph.linkLabel ? (
               <>
                 {" "}
@@ -30,7 +31,7 @@ export default async function TermsPage() {
                 .
               </>
             ) : null}
-          </p>
+          </div>
         ))}
       </div>
     </div>

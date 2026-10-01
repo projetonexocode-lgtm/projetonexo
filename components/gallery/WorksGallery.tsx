@@ -1,21 +1,23 @@
 import Link from "next/link";
 import { MosaicPhoto, ProcessGrid, TitleBlock } from "@/components/gallery/media";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { DEFAULT_GALLERY } from "@/lib/cms/defaults";
 import { splitGallery, type GalleryProject } from "@/lib/gallery";
+import { stripLeadingPlainPrefix, type CmsRichTextData } from "@/lib/cms/rich-text";
 
 const PHOTO_SIZES = "(min-width: 1152px) 352px, (min-width: 640px) 50vw, 100vw";
 
 type WorksGalleryProps = {
   heading: string;
-  intro?: string;
+  intro?: CmsRichTextData;
   environmentsHeading?: string;
-  environmentsIntro?: string;
+  environmentsIntro?: CmsRichTextData;
   contactCta?: string;
   projects: GalleryProject[];
 };
 
-function workCaption(caption?: string): string {
-  return (caption ?? "").replace(/^Obra real\.\s*/i, "").trim();
+function workCaption(caption: CmsRichTextData): CmsRichTextData {
+  return stripLeadingPlainPrefix(caption, /^Obra real\.\s*/i);
 }
 
 export function WorksGallery({
@@ -39,9 +41,10 @@ export function WorksGallery({
             <TitleBlock project={process} as="h1" size="feature" />
             <aside className="max-w-[34ch] border-l-2 border-gold pl-5">
               <p className="type-label text-gold">Obra real</p>
-              <p className="mt-2 text-base leading-relaxed text-charcoal sm:text-lg">
-                {workCaption(process.caption)}
-              </p>
+              <CmsRichText
+                value={workCaption(process.caption)}
+                className="mt-2 text-base leading-relaxed text-charcoal sm:text-lg"
+              />
             </aside>
           </div>
         ) : (
@@ -49,9 +52,10 @@ export function WorksGallery({
             <h1 className="max-w-[16ch] font-display text-pretty text-4xl leading-[1.08] text-charcoal sm:text-5xl">
               {heading}
             </h1>
-            <p className="max-w-[42ch] text-base leading-relaxed text-charcoal/75 sm:text-lg">
-              {intro}
-            </p>
+            <CmsRichText
+              value={intro}
+              className="max-w-[42ch] text-base leading-relaxed text-charcoal/75 sm:text-lg"
+            />
           </div>
         )}
       </header>
@@ -71,9 +75,10 @@ export function WorksGallery({
             <h2 className="font-display text-3xl leading-[1.08] text-charcoal sm:text-4xl">
               {environmentsHeading}
             </h2>
-            <p className="max-w-[42ch] text-base leading-relaxed text-charcoal/75">
-              {environmentsIntro}
-            </p>
+            <CmsRichText
+              value={environmentsIntro}
+              className="max-w-[42ch] text-base leading-relaxed text-charcoal/75"
+            />
           </div>
           <div className="relative mt-8">
             <div

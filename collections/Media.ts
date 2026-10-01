@@ -20,5 +20,8 @@ export const Media: CollectionConfig = {
       required: true,
     },
   ],
-  upload: true,
+  upload: {
+    // Vercel has a read-only filesystem; local disk uploads only work in development.
+    disableLocalStorage: Boolean(process.env.VERCEL),
+  },
 };

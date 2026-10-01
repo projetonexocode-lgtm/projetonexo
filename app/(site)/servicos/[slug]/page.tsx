@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { ProjectServiceIcon } from "@/components/ui/ProjectServiceIcon";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { getCmsContent } from "@/lib/cms/content";
+import { richTextToPlain } from "@/lib/cms/rich-text";
 import { SERVICE_PHOTOS } from "@/lib/service-photos";
 
 type ServicePageProps = {
@@ -32,7 +34,7 @@ export async function generateMetadata({
 
   return {
     title: service.title,
-    description: service.description,
+    description: richTextToPlain(service.description),
   };
 }
 
@@ -57,9 +59,10 @@ export default async function ServicePage({ params }: ServicePageProps) {
       <h1 className="mt-5 font-display text-4xl text-charcoal sm:text-5xl">
         {service.title}
       </h1>
-      <p className="mt-4 max-w-[65ch] text-lg leading-relaxed text-charcoal/75">
-        {service.description}
-      </p>
+      <CmsRichText
+        value={service.description}
+        className="mt-4 max-w-[65ch] text-lg leading-relaxed text-charcoal/75"
+      />
       {photo ? (
         <div className="relative mt-8 aspect-[16/10] overflow-hidden bg-sand">
           <Image

@@ -1,7 +1,10 @@
+import { CmsRichText } from "@/components/ui/CmsRichText";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
+
 type SectionHeadingProps = {
   title: string;
   highlight?: string;
-  description?: string;
+  description?: CmsRichTextData;
   align?: "left" | "center";
   tone?: "light" | "dark";
 };
@@ -33,17 +36,14 @@ export function SectionHeading({
           title
         )}
       </h2>
-      {description ? (
-        <p
-          className={`mt-4 max-w-[65ch] text-base sm:text-lg ${
-            isDark
-              ? "leading-[1.7] tracking-[0.01em] text-cream"
-              : "leading-relaxed text-charcoal/70"
-          }`}
-        >
-          {description}
-        </p>
-      ) : null}
+      <CmsRichText
+        value={description}
+        className={`mt-4 max-w-[65ch] text-base sm:text-lg ${
+          isDark
+            ? "leading-[1.7] tracking-[0.01em] text-cream"
+            : "leading-relaxed text-charcoal/70"
+        }`}
+      />
     </div>
   );
 }

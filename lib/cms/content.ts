@@ -11,13 +11,20 @@ import {
   type SocialLink,
 } from "@/lib/cms/defaults";
 import { SERVICE_PHOTOS } from "@/lib/service-photos";
+import {
+  asRichText,
+  optionalRichText,
+  plainTextToRichText,
+  type CmsRichTextData,
+} from "@/lib/cms/rich-text";
 
 export type NavItem = { label: string; href: string };
 
 export type CmsService = {
   title: string;
   slug: string;
-  description: string;
+  description: CmsRichTextData;
+  featuredDescription?: CmsRichTextData;
   whatsappLabel: string;
   contactLabel: string;
   featured: boolean;
@@ -39,11 +46,11 @@ export type CmsContent = {
 export type CmsPost = {
   title: string;
   slug: string;
-  excerpt?: string;
+  excerpt?: CmsRichTextData;
   category?: string;
   publishedAt?: string;
   coverUrl?: string;
-  body: unknown;
+  body?: CmsRichTextData;
 };
 
 export function contactServiceOptions(content: CmsContent): string[] {
@@ -87,17 +94,17 @@ function mapNav(value: unknown): NavItem[] {
 
 function mapTitleBody(
   items:
-    | { title?: string | null; body?: string | null }[]
+    | { title?: string | null; body?: unknown }[]
     | null
     | undefined,
-  fallback: { title: string; body: string }[],
+  fallback: { title: string; body: CmsRichTextData }[],
 ) {
   if (!Array.isArray(items) || items.length === 0) return fallback;
   return items.map((item, index) => {
     const current = fallback[index];
     return {
       title: text(item.title, current?.title ?? ""),
-      body: text(item.body, current?.body ?? ""),
+      body: asRichText(item.body, current?.body ?? plainTextToRichText("")),
     };
   });
 }
@@ -106,13 +113,13 @@ function mapAbout(about: {
   heading?: string | null;
   headingHighlight?: string | null;
   heroEyebrow?: string | null;
-  heroLead?: string | null;
+  heroLead?: unknown;
   heroImage?: unknown;
   heroImageUrl?: string | null;
   heroImageAlt?: string | null;
   storyTitle?: string | null;
   missionTitle?: string | null;
-  missionBody?: string | null;
+  missionBody?: unknown;
   missionImages?: {
     label?: string | null;
     image?: unknown;
@@ -121,32 +128,32 @@ function mapAbout(about: {
   }[] | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
-  valuesIntro?: string | null;
+  valuesIntro?: unknown;
   values?:
     | {
         title?: string | null;
-        body?: string | null;
+        body?: unknown;
         href?: string | null;
         linkLabel?: string | null;
       }[]
     | null;
   processTitle?: string | null;
-  processIntro?: string | null;
+  processIntro?: unknown;
   processImage?: unknown;
   processImageUrl?: string | null;
   processImageAlt?: string | null;
-  processSteps?: { title?: string | null; body?: string | null }[] | null;
+  processSteps?: { title?: string | null; body?: unknown }[] | null;
   audiencesTitle?: string | null;
-  audiencesIntro?: string | null;
-  audiences?: { title?: string | null; body?: string | null }[] | null;
+  audiencesIntro?: unknown;
+  audiences?: { title?: string | null; body?: unknown }[] | null;
   ctaTitle?: string | null;
-  ctaBody?: string | null;
+  ctaBody?: unknown;
   ctaLabel?: string | null;
   ctaHref?: string | null;
   ctaWhatsappLabel?: string | null;
   seoTitle?: string | null;
   seoDescription?: string | null;
-  paragraphs?: { text?: string | null }[] | null;
+  paragraphs?: { text?: unknown }[] | null;
   placeholders?: {
     label?: string | null;
     image?: unknown;
@@ -168,7 +175,7 @@ function mapAbout(about: {
       ? text(about.heroEyebrow, DEFAULT_ABOUT.heroEyebrow)
       : DEFAULT_ABOUT.heroEyebrow,
     heroLead: hasNarrative
-      ? text(about.heroLead, DEFAULT_ABOUT.heroLead)
+      ? asRichText(about.heroLead, DEFAULT_ABOUT.heroLead)
       : DEFAULT_ABOUT.heroLead,
     heroImageUrl:
       mediaUrl(about.heroImage) ||
@@ -178,7 +185,7 @@ function mapAbout(about: {
       ? text(about.storyTitle, DEFAULT_ABOUT.storyTitle)
       : DEFAULT_ABOUT.storyTitle,
     missionTitle: text(about.missionTitle, DEFAULT_ABOUT.missionTitle),
-    missionBody: text(about.missionBody, DEFAULT_ABOUT.missionBody),
+    missionBody: asRichText(about.missionBody, DEFAULT_ABOUT.missionBody),
     missionImages:
       Array.isArray(about.missionImages) && about.missionImages.length > 0
         ? about.missionImages.map((item, index) => {
@@ -199,7 +206,7 @@ function mapAbout(about: {
       ? text(about.valuesTitle, DEFAULT_ABOUT.valuesTitle)
       : DEFAULT_ABOUT.valuesTitle,
     valuesIntro: hasNarrative
-      ? text(about.valuesIntro, DEFAULT_ABOUT.valuesIntro)
+      ? asRichText(about.valuesIntro, DEFAULT_ABOUT.valuesIntro)
       : DEFAULT_ABOUT.valuesIntro,
     values:
       hasNarrative && Array.isArray(about.values) && about.values.length > 0
@@ -211,27 +218,27 @@ function mapAbout(about: {
             );
             return {
               title,
-              body: text(item.body, fallback?.body ?? ""),
+              body: asRichText(item.body, fallback?.body ?? plainTextToRichText("")),
               href: text(item.href, matched?.href ?? ""),
               linkLabel: text(item.linkLabel, matched?.linkLabel ?? ""),
             };
           })
         : DEFAULT_ABOUT.values,
     processTitle: text(about.processTitle, DEFAULT_ABOUT.processTitle),
-    processIntro: text(about.processIntro, DEFAULT_ABOUT.processIntro),
+    processIntro: asRichText(about.processIntro, DEFAULT_ABOUT.processIntro),
     processImageUrl:
       mediaUrl(about.processImage) ||
       text(about.processImageUrl, DEFAULT_ABOUT.processImageUrl),
     processImageAlt: text(about.processImageAlt, DEFAULT_ABOUT.processImageAlt),
     processSteps: mapTitleBody(about.processSteps, DEFAULT_ABOUT.processSteps),
     audiencesTitle: text(about.audiencesTitle, DEFAULT_ABOUT.audiencesTitle),
-    audiencesIntro: text(about.audiencesIntro, DEFAULT_ABOUT.audiencesIntro),
+    audiencesIntro: asRichText(about.audiencesIntro, DEFAULT_ABOUT.audiencesIntro),
     audiences: mapTitleBody(about.audiences, DEFAULT_ABOUT.audiences),
     ctaTitle: hasNarrative
       ? text(about.ctaTitle, DEFAULT_ABOUT.ctaTitle)
       : DEFAULT_ABOUT.ctaTitle,
     ctaBody: hasNarrative
-      ? text(about.ctaBody, DEFAULT_ABOUT.ctaBody)
+      ? asRichText(about.ctaBody, DEFAULT_ABOUT.ctaBody)
       : DEFAULT_ABOUT.ctaBody,
     ctaLabel: hasNarrative
       ? text(about.ctaLabel, DEFAULT_ABOUT.ctaLabel)
@@ -252,8 +259,11 @@ function mapAbout(about: {
       hasNarrative &&
       Array.isArray(about.paragraphs) &&
       about.paragraphs.length > 0
-        ? about.paragraphs.map((item) => ({
-            text: text(item.text, ""),
+        ? about.paragraphs.map((item, index) => ({
+            text: asRichText(
+              item.text,
+              DEFAULT_ABOUT.paragraphs[index]?.text ?? plainTextToRichText(""),
+            ),
           }))
         : DEFAULT_ABOUT.paragraphs,
     placeholders:
@@ -322,7 +332,12 @@ export async function getCmsContent(): Promise<CmsContent> {
             return {
               title: text(doc.title, ""),
               slug: text(doc.slug, ""),
-              description: text(doc.description, ""),
+              description: asRichText(
+                doc.description,
+                DEFAULT_SERVICES.find((item) => item.slug === text(doc.slug, ""))
+                  ?.description ?? plainTextToRichText(""),
+              ),
+              featuredDescription: optionalRichText(doc.featuredDescription),
               whatsappLabel: text(doc.whatsappLabel, ""),
               contactLabel: text(doc.contactLabel, text(doc.title, "")),
               featured: Boolean(doc.featured),
@@ -375,7 +390,7 @@ export async function getCmsContent(): Promise<CmsContent> {
           site.heroHeadingHighlight,
           DEFAULT_SITE.heroHeadingHighlight,
         ),
-        heroLede: text(site.heroLede, DEFAULT_SITE.heroLede),
+        heroLede: asRichText(site.heroLede, DEFAULT_SITE.heroLede),
         heroSecondaryCta: text(
           site.heroSecondaryCta,
           DEFAULT_SITE.heroSecondaryCta,
@@ -414,7 +429,10 @@ export async function getCmsContent(): Promise<CmsContent> {
           Array.isArray(site.methodSteps) && site.methodSteps.length > 0
             ? site.methodSteps.map((step, index) => ({
                 title: text(step.title, DEFAULT_SITE.methodSteps[index]?.title ?? ""),
-                body: text(step.body, DEFAULT_SITE.methodSteps[index]?.body ?? ""),
+                body: asRichText(
+                  step.body,
+                  DEFAULT_SITE.methodSteps[index]?.body ?? plainTextToRichText(""),
+                ),
               }))
             : DEFAULT_SITE.methodSteps,
         coverageHeading: text(site.coverageHeading, DEFAULT_SITE.coverageHeading),
@@ -430,7 +448,7 @@ export async function getCmsContent(): Promise<CmsContent> {
           site.coverageSubheadingHighlight,
           DEFAULT_SITE.coverageSubheadingHighlight,
         ),
-        coverageBody: text(site.coverageBody, DEFAULT_SITE.coverageBody),
+        coverageBody: asRichText(site.coverageBody, DEFAULT_SITE.coverageBody),
         coverageRegions:
           Array.isArray(site.coverageRegions) && site.coverageRegions.length > 0
             ? site.coverageRegions.map((region) => ({
@@ -449,27 +467,33 @@ export async function getCmsContent(): Promise<CmsContent> {
           site.faqHeadingHighlight,
           DEFAULT_SITE.faqHeadingHighlight,
         ),
-        faqIntro: text(site.faqIntro, DEFAULT_SITE.faqIntro),
+        faqIntro: asRichText(site.faqIntro, DEFAULT_SITE.faqIntro),
         faqPolicyHeading: text(
           site.faqPolicyHeading,
           DEFAULT_SITE.faqPolicyHeading,
         ),
         faqPolicyItems:
           Array.isArray(site.faqPolicyItems) && site.faqPolicyItems.length > 0
-            ? site.faqPolicyItems.map((item) => ({
-                text: text(item.text, ""),
+            ? site.faqPolicyItems.map((item, index) => ({
+                text: asRichText(
+                  item.text,
+                  DEFAULT_SITE.faqPolicyItems[index]?.text ?? plainTextToRichText(""),
+                ),
               }))
             : DEFAULT_SITE.faqPolicyItems,
         faqs:
           Array.isArray(site.faqs) && site.faqs.length > 0
-            ? site.faqs.map((item) => ({
+            ? site.faqs.map((item, index) => ({
                 question: text(item.question, ""),
-                answer: text(item.answer, ""),
+                answer: asRichText(
+                  item.answer,
+                  DEFAULT_SITE.faqs[index]?.answer ?? plainTextToRichText(""),
+                ),
               }))
             : DEFAULT_SITE.faqs,
         faqWhatsappCta: text(site.faqWhatsappCta, DEFAULT_SITE.faqWhatsappCta),
-        footerIntro: text(site.footerIntro, DEFAULT_SITE.footerIntro),
-        footerGuarantees: text(
+        footerIntro: asRichText(site.footerIntro, DEFAULT_SITE.footerIntro),
+        footerGuarantees: asRichText(
           site.footerGuarantees,
           DEFAULT_SITE.footerGuarantees,
         ),
@@ -549,8 +573,8 @@ export async function getCmsContent(): Promise<CmsContent> {
           (site as { footerAlsoDoTitle?: string | null }).footerAlsoDoTitle,
           DEFAULT_SITE.footerAlsoDoTitle,
         ),
-        footerAlsoDoBody: text(
-          (site as { footerAlsoDoBody?: string | null }).footerAlsoDoBody,
+        footerAlsoDoBody: asRichText(
+          (site as { footerAlsoDoBody?: unknown }).footerAlsoDoBody,
           DEFAULT_SITE.footerAlsoDoBody,
         ),
         socialLinks: mapSocialLinks(
@@ -564,8 +588,8 @@ export async function getCmsContent(): Promise<CmsContent> {
           (site as { blogHeadingHighlight?: string | null }).blogHeadingHighlight,
           DEFAULT_SITE.blogHeadingHighlight,
         ),
-        blogIntro: text(
-          (site as { blogIntro?: string | null }).blogIntro,
+        blogIntro: asRichText(
+          (site as { blogIntro?: unknown }).blogIntro,
           DEFAULT_SITE.blogIntro,
         ),
         blogAllCta: text(
@@ -580,32 +604,32 @@ export async function getCmsContent(): Promise<CmsContent> {
           (site as { blogEmptyTitle?: string | null }).blogEmptyTitle,
           DEFAULT_SITE.blogEmptyTitle,
         ),
-        blogEmptyBody: text(
-          (site as { blogEmptyBody?: string | null }).blogEmptyBody,
+        blogEmptyBody: asRichText(
+          (site as { blogEmptyBody?: unknown }).blogEmptyBody,
           DEFAULT_SITE.blogEmptyBody,
         ),
-        blogEmptyAside: text(
-          (site as { blogEmptyAside?: string | null }).blogEmptyAside,
+        blogEmptyAside: asRichText(
+          (site as { blogEmptyAside?: unknown }).blogEmptyAside,
           DEFAULT_SITE.blogEmptyAside,
         ),
         blogEmptyCta: text(
           (site as { blogEmptyCta?: string | null }).blogEmptyCta,
           DEFAULT_SITE.blogEmptyCta,
         ),
-        blogPageIntro: text(
-          (site as { blogPageIntro?: string | null }).blogPageIntro,
+        blogPageIntro: asRichText(
+          (site as { blogPageIntro?: unknown }).blogPageIntro,
           DEFAULT_SITE.blogPageIntro,
         ),
         blogPageEmptyTitle: text(
           (site as { blogPageEmptyTitle?: string | null }).blogPageEmptyTitle,
           DEFAULT_SITE.blogPageEmptyTitle,
         ),
-        blogPageEmptyBody: text(
-          (site as { blogPageEmptyBody?: string | null }).blogPageEmptyBody,
+        blogPageEmptyBody: asRichText(
+          (site as { blogPageEmptyBody?: unknown }).blogPageEmptyBody,
           DEFAULT_SITE.blogPageEmptyBody,
         ),
-        blogPageEmptyAside: text(
-          (site as { blogPageEmptyAside?: string | null }).blogPageEmptyAside,
+        blogPageEmptyAside: asRichText(
+          (site as { blogPageEmptyAside?: unknown }).blogPageEmptyAside,
           DEFAULT_SITE.blogPageEmptyAside,
         ),
         termsHeading: text(
@@ -613,21 +637,23 @@ export async function getCmsContent(): Promise<CmsContent> {
           DEFAULT_SITE.termsHeading,
         ),
         termsParagraphs: Array.isArray(
-          (site as { termsParagraphs?: { text?: string; linkHref?: string; linkLabel?: string }[] })
+          (site as { termsParagraphs?: { text?: unknown; linkHref?: string; linkLabel?: string }[] })
             .termsParagraphs,
         ) &&
-        ((site as { termsParagraphs?: { text?: string }[] }).termsParagraphs?.length ??
-          0) > 0
+        ((site as { termsParagraphs?: unknown[] }).termsParagraphs?.length ?? 0) > 0
           ? (
               site as {
                 termsParagraphs: {
-                  text?: string | null;
+                  text?: unknown;
                   linkHref?: string | null;
                   linkLabel?: string | null;
                 }[];
               }
             ).termsParagraphs.map((item, index) => ({
-              text: text(item.text, DEFAULT_SITE.termsParagraphs[index]?.text ?? ""),
+              text: asRichText(
+                item.text,
+                DEFAULT_SITE.termsParagraphs[index]?.text ?? plainTextToRichText(""),
+              ),
               linkHref:
                 text(
                   item.linkHref,
@@ -644,7 +670,7 @@ export async function getCmsContent(): Promise<CmsContent> {
       about: mapAbout(about),
       servicesPage: {
         heading: text(servicesPage.heading, DEFAULT_SERVICES_PAGE.heading),
-        intro: text(servicesPage.intro, DEFAULT_SERVICES_PAGE.intro),
+        intro: asRichText(servicesPage.intro, DEFAULT_SERVICES_PAGE.intro),
         contactLinkLabel: text(
           servicesPage.contactLinkLabel,
           DEFAULT_SERVICES_PAGE.contactLinkLabel,
@@ -652,7 +678,7 @@ export async function getCmsContent(): Promise<CmsContent> {
         cardCta: text(servicesPage.cardCta, DEFAULT_SERVICES_PAGE.cardCta),
         nexoKicker: text(servicesPage.nexoKicker, DEFAULT_SERVICES_PAGE.nexoKicker),
         nexoHeading: text(servicesPage.nexoHeading, DEFAULT_SERVICES_PAGE.nexoHeading),
-        nexoBody: text(servicesPage.nexoBody, DEFAULT_SERVICES_PAGE.nexoBody),
+        nexoBody: asRichText(servicesPage.nexoBody, DEFAULT_SERVICES_PAGE.nexoBody),
         nexoCta: text(servicesPage.nexoCta, DEFAULT_SERVICES_PAGE.nexoCta),
         serviceWhatsappCta: text(
           (servicesPage as { serviceWhatsappCta?: string | null }).serviceWhatsappCta,
@@ -661,16 +687,16 @@ export async function getCmsContent(): Promise<CmsContent> {
       },
       gallery: {
         heading: text(gallery.heading, DEFAULT_GALLERY.heading),
-        intro: text(
-          (gallery as { intro?: string | null }).intro,
+        intro: asRichText(
+          (gallery as { intro?: unknown }).intro,
           DEFAULT_GALLERY.intro,
         ),
         environmentsHeading: text(
           (gallery as { environmentsHeading?: string | null }).environmentsHeading,
           DEFAULT_GALLERY.environmentsHeading,
         ),
-        environmentsIntro: text(
-          (gallery as { environmentsIntro?: string | null }).environmentsIntro,
+        environmentsIntro: asRichText(
+          (gallery as { environmentsIntro?: unknown }).environmentsIntro,
           DEFAULT_GALLERY.environmentsIntro,
         ),
         contactCta: text(
@@ -683,9 +709,8 @@ export async function getCmsContent(): Promise<CmsContent> {
               ?.title,
             DEFAULT_GALLERY.mosaicContact.title,
           ),
-          body: text(
-            (gallery as { mosaicContact?: { body?: string | null } }).mosaicContact
-              ?.body,
+          body: asRichText(
+            (gallery as { mosaicContact?: { body?: unknown } }).mosaicContact?.body,
             DEFAULT_GALLERY.mosaicContact.body,
           ),
           cta: text(
@@ -717,8 +742,8 @@ export async function getCmsContent(): Promise<CmsContent> {
               ?.fallbackTitle,
             DEFAULT_GALLERY.mosaicWork.fallbackTitle,
           ),
-          fallbackBody: text(
-            (gallery as { mosaicWork?: { fallbackBody?: string | null } }).mosaicWork
+          fallbackBody: asRichText(
+            (gallery as { mosaicWork?: { fallbackBody?: unknown } }).mosaicWork
               ?.fallbackBody,
             DEFAULT_GALLERY.mosaicWork.fallbackBody,
           ),
@@ -730,17 +755,16 @@ export async function getCmsContent(): Promise<CmsContent> {
         },
         projects:
           Array.isArray(gallery.projects) && gallery.projects.length > 0
-            ? gallery.projects.map((project, index) => {
-                const fallback =
-                  DEFAULT_GALLERY.projects[index] ?? DEFAULT_GALLERY.projects[0];
+            ? gallery.projects.map((project) => {
                 const imageUrl =
                   mediaUrl(project.image) ||
-                  text(project.imageUrl, fallback.imageUrl);
+                  (typeof project.imageUrl === "string" ? project.imageUrl.trim() : "");
                 const fit =
                   project.fit === "contain" || project.fit === "cover"
                     ? project.fit
-                    : fallback.fit ??
-                      (imageUrl.includes("wc-base-de-duche") ? "contain" : "cover");
+                    : imageUrl.includes("wc-base-de-duche")
+                      ? "contain"
+                      : "cover";
                 const cms = project as {
                   isRealWork?: boolean | null;
                   titleLines?: { line?: string | null }[] | null;
@@ -754,44 +778,49 @@ export async function getCmsContent(): Promise<CmsContent> {
                   ? cms.titleLines
                       .map((row) => text(row.line, ""))
                       .filter(Boolean)
-                  : fallback.titleLines;
-                const cmsPanels =
+                  : undefined;
+                const panels =
                   Array.isArray(cms.panels) && cms.panels.length > 0
-                    ? cms.panels.map((panel, panelIndex) => {
-                        const panelFallback = fallback.panels?.[panelIndex];
-                        return {
+                    ? cms.panels
+                        .map((panel) => ({
                           src:
                             mediaUrl(panel.image) ||
-                            text(panel.src, panelFallback?.src ?? ""),
-                          alt: text(panel.alt, panelFallback?.alt ?? ""),
-                        };
-                      })
-                    : fallback.panels;
+                            (typeof panel.src === "string" ? panel.src.trim() : ""),
+                          alt: typeof panel.alt === "string" ? panel.alt : "",
+                        }))
+                        .filter((panel) => panel.src)
+                    : undefined;
+                const matchedDefault = DEFAULT_GALLERY.projects.find(
+                  (item) => item.imageUrl === imageUrl || item.title === project.title,
+                );
                 return {
-                  title: text(project.title, fallback.title),
-                  titleLines,
-                  caption: text(project.caption, fallback.caption),
+                  title: text(project.title, matchedDefault?.title ?? ""),
+                  titleLines: titleLines?.length ? titleLines : undefined,
+                  caption: asRichText(
+                    project.caption,
+                    matchedDefault?.caption ?? plainTextToRichText(""),
+                  ),
                   imageUrl,
-                  alt: text(project.alt, fallback.alt),
+                  alt: text(project.alt, matchedDefault?.alt ?? ""),
                   width:
                     typeof project.width === "number"
                       ? project.width
-                      : fallback.width,
+                      : matchedDefault?.width ?? 1600,
                   height:
                     typeof project.height === "number"
                       ? project.height
-                      : fallback.height,
+                      : matchedDefault?.height ?? 1066,
                   fit,
-                  isRealWork: Boolean(cms.isRealWork) || Boolean(cmsPanels?.length),
-                  icon: fallback.icon,
-                  panels: cmsPanels,
+                  isRealWork: Boolean(cms.isRealWork),
+                  icon: matchedDefault?.icon,
+                  panels,
                 };
               }) as typeof DEFAULT_GALLERY.projects
             : DEFAULT_GALLERY.projects,
       },
       contact: {
         heading: text(contact.heading, DEFAULT_CONTACT.heading),
-        body: text(contact.body, DEFAULT_CONTACT.body),
+        body: asRichText(contact.body, DEFAULT_CONTACT.body),
         otherServiceOption: text(
           contact.otherServiceOption,
           DEFAULT_CONTACT.otherServiceOption,
@@ -801,8 +830,8 @@ export async function getCmsContent(): Promise<CmsContent> {
           contact.submittingLabel,
           DEFAULT_CONTACT.submittingLabel,
         ),
-        successMessage: text(contact.successMessage, DEFAULT_CONTACT.successMessage),
-        consent: text(contact.consent, DEFAULT_CONTACT.consent),
+        successMessage: asRichText(contact.successMessage, DEFAULT_CONTACT.successMessage),
+        consent: asRichText(contact.consent, DEFAULT_CONTACT.consent),
         nameLabel: text(contact.nameLabel, DEFAULT_CONTACT.nameLabel),
         phoneLabel: text(contact.phoneLabel, DEFAULT_CONTACT.phoneLabel),
         phoneHint: text(contact.phoneHint ?? "", DEFAULT_CONTACT.phoneHint),
@@ -862,12 +891,12 @@ export async function getAllPosts(): Promise<CmsPost[]> {
       .map((post) => ({
         title: text(post.title, ""),
         slug: text(post.slug, ""),
-        excerpt: typeof post.excerpt === "string" ? post.excerpt : undefined,
+        excerpt: optionalRichText(post.excerpt),
         category: typeof post.category === "string" ? post.category : undefined,
         publishedAt:
           typeof post.publishedAt === "string" ? post.publishedAt : undefined,
         coverUrl: mediaUrl(post.cover),
-        body: post.body,
+        body: optionalRichText(post.body),
       }))
       .filter((post) => post.slug);
   } catch (error) {

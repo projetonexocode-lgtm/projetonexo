@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import type { CmsPost } from "@/lib/cms/content";
 import { formatPostDate } from "@/lib/format-date";
 
@@ -60,15 +61,12 @@ export function PostTeaser({
           >
             {post.title}
           </h3>
-          {post.excerpt ? (
-            <p
-              className={`mt-3 max-w-[55ch] leading-relaxed text-charcoal/75 ${
-                featured ? "text-base sm:text-lg" : "text-sm sm:text-base"
-              }`}
-            >
-              {post.excerpt}
-            </p>
-          ) : null}
+          <CmsRichText
+            value={post.excerpt}
+            className={`mt-3 max-w-[55ch] leading-relaxed text-charcoal/75 ${
+              featured ? "text-base sm:text-lg" : "text-sm sm:text-base"
+            }`}
+          />
           <span className="hit-link mt-4 w-fit text-sm tracking-wide text-charcoal group-hover:text-gold">
             {readCta}
           </span>

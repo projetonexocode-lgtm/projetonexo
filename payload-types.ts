@@ -188,7 +188,21 @@ export interface Service {
    * Usado no URL e na identificação interna.
    */
   slug: string;
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   /**
    * Texto que entra na mensagem pronta do WhatsApp, por exemplo «remodelação de cozinha».
    */
@@ -198,6 +212,24 @@ export interface Service {
    */
   contactLabel?: string | null;
   featured?: boolean | null;
+  /**
+   * Texto do cartão na secção Serviços da homepage. Se vazio, usa a descrição do serviço.
+   */
+  featuredDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   inContactForm?: boolean | null;
   inFooter?: boolean | null;
   image?: (number | null) | Media;
@@ -217,7 +249,21 @@ export interface Post {
   id: number;
   title: string;
   slug: string;
-  excerpt?: string | null;
+  excerpt?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   category?: ('Obras' | 'Remodelações' | 'Reabilitação' | 'Arquitetura' | 'Processo') | null;
   publishedAt?: string | null;
   cover?: (number | null) | Media;
@@ -372,6 +418,7 @@ export interface ServicesSelect<T extends boolean = true> {
   whatsappLabel?: T;
   contactLabel?: T;
   featured?: T;
+  featuredDescription?: T;
   inContactForm?: T;
   inFooter?: T;
   image?: T;
@@ -471,7 +518,21 @@ export interface Site {
     | null;
   heroHeading: string;
   heroHeadingHighlight?: string | null;
-  heroLede: string;
+  heroLede: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   heroSecondaryCta: string;
   heroSecondaryHref: string;
   heroSlides?:
@@ -496,7 +557,21 @@ export interface Site {
   methodSteps?:
     | {
         title: string;
-        body: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
@@ -504,7 +579,21 @@ export interface Site {
   coverageHighlight?: string | null;
   coverageSubheading?: string | null;
   coverageSubheadingHighlight?: string | null;
-  coverageBody: string;
+  coverageBody: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   coverageRegions?:
     | {
         label: string;
@@ -517,37 +606,191 @@ export interface Site {
   mapsLink?: string | null;
   blogHeading?: string | null;
   blogHeadingHighlight?: string | null;
-  blogIntro?: string | null;
+  blogIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   blogAllCta?: string | null;
   blogReadCta?: string | null;
   blogEmptyTitle?: string | null;
-  blogEmptyBody?: string | null;
-  blogEmptyAside?: string | null;
+  blogEmptyBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  blogEmptyAside?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   blogEmptyCta?: string | null;
-  blogPageIntro?: string | null;
+  blogPageIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   blogPageEmptyTitle?: string | null;
-  blogPageEmptyBody?: string | null;
-  blogPageEmptyAside?: string | null;
+  blogPageEmptyBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  blogPageEmptyAside?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   faqHeading: string;
   faqHeadingHighlight?: string | null;
-  faqIntro: string;
+  faqIntro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   faqPolicyHeading: string;
   faqPolicyItems?:
     | {
-        text: string;
+        text: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
   faqs?:
     | {
         question: string;
-        answer: string;
+        answer: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
   faqWhatsappCta: string;
-  footerIntro: string;
-  footerGuarantees: string;
+  footerIntro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  footerGuarantees: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   footerGuaranteesCta: string;
   footerNexoLabel: string;
   locationLine: string;
@@ -567,7 +810,21 @@ export interface Site {
   footerCertificateNipc?: string | null;
   footerCertificateAlvara?: string | null;
   footerAlsoDoTitle?: string | null;
-  footerAlsoDoBody?: string | null;
+  footerAlsoDoBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * O ícone só aparece no rodapé se «Visível no rodapé» estiver activo e o URL estiver preenchido.
    */
@@ -585,7 +842,21 @@ export interface Site {
   termsHeading?: string | null;
   termsParagraphs?:
     | {
-        text: string;
+        text: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         linkHref?: string | null;
         linkLabel?: string | null;
         id?: string | null;
@@ -605,7 +876,21 @@ export interface About {
   heroEyebrow?: string | null;
   heading: string;
   headingHighlight?: string | null;
-  heroLead?: string | null;
+  heroLead?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   heroImage?: (number | null) | Media;
   /**
    * Usado só se a imagem Media estiver vazia. Preferir o carregamento acima.
@@ -615,7 +900,21 @@ export interface About {
   storyTitle?: string | null;
   paragraphs?:
     | {
-        text: string;
+        text: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
@@ -636,7 +935,21 @@ export interface About {
       }[]
     | null;
   missionTitle?: string | null;
-  missionBody?: string | null;
+  missionBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   /**
    * Grelha ao lado do texto da missão. A primeira imagem é a maior. Preferir Media; o URL só serve se a imagem estiver vazia.
    */
@@ -654,18 +967,60 @@ export interface About {
     | null;
   valuesEyebrow?: string | null;
   valuesTitle?: string | null;
-  valuesIntro?: string | null;
+  valuesIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   values?:
     | {
         title: string;
-        body: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         href?: string | null;
         linkLabel?: string | null;
         id?: string | null;
       }[]
     | null;
   processTitle?: string | null;
-  processIntro?: string | null;
+  processIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   processImage?: (number | null) | Media;
   /**
    * Usado só se a imagem Media estiver vazia. Preferir o carregamento acima.
@@ -678,21 +1033,77 @@ export interface About {
   processSteps?:
     | {
         title: string;
-        body: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
   audiencesTitle?: string | null;
-  audiencesIntro?: string | null;
+  audiencesIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   audiences?:
     | {
         title: string;
-        body: string;
+        body: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         id?: string | null;
       }[]
     | null;
   ctaTitle?: string | null;
-  ctaBody?: string | null;
+  ctaBody?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   ctaLabel?: string | null;
   ctaHref?: string | null;
   ctaWhatsappLabel?: string | null;
@@ -710,12 +1121,40 @@ export interface About {
 export interface ServicesPage {
   id: number;
   heading: string;
-  intro: string;
+  intro: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   contactLinkLabel: string;
   cardCta: string;
   nexoKicker: string;
   nexoHeading: string;
-  nexoBody: string;
+  nexoBody: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   nexoCta: string;
   serviceWhatsappCta?: string | null;
   updatedAt?: string | null;
@@ -730,13 +1169,55 @@ export interface ServicesPage {
 export interface Gallery {
   id: number;
   heading: string;
-  intro?: string | null;
+  intro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   environmentsHeading?: string | null;
-  environmentsIntro?: string | null;
+  environmentsIntro?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   contactCta?: string | null;
   mosaicContact?: {
     title?: string | null;
-    body?: string | null;
+    body?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     cta?: string | null;
     href?: string | null;
   };
@@ -745,7 +1226,21 @@ export interface Gallery {
     cta?: string | null;
     href?: string | null;
     fallbackTitle?: string | null;
-    fallbackBody?: string | null;
+    fallbackBody?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
     fallbackCta?: string | null;
   };
   projects?:
@@ -757,7 +1252,21 @@ export interface Gallery {
               id?: string | null;
             }[]
           | null;
-        caption: string;
+        caption: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        };
         isRealWork?: boolean | null;
         image?: (number | null) | Media;
         /**
@@ -797,12 +1306,54 @@ export interface Gallery {
 export interface Contact {
   id: number;
   heading: string;
-  body: string;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   otherServiceOption?: string | null;
   submitLabel: string;
   submittingLabel: string;
-  successMessage: string;
-  consent: string;
+  successMessage: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  consent: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   nameLabel: string;
   phoneLabel: string;
   phoneHint?: string | null;

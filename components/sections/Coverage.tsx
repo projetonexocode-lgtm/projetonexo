@@ -1,11 +1,13 @@
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { DEFAULT_SITE } from "@/lib/cms/defaults";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 
 type CoverageProps = {
   heading?: string;
   highlight?: string;
   subheading?: string;
   subheadingHighlight?: string;
-  body?: string;
+  body?: CmsRichTextData;
   regions?: { label: string }[];
   mapLabel?: string;
   mapsCta?: string;
@@ -57,9 +59,10 @@ export function Coverage({
               )}
             </p>
           ) : null}
-          <p className="mt-6 max-w-[65ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
-            {body}
-          </p>
+          <CmsRichText
+            value={body}
+            className="mt-6 max-w-[65ch] text-base leading-relaxed text-charcoal/70 sm:text-lg"
+          />
           <div className="mt-8 flex flex-wrap gap-2.5">
             {regions.map((region) => (
               <span

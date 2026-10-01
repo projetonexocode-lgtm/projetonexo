@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { getCmsContent } from "@/lib/cms/content";
 
@@ -27,15 +28,18 @@ export default async function FaqPage() {
           site.faqHeading
         )}
       </h1>
-      <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75">
-        {site.faqIntro}
-      </p>
+      <CmsRichText
+        value={site.faqIntro}
+        className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75"
+      />
 
       <div className="mt-10 border border-card bg-card p-6">
         <h2 className="font-display text-2xl text-warm">{site.faqPolicyHeading}</h2>
         <ul className="mt-4 space-y-3 text-sm leading-relaxed text-warm/80">
-          {site.faqPolicyItems.map((item) => (
-            <li key={item.text}>{item.text}</li>
+          {site.faqPolicyItems.map((item, index) => (
+            <li key={index}>
+              <CmsRichText value={item.text} />
+            </li>
           ))}
         </ul>
       </div>
@@ -44,9 +48,10 @@ export default async function FaqPage() {
         {site.faqs.map((item) => (
           <li key={item.question} className="border-t border-bronze/25 pt-6">
             <h2 className="font-display text-xl text-charcoal">{item.question}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-charcoal/75">
-              {item.answer}
-            </p>
+            <CmsRichText
+              value={item.answer}
+              className="mt-2 text-sm leading-relaxed text-charcoal/75"
+            />
           </li>
         ))}
       </ul>

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { MosaicPhoto } from "@/components/gallery/media";
+import { CmsRichText } from "@/components/ui/CmsRichText";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 import { DEFAULT_GALLERY } from "@/lib/cms/defaults";
 import { splitGallery, type GalleryProject } from "@/lib/gallery";
 
@@ -19,7 +21,7 @@ function MosaicCopy({
   cta,
 }: {
   title: string;
-  body: string;
+  body: CmsRichTextData;
   href: string;
   cta: string;
 }) {
@@ -28,9 +30,10 @@ function MosaicCopy({
       <h3 className="font-display text-2xl leading-[1.1] text-charcoal sm:text-[1.65rem]">
         {title}
       </h3>
-      <p className="mt-3 max-w-[28ch] text-sm leading-relaxed text-charcoal/75 sm:text-base">
-        {body}
-      </p>
+      <CmsRichText
+        value={body}
+        className="mt-3 max-w-[28ch] text-sm leading-relaxed text-charcoal/75 sm:text-base"
+      />
       <Link
         href={href}
         className="hit-link mt-6 w-fit rounded-full border border-charcoal px-5 text-sm tracking-wide text-charcoal transition-colors hover:bg-charcoal hover:text-cream"

@@ -3,7 +3,9 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
 import { Briefcase, Building2, Home, KeyRound } from "lucide-react";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { hasRichText } from "@/lib/cms/rich-text";
 import { WhatsAppButton } from "@/components/ui/WhatsAppButton";
 import { DEFAULT_ABOUT } from "@/lib/cms/defaults";
 
@@ -176,11 +178,10 @@ export function AboutPage({
           <h1 className="nx-hero-rise max-w-[20ch] font-display text-[clamp(2.2rem,5.5vw,4rem)] leading-[1.05] tracking-[-0.02em]">
             {titleWithAccent(about.heading, about.headingHighlight)}
           </h1>
-          {about.heroLead ? (
-            <p className="nx-hero-rise nx-hero-rise-delay-1 mt-6 max-w-[42ch] text-[17px] leading-relaxed text-cream/80">
-              {about.heroLead}
-            </p>
-          ) : null}
+          <CmsRichText
+            value={about.heroLead}
+            className="nx-hero-rise nx-hero-rise-delay-1 mt-6 max-w-[42ch] text-[17px] leading-relaxed text-cream/80"
+          />
         </div>
       </section>
 
@@ -189,8 +190,8 @@ export function AboutPage({
           <div>
             <SectionHeading title={about.storyTitle} />
             <div className="mt-8 max-w-[54ch] space-y-5 text-base leading-relaxed text-charcoal/70 sm:text-lg">
-              {about.paragraphs.map((paragraph) => (
-                <p key={paragraph.text}>{paragraph.text}</p>
+              {about.paragraphs.map((paragraph, index) => (
+                <CmsRichText key={index} value={paragraph.text} />
               ))}
             </div>
           </div>
@@ -238,7 +239,7 @@ export function AboutPage({
         </div>
       </section>
 
-      {about.missionTitle || about.missionBody ? (
+      {about.missionTitle || hasRichText(about.missionBody) ? (
         <section className="bg-plaster px-5 py-[clamp(4.5rem,8vw,8rem)] sm:px-8">
           <div className="mx-auto grid max-w-6xl items-start gap-12 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-16">
             <div>
@@ -247,11 +248,10 @@ export function AboutPage({
                   {about.missionTitle}
                 </h2>
               ) : null}
-              {about.missionBody ? (
-                <p className="mt-8 max-w-[58ch] text-base leading-relaxed text-charcoal sm:text-lg">
-                  {about.missionBody}
-                </p>
-              ) : null}
+              <CmsRichText
+                value={about.missionBody}
+                className="mt-8 max-w-[58ch] text-base leading-relaxed text-charcoal sm:text-lg"
+              />
             </div>
             <MissionImages images={about.missionImages} />
           </div>
@@ -265,7 +265,7 @@ export function AboutPage({
               <>
                 <SectionHeading
                   title={about.valuesTitle}
-                  description={about.valuesIntro || undefined}
+                  description={about.valuesIntro}
                 />
                 <div className="mt-12 grid min-w-0 gap-12 border-t border-charcoal/15 pt-12 lg:grid-cols-2 lg:gap-0">
                   {about.values.map((item, index) => (
@@ -280,9 +280,10 @@ export function AboutPage({
                       <h3 className="text-lg font-medium text-charcoal">
                         {item.title}
                       </h3>
-                      <p className="mt-4 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
-                        {item.body}
-                      </p>
+                      <CmsRichText
+                        value={item.body}
+                        className="mt-4 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg"
+                      />
                       {item.href && item.linkLabel ? (
                         <ActionLink
                           href={item.href}
@@ -308,7 +309,7 @@ export function AboutPage({
                 <div>
                   <SectionHeading
                     title={about.processTitle}
-                    description={about.processIntro || undefined}
+                    description={about.processIntro}
                   />
                   {about.processImageUrl ? (
                     <figure className="relative mt-10 aspect-16/10 overflow-hidden bg-sand">
@@ -341,9 +342,10 @@ export function AboutPage({
                         <h3 className="text-lg font-medium leading-snug text-charcoal">
                           {step.title}
                         </h3>
-                        <p className="mt-2 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
-                          {step.body}
-                        </p>
+                        <CmsRichText
+                          value={step.body}
+                          className="mt-2 max-w-[58ch] text-base leading-relaxed text-charcoal/70 sm:text-lg"
+                        />
                       </div>
                     </li>
                   ))}
@@ -359,7 +361,7 @@ export function AboutPage({
           <div className="mx-auto max-w-6xl">
             <SectionHeading
               title={about.audiencesTitle}
-              description={about.audiencesIntro || undefined}
+              description={about.audiencesIntro}
             />
             <dl className="mt-12 grid gap-10 border-t border-charcoal/15 pt-12 sm:grid-cols-2 sm:gap-x-16 sm:gap-y-12">
               {about.audiences.map((item) => {
@@ -376,7 +378,7 @@ export function AboutPage({
                       {item.title}
                     </dt>
                     <dd className="mt-3 max-w-[65ch] text-base leading-relaxed text-charcoal/70 sm:text-lg">
-                      {item.body}
+                      <CmsRichText value={item.body} />
                     </dd>
                   </div>
                 );
@@ -390,11 +392,10 @@ export function AboutPage({
         <div className="mx-auto flex max-w-6xl flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <div>
             <SectionHeading title={about.ctaTitle} tone="dark" />
-            {about.ctaBody ? (
-              <p className="mt-4 max-w-[42ch] text-[16.5px] leading-relaxed text-cream/75">
-                {about.ctaBody}
-              </p>
-            ) : null}
+            <CmsRichText
+              value={about.ctaBody}
+              className="mt-4 max-w-[42ch] text-[16.5px] leading-relaxed text-cream/75"
+            />
           </div>
           <div className="flex shrink-0 flex-col gap-3 sm:flex-row sm:items-center">
             <ActionLink

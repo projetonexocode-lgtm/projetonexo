@@ -39,7 +39,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "heroLead",
-              type: "textarea",
+              type: "richText",
               label: "Texto de apoio",
               defaultValue: DEFAULT_ABOUT.heroLead,
             },
@@ -70,7 +70,7 @@ export const About: GlobalConfig = {
               fields: [
                 {
                   name: "text",
-                  type: "textarea",
+                  type: "richText",
                   label: "Texto",
                   required: true,
                 },
@@ -124,7 +124,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "missionBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto",
               defaultValue: DEFAULT_ABOUT.missionBody,
             },
@@ -172,7 +172,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "valuesIntro",
-              type: "textarea",
+              type: "richText",
               label: "Introdução",
               defaultValue: DEFAULT_ABOUT.valuesIntro,
             },
@@ -183,7 +183,7 @@ export const About: GlobalConfig = {
               labels: { singular: "Vertente", plural: "Vertentes" },
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
-                { name: "body", type: "textarea", label: "Texto", required: true },
+                { name: "body", type: "richText", label: "Texto", required: true },
                 { name: "href", type: "text", label: "Ligação" },
                 { name: "linkLabel", type: "text", label: "Texto da ligação" },
               ],
@@ -201,7 +201,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "processIntro",
-              type: "textarea",
+              type: "richText",
               label: "Introdução",
               defaultValue: DEFAULT_ABOUT.processIntro,
             },
@@ -223,7 +223,7 @@ export const About: GlobalConfig = {
               },
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
-                { name: "body", type: "textarea", label: "Texto", required: true },
+                { name: "body", type: "richText", label: "Texto", required: true },
               ],
             },
           ],
@@ -239,7 +239,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "audiencesIntro",
-              type: "textarea",
+              type: "richText",
               label: "Introdução",
               defaultValue: DEFAULT_ABOUT.audiencesIntro,
             },
@@ -250,7 +250,7 @@ export const About: GlobalConfig = {
               labels: { singular: "Público", plural: "Públicos" },
               fields: [
                 { name: "title", type: "text", label: "Título", required: true },
-                { name: "body", type: "textarea", label: "Texto", required: true },
+                { name: "body", type: "richText", label: "Texto", required: true },
               ],
             },
           ],
@@ -266,7 +266,7 @@ export const About: GlobalConfig = {
             },
             {
               name: "ctaBody",
-              type: "textarea",
+              type: "richText",
               label: "Texto",
               defaultValue: DEFAULT_ABOUT.ctaBody,
             },

@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PostTeaser } from "@/components/blog/PostTeaser";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import { getAllPosts, getCmsContent } from "@/lib/cms/content";
+import { richTextToPlain } from "@/lib/cms/rich-text";
 
 export const revalidate = 60;
 
@@ -9,7 +11,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { site } = await getCmsContent();
   return {
     title: "Blog",
-    description: site.blogPageIntro,
+    description: richTextToPlain(site.blogPageIntro),
   };
 }
 
@@ -33,9 +35,10 @@ export default async function BlogPage() {
           site.blogHeading
         )}
       </h1>
-      <p className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75 sm:text-lg">
-        {site.blogPageIntro}
-      </p>
+      <CmsRichText
+        value={site.blogPageIntro}
+        className="mt-4 max-w-[65ch] text-base leading-relaxed text-charcoal/75 sm:text-lg"
+      />
 
       {posts.length === 0 ? (
         <div className="relative mt-12 overflow-hidden">
@@ -48,14 +51,16 @@ export default async function BlogPage() {
               <p className="font-display text-2xl leading-[1.12] text-charcoal sm:text-3xl">
                 {site.blogPageEmptyTitle}
               </p>
-              <p className="mt-3 max-w-[36ch] text-base leading-relaxed text-charcoal/75">
-                {site.blogPageEmptyBody}
-              </p>
+              <CmsRichText
+                value={site.blogPageEmptyBody}
+                className="mt-3 max-w-[36ch] text-base leading-relaxed text-charcoal/75"
+              />
             </div>
             <div className="flex min-h-64 flex-col justify-center bg-sand px-7 py-10 sm:px-10">
-              <p className="max-w-[32ch] text-base leading-relaxed text-charcoal/75">
-                {site.blogPageEmptyAside}
-              </p>
+              <CmsRichText
+                value={site.blogPageEmptyAside}
+                className="max-w-[32ch] text-base leading-relaxed text-charcoal/75"
+              />
               <Link
                 href="/#contacto"
                 className="hit-link mt-6 w-fit rounded-full border border-charcoal px-5 text-sm tracking-wide text-charcoal transition-colors hover:bg-charcoal hover:text-cream"

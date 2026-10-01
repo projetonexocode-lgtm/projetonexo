@@ -1,16 +1,18 @@
 import Link from "next/link";
 import { ServiceSpotlight } from "@/components/sections/ServiceSpotlight";
+import { CmsRichText } from "@/components/ui/CmsRichText";
 import type { CmsService } from "@/lib/cms/content";
 import { DEFAULT_SERVICES_PAGE, DEFAULT_SITE } from "@/lib/cms/defaults";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 
 type ServicesProps = {
   heading?: string;
-  intro?: string;
+  intro?: CmsRichTextData;
   contactLinkLabel?: string;
   cardCta?: string;
   nexoKicker?: string;
   nexoHeading?: string;
-  nexoBody?: string;
+  nexoBody?: CmsRichTextData;
   nexoCta?: string;
   nexoServicesUrl?: string;
   featured?: CmsService[];
@@ -42,9 +44,10 @@ export function Services({
           <h2 className="max-w-[18ch] font-display text-3xl leading-[1.1] text-cream sm:text-4xl lg:text-[2.75rem]">
             {heading}
           </h2>
-          <p className="max-w-[46ch] text-base leading-[1.7] tracking-[0.01em] text-cream">
-            {intro}
-          </p>
+          <CmsRichText
+            value={intro}
+            className="max-w-[46ch] text-base leading-[1.7] tracking-[0.01em] text-cream"
+          />
         </div>
 
         <ServiceSpotlight
@@ -75,9 +78,10 @@ export function Services({
             <h3 className="mt-5 max-w-[24ch] font-display text-[clamp(1.35rem,6.2vw,2.25rem)] leading-tight sm:text-4xl">
               {nexoHeading}
             </h3>
-            <p className="mt-4 max-w-[46ch] text-base leading-relaxed text-charcoal">
-              {nexoBody}
-            </p>
+            <CmsRichText
+              value={nexoBody}
+              className="mt-4 max-w-[46ch] text-base leading-relaxed text-charcoal"
+            />
           </div>
           <div className="flex min-w-0 items-center sm:justify-end">
             <img

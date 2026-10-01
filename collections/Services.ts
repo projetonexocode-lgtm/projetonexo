@@ -34,7 +34,7 @@ export const Services: CollectionConfig = {
     },
     {
       name: "description",
-      type: "textarea",
+      type: "richText",
       label: "Descrição",
       required: true,
     },
@@ -62,6 +62,16 @@ export const Services: CollectionConfig = {
       type: "checkbox",
       label: "Em destaque na homepage",
       defaultValue: false,
+    },
+    {
+      name: "featuredDescription",
+      type: "richText",
+      label: "Descrição no destaque",
+      admin: {
+        condition: (_, siblingData) => Boolean(siblingData?.featured),
+        description:
+          "Texto do cartão na secção Serviços da homepage. Se vazio, usa a descrição do serviço.",
+      },
     },
     {
       name: "inContactForm",

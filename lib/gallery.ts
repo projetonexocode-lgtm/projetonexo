@@ -1,4 +1,4 @@
-import { DEFAULT_GALLERY } from "@/lib/cms/defaults";
+import type { CmsRichTextData } from "@/lib/cms/rich-text";
 
 export type GalleryPanel = {
   src: string;
@@ -8,7 +8,7 @@ export type GalleryPanel = {
 export type GalleryProject = {
   title: string;
   titleLines?: string[];
-  caption: string;
+  caption: CmsRichTextData;
   imageUrl: string;
   alt: string;
   width: number;
@@ -19,25 +19,10 @@ export type GalleryProject = {
   panels?: GalleryPanel[];
 };
 
-export function withGalleryExtras(project: GalleryProject): GalleryProject {
-  const match = DEFAULT_GALLERY.projects.find(
-    (item) => item.imageUrl === project.imageUrl,
-  );
-  return match
-    ? {
-        ...match,
-        ...project,
-        panels: project.panels ?? match.panels,
-        titleLines: project.titleLines ?? match.titleLines,
-        icon: project.icon ?? match.icon,
-        isRealWork: project.isRealWork || match.isRealWork,
-      }
-    : project;
-}
-
 export function splitGallery(projects: GalleryProject[]) {
-  const items = projects.map(withGalleryExtras);
-  const process = items.find((item) => item.isRealWork || item.panels?.length);
-  const photos = items.filter((item) => item !== process);
-  return { items, process, photos };
+  const process = projects.find(
+    (item) => Boolean(item.isRealWork) || Boolean(item.panels?.length),
+  );
+  const photos = projects.filter((item) => item !== process);
+  return { items: projects, process, photos };
 }
